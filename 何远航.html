@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>何远航 | 蔚蓝科技创始人 · 官方介绍</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #eef2f5;
+            font-family: 'Inter', 'Segoe UI', 'Roboto', 'Noto Sans', system-ui, -apple-system, sans-serif;
+            line-height: 1.5;
+            color: #1a2c3a;
+            padding: 0;
+            margin: 0;
+        }
+
+        /* 主容器：无圆角、无阴影，严格直角 */
+        .profile-container {
+            max-width: 1100px;
+            margin: 0 auto;
+            background: #ffffff;
+            border: none;
+            padding: 0;
+        }
+
+        /* 顶部色块条幅 - 直角，无阴影 */
+        .top-banner {
+            background-color: #1f5e5e;
+            width: 100%;
+            padding: 1rem 2rem;
+            border-bottom: 1px solid #0f3e3e;
+        }
+
+        .banner-content {
+            max-width: 1100px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .banner-left {
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: #f0f7f4;
+            letter-spacing: 0.3px;
+        }
+
+        .banner-right {
+            font-size: 0.8rem;
+            color: #cde3df;
+            font-family: 'Courier New', monospace;
+        }
+
+        /* 头部区域：直角分割 */
+        .hero-section {
+            border-bottom: 2px solid #1f5e5e;
+            padding: 2.5rem 2rem 1.8rem 2rem;
+            background: #ffffff;
+        }
+
+        .name {
+            font-size: 3rem;
+            font-weight: 700;
+            color: #1f5e5e;
+            letter-spacing: -0.02em;
+            margin-bottom: 0.25rem;
+        }
+
+        .title {
+            font-size: 1.2rem;
+            font-weight: 500;
+            color: #4a6272;
+            margin-bottom: 1rem;
+            border-left: 3px solid #9bc2c2;
+            padding-left: 0.8rem;
+        }
+
+        .brief {
+            font-size: 1rem;
+            color: #2c3f4c;
+            line-height: 1.6;
+            max-width: 85%;
+        }
+
+        /* 主体内容区：严格直角，无阴影 */
+        .content {
+            padding: 2rem 2rem 2.5rem 2rem;
+        }
+
+        /* 每个介绍区块 */
+        .profile-block {
+            margin-bottom: 2.5rem;
+            border-bottom: 1px solid #e2e8f0;
+            padding-bottom: 2rem;
+        }
+
+        .profile-block:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+
+        /* 中文段落样式 */
+        .cn-text {
+            font-size: 1rem;
+            line-height: 1.65;
+            color: #2c3f4c;
+            text-align: justify;
+            margin-bottom: 1.2rem;
+        }
+
+        /* 英文段落样式，首字母特殊处理 */
+        .en-text {
+            font-size: 0.95rem;
+            line-height: 1.6;
+            color: #4a5f6e;
+            text-align: justify;
+            margin-top: 0.5rem;
+            font-family: 'Georgia', 'Times New Roman', serif;
+        }
+
+        .dropcap {
+            font-size: 2.2rem;
+            font-weight: 800;
+            float: left;
+            line-height: 0.85;
+            margin-right: 0.4rem;
+            margin-top: 0.05rem;
+            margin-bottom: 0rem;
+            color: #1f5e5e;
+            font-family: inherit;
+        }
+
+        /* 辅助分割 */
+        .section-tag {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #7e95a5;
+            margin-bottom: 0.8rem;
+            border-left: 2px solid #cbdde6;
+            padding-left: 0.8rem;
+        }
+
+        footer {
+            text-align: center;
+            font-size: 0.7rem;
+            color: #8ba3b3;
+            padding: 1.5rem;
+            border-top: 1px solid #e2e8f0;
+            background: #ffffff;
+        }
+
+        /* 响应式 */
+        @media (max-width: 720px) {
+            body {
+                padding: 0;
+            }
+            .top-banner {
+                padding: 0.7rem 1rem;
+            }
+            .banner-content {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            .hero-section {
+                padding: 1.5rem 1rem;
+            }
+            .name {
+                font-size: 2.2rem;
+            }
+            .brief {
+                max-width: 100%;
+            }
+            .content {
+                padding: 1.5rem 1rem;
+            }
+            .dropcap {
+                font-size: 1.8rem;
+                margin-right: 0.3rem;
+            }
+        }
+
+        /* 无卡片风格强调 */
+        a, button {
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+
+<div class="profile-container">
+    <!-- 顶部色块条幅 直角无阴影 -->
+    <div class="top-banner">
+        <div class="banner-content">
+            <div class="banner-left">蔚蓝科技 | 官方人物志</div>
+            <div class="banner-right">创始人 · 首席科学家 · 伦理科技倡导者</div>
+        </div>
+    </div>
+
+    <!-- 头部：身份介绍，无圆角无阴影 -->
+    <div class="hero-section">
+        <div class="name">何远航</div>
+        <div class="title">蔚蓝科技创始人 · 首席科学家 | 生态人工智能先驱</div>
+        <div class="brief">
+            何远航先生，清华大学环境工程学士、麻省理工学院计算机科学博士。2016年创立蔚蓝科技，致力于将前沿人工智能与生态监测、伦理科技深度融合。作为连续创业者与科研领军人，他推动多项环境数据透明化倡议，并建立行业首个“算法伦理委员会”。其领导的企业被《麻省理工科技评论》评为“最具社会责任科技公司”。
+        </div>
+    </div>
+
+    <div class="content">
+        <!-- 四大维度，英文段落首字母分别对应 O D I N，每段首字母放大加粗 -->
+        
+        <!-- 区块 1：远见与使命 (O) -->
+        <div class="profile-block">
+            <div class="section-tag">远见 · 使命</div>
+            <div class="cn-text">
+                何远航坚信，科技的本质是服务于人与自然的和谐共生。在创建蔚蓝科技之初，他便确立“透明、可信、可持续”的核心原则，拒绝以数据垄断换取短期商业利益。他主导的“回声项目”原本旨在构建全球环境感知网络，却因发现超出原定伦理边界的风险而主动暂停，并推动行业重新审视数据采集权限。这种敢于自我审视的勇气，使其成为科技伦理领域的标志性人物。
+            </div>
+            <div class="en-text">
+                <span class="dropcap">O</span>riginating from a deep conviction that technology must serve both humanity and nature, He Yuanhang established AzureTech with three immutable pillars: transparency, trustworthiness, and sustainability. He refused to pursue short-term gains through data monopolization, instead embedding ethical safeguards into every layer of the company’s architecture. The “Echo Initiative”, originally designed as a global environmental sensing network, was voluntarily suspended when it revealed unforeseen ethical complexities—a decision that cemented his reputation as a principled leader in responsible innovation.
+            </div>
+        </div>
+
+        <!-- 区块 2：科研与突破 (D) -->
+        <div class="profile-block">
+            <div class="section-tag">科研 · 突破</div>
+            <div class="cn-text">
+                作为跨学科研究者，何远航将环境科学与深度学习相结合，开发出低功耗边缘感知算法，使生态监测设备能够在极端环境下实现自主校准。其团队在《Nature》子刊发表的论文提出“可解释性环境模型”，首次将因果推断引入生态系统模拟，显著提升了预测精度。蔚蓝科技因此获得联合国环境署“数字地球”创新奖，相关技术已被全球三十余个自然保护区采用。
+            </div>
+            <div class="en-text">
+                <span class="dropcap">D</span>riving innovation at the intersection of environmental science and deep learning, He engineered low‑power edge perception algorithms that enable autonomous calibration of ecological sensors in extreme conditions. His team’s paper in *Nature* sub-journals introduced “explainable environmental models”, pioneering causal inference in ecosystem simulation—a breakthrough that boosted predictive accuracy by over 40%. AzureTech was subsequently awarded the UNEP “Digital Earth” Innovation Prize, and its technologies now safeguard more than thirty nature reserves worldwide.
+            </div>
+        </div>
+
+        <!-- 区块 3：责任与伦理 (I) -->
+        <div class="profile-block">
+            <div class="section-tag">责任 · 伦理</div>
+            <div class="cn-text">
+                何远航积极推动建立行业算法伦理委员会，并亲自担任首届主席。他发起“数据主权守护者”计划，要求所有合作伙伴遵循严格的数据最小化原则。在面对内部异议时，他坚持公开项目潜在影响，并邀请第三方机构独立审计。因其在科技向善领域的杰出贡献，被世界经济论坛授予“全球青年领袖”称号，并多次受邀在联合国人工智能峰会上阐述负责任创新的实践框架。
+            </div>
+            <div class="en-text">
+                <span class="dropcap">I</span>n 2020, He founded the first industry‑wide Algorithmic Ethics Board and served as its inaugural chair. The “Data Sovereignty Guardian” initiative he launched mandates strict data‑minimization protocols for all partners. When internal disagreements arose over the scope of environmental data collection, he insisted on full transparency and commissioned third‑party audits to evaluate potential risks. His unwavering commitment to ethical tech earned him recognition as a Young Global Leader by the World Economic Forum, and he continues to shape global standards at UN AI summits.
+            </div>
+        </div>
+
+        <!-- 区块 4：未来愿景 (N) -->
+        <div class="profile-block">
+            <div class="section-tag">愿景 · 传承</div>
+            <div class="cn-text">
+                面向未来，何远航提出“开源生态智能”计划，将蔚蓝科技积累的脱敏环境数据与核心算法向非营利科研机构开放，以加速全球气候适应行动。他同时关注科研人员权益保障，在内部建立独立的伦理申诉通道。他相信，真正的创新不应以牺牲个体福祉为代价，而应缔造更具包容性的技术文明。目前，他正致力于撰写《数字时代的自然契约》一书，系统阐述科技与生态共生的未来范式。
+            </div>
+            <div class="en-text">
+                <span class="dropcap">N</span>ow, He Yuanhang is championing the “Open Ecological Intelligence” initiative, which grants non‑profit research institutions access to anonymized environmental datasets and core algorithms—accelerating global climate adaptation efforts. Within AzureTech, he established an independent ethics grievance channel to safeguard researchers’ rights, reinforcing his belief that true innovation never sacrifices individual well‑being. Currently he is writing *The Natural Contract in the Digital Age*, a seminal work that envisions a symbiotic future between technology and the biosphere.
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        蔚蓝科技 · 官方资料 | 版权所有 © 2025 | 基于透明与责任原则发布
+    </footer>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>清港市人民政府</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: #f5f7fa;
+            font-family: '微软雅黑', '宋体', SimSun, 'Segoe UI', Roboto, sans-serif;
+            color: #1f2d3d;
+            line-height: 1.5;
+        }
+
+        /* 整体容器 - 宽屏居中 */
+        .gov-wrapper {
+            max-width: 1300px;
+            margin: 0 auto;
+            background: #ffffff;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.05);
+        }
+
+        /* ========= 顶部区域（参考中国政府网风格） ========= */
+        .top-header {
+            background: #003366;
+            color: white;
+            padding: 0.5rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.8rem;
+            flex-wrap: wrap;
+        }
+        .top-header .date {
+            letter-spacing: 1px;
+        }
+        .top-header .links a {
+            color: #e0edff;
+            text-decoration: none;
+            margin-left: 1.5rem;
+        }
+        .top-header .links a:hover {
+            text-decoration: underline;
+        }
+
+        /* 主标识区 - 已删除搜索框 */
+        .main-brand {
+            background: #ffffff;
+            padding: 1.5rem 2rem;
+            display: flex;
+            align-items: center;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        .brand-left {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        .emblem {
+            font-size: 3rem;
+            color: #b22234;
+        }
+        .gov-name h1 {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #003366;
+            letter-spacing: 1px;
+        }
+        .gov-name p {
+            font-size: 0.75rem;
+            color: #5a6e7c;
+        }
+
+        /* 导航栏 */
+        .nav-bar {
+            background: #004d99;
+            padding: 0 2rem;
+        }
+        .nav-bar ul {
+            display: flex;
+            list-style: none;
+            flex-wrap: wrap;
+        }
+        .nav-bar li a {
+            display: block;
+            padding: 0.9rem 1.2rem;
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.95rem;
+            transition: 0.2s;
+        }
+        .nav-bar li a:hover {
+            background: #002d66;
+        }
+
+        /* 焦点图 / 欢迎语区 */
+        .hero-banner {
+            background: linear-gradient(135deg, #eef2ff 0%, #ffffff 100%);
+            padding: 2rem 2rem;
+            text-align: center;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        .hero-banner h2 {
+            font-size: 1.8rem;
+            color: #003366;
+            margin-bottom: 0.5rem;
+        }
+        .hero-banner p {
+            font-size: 1rem;
+            color: #2c3e4e;
+        }
+
+        /* 两列内容区 */
+        .content-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            padding: 2rem 2rem 1rem;
+        }
+        /* 信息板块样式 */
+        .info-card {
+            background: #fff;
+            border: 1px solid #e9edf2;
+            border-radius: 8px;
+            overflow: hidden;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.02);
+        }
+        .card-header {
+            background: #f9fafb;
+            padding: 0.8rem 1.2rem;
+            border-left: 4px solid #b22234;
+            border-bottom: 1px solid #e9edf2;
+            font-weight: 700;
+            font-size: 1.2rem;
+            color: #003366;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .card-header i {
+            color: #b22234;
+        }
+        .card-content {
+            padding: 0.8rem 1.2rem 1.2rem;
+        }
+        .news-list {
+            list-style: none;
+        }
+        .news-list li {
+            padding: 0.7rem 0;
+            border-bottom: 1px dashed #edf2f7;
+            display: flex;
+            align-items: flex-start;
+            gap: 0.6rem;
+        }
+        .news-list li:last-child {
+            border-bottom: none;
+        }
+        .news-list li i {
+            color: #b22234;
+            font-size: 0.7rem;
+            margin-top: 0.4rem;
+        }
+        .news-list li span {
+            color: #2c3e4e;
+            font-size: 0.9rem;
+        }
+        .date-tag {
+            font-size: 0.7rem;
+            color: #7f8c8d;
+            margin-left: 0.5rem;
+            white-space: nowrap;
+        }
+        .more-link {
+            text-align: right;
+            margin-top: 0.6rem;
+            font-size: 0.8rem;
+        }
+        .more-link a {
+            color: #b22234;
+            text-decoration: none;
+        }
+
+        /* 领导介绍表格 */
+        .leaders-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .leaders-table tr {
+            border-bottom: 1px solid #e9edf2;
+        }
+        .leaders-table td {
+            padding: 0.8rem 0.5rem;
+            vertical-align: top;
+        }
+        .leader-name {
+            font-weight: 700;
+            color: #003366;
+            width: 90px;
+        }
+        .leader-role {
+            font-weight: 600;
+            color: #b22234;
+            width: 80px;
+        }
+        .leader-desc {
+            font-size: 0.85rem;
+            color: #2c3e4e;
+        }
+
+        /* 办公信息 */
+        .contact-box {
+            background: #fafcff;
+            border: 1px solid #e2e8f0;
+            padding: 0.8rem 1.2rem;
+            border-radius: 6px;
+        }
+        .contact-list {
+            list-style: none;
+        }
+        .contact-list li {
+            margin-bottom: 0.6rem;
+            font-size: 0.85rem;
+            display: flex;
+            flex-wrap: wrap;
+        }
+        .contact-label {
+            font-weight: 700;
+            width: 110px;
+            color: #003366;
+        }
+        .contact-value {
+            color: #2c3e4e;
+        }
+
+        /* 底部关联链接区域 - 横向排列 */
+        .related-links {
+            background: #f8fafc;
+            border-top: 1px solid #e2e8f0;
+            border-bottom: 1px solid #e2e8f0;
+            padding: 1rem 2rem;
+            text-align: center;
+            margin: 1rem 0 0;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 1.5rem;
+        }
+        .related-links a, .related-links span {
+            display: inline-block;
+            color: #003366;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.9rem;
+        }
+        .related-links a:hover {
+            text-decoration: underline;
+            color: #b22234;
+        }
+        .related-links span {
+            color: #5a6e7c;
+            cursor: default;
+            font-weight: normal;
+        }
+
+        /* 底部版权 */
+        .footer {
+            background: #1e2f3a;
+            text-align: center;
+            padding: 1rem;
+            font-size: 0.7rem;
+            color: #9aaeb9;
+        }
+        .footer .icp {
+            margin-top: 5px;
+            font-family: monospace;
+        }
+
+        /* 响应式 */
+        @media (max-width: 900px) {
+            .content-grid {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+            .main-brand {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1rem;
+            }
+            .nav-bar ul {
+                overflow-x: auto;
+                padding: 0.5rem 0;
+            }
+            .contact-list li {
+                flex-direction: column;
+            }
+            .contact-label {
+                width: auto;
+                margin-bottom: 0.2rem;
+            }
+            .related-links {
+                gap: 0.8rem;
+                flex-wrap: wrap;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="gov-wrapper">
+    <!-- 顶部工具栏 -->
+    <div class="top-header">
+        <div class="date"><i class="far fa-calendar-alt"></i> 2026年3月28日 星期六</div>
+        <div class="links">
+            <a href="javascript:void(0)">长者模式</a>
+            <a href="javascript:void(0)">无障碍浏览</a>
+            <a href="javascript:void(0)">English</a>
+        </div>
+    </div>
+
+    <!-- 主品牌区（已删除搜索框） -->
+    <div class="main-brand">
+        <div class="brand-left">
+            <div class="emblem">🏛️</div>
+            <div class="gov-name">
+                <h1>清港市人民政府</h1>
+                <p>Qinggang Municipal People's Government</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- 导航栏 -->
+    <div class="nav-bar">
+        <ul>
+            <li><a href="javascript:void(0)">首页</a></li>
+            <li><a href="javascript:void(0)">走进清港</a></li>
+            <li><a href="javascript:void(0)">政务公开</a></li>
+            <li><a href="javascript:void(0)">政务服务</a></li>
+            <li><a href="javascript:void(0)">互动交流</a></li>
+            <li><a href="javascript:void(0)">数据开放</a></li>
+            <li><a href="javascript:void(0)">专题专栏</a></li>
+        </ul>
+    </div>
+
+    <!-- 欢迎语/焦点区 -->
+    <div class="hero-banner">
+        <h2>建设现代化滨海城市</h2>
+        <p>务实 · 清廉 · 高效 —— 全力推动清港高质量发展</p>
+    </div>
+
+    <!-- 主要内容区：两列布局（要闻+最新政策） -->
+    <div class="content-grid">
+        <!-- 左侧：要闻 -->
+        <div class="info-card">
+            <div class="card-header">
+                <i class="fas fa-newspaper"></i> 要闻
+            </div>
+            <div class="card-content">
+                <ul class="news-list">
+                    <li><i class="fas fa-caret-right"></i> <span>市政府召开第32次常务会议 研究部署一季度经济“开门红”工作 <span class="date-tag">03-26</span></span></li>
+                    <li><i class="fas fa-caret-right"></i> <span>清港市与上海临港集团签署战略合作协议 共建长三角产业协作示范区 <span class="date-tag">03-24</span></span></li>
+                    <li><i class="fas fa-caret-right"></i> <span>2026年全市民生实事项目最新进展：老旧小区改造完成率达75% <span class="date-tag">03-22</span></span></li>
+                    <li><i class="fas fa-caret-right"></i> <span>林志远市长调研港口经济区 强调打造绿色智慧港口标杆 <span class="date-tag">03-20</span></span></li>
+                </ul>
+                <div class="more-link"><a href="javascript:void(0)">更多 &gt;&gt;</a></div>
+            </div>
+        </div>
+
+        <!-- 右侧：最新政策 -->
+        <div class="info-card">
+            <div class="card-header">
+                <i class="fas fa-file-alt"></i> 最新政策
+            </div>
+            <div class="card-content">
+                <ul class="news-list">
+                    <li><i class="fas fa-caret-right"></i> <span>《清港市优化营商环境若干规定（2026年修订）》正式印发 <span class="date-tag">03-28</span></span></li>
+                    <li><i class="fas fa-caret-right"></i> <span>关于进一步促进高校毕业生来清港就业创业的实施意见 <span class="date-tag">03-25</span></span></li>
+                    <li><i class="fas fa-caret-right"></i> <span>清港市城镇老旧小区改造三年行动计划（2026-2028）发布 <span class="date-tag">03-22</span></span></li>
+                    <li><i class="fas fa-caret-right"></i> <span>《清港市数字化城市治理条例》公开征求意见情况反馈 <span class="date-tag">03-18</span></span></li>
+                </ul>
+                <div class="more-link"><a href="javascript:void(0)">更多 &gt;&gt;</a></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 第二行：政府领导 + 办公信息（两列布局） -->
+    <div class="content-grid">
+        <!-- 政府领导 -->
+        <div class="info-card">
+            <div class="card-header">
+                <i class="fas fa-user-tie"></i> 政府领导
+            </div>
+            <div class="card-content">
+                <table class="leaders-table">
+                    <tr>
+                        <td class="leader-name">林志远</td>
+                        <td class="leader-role">市长</td>
+                        <td class="leader-desc">1968年出生，清华大学公共管理硕士。主持市政府全面工作，分管审计、财政、人事编制等工作。</td>
+                    </tr>
+                    <tr>
+                        <td class="leader-name">王丽华</td>
+                        <td class="leader-role">副市长</td>
+                        <td class="leader-desc">1975年出生，经济学博士。负责发展改革、科技、工信、商务、金融、统计工作。</td>
+                    </tr>
+                    <tr>
+                        <td class="leader-name">陈国栋</td>
+                        <td class="leader-role">副市长</td>
+                        <td class="leader-desc">1970年出生，高级城市规划师。负责自然资源、住建、交通、城管、生态环境。</td>
+                    </tr>
+                    <tr>
+                        <td class="leader-name">李秀英</td>
+                        <td class="leader-role">副市长</td>
+                        <td class="leader-desc">1972年出生，法学硕士。负责教育、文旅、卫健、医保、体育。</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+        <!-- 办公信息（电话已修改） -->
+        <div class="info-card">
+            <div class="card-header">
+                <i class="fas fa-building"></i> 办公信息
+            </div>
+            <div class="card-content">
+                <div class="contact-box">
+                    <ul class="contact-list">
+                        <li><span class="contact-label">市政府办公室电话：</span><span class="contact-value">0574-1236732</span></li>
+                        <li><span class="contact-label">政府地址：</span><span class="contact-value">浙江省清港市新城大道188号 市政府大楼（邮编 315200）</span></li>
+                        <li><span class="contact-label">办公时间：</span><span class="contact-value">周一至周五 8:30-12:00，14:00-17:30（法定节假日除外）</span></li>
+                        <li><span class="contact-label">官方网站：</span><span class="contact-value">www.qinggang.gov.cn</span></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 底部关联链接区：横向排列，部分可点击，部分不可点击 -->
+    <div class="related-links">
+        <a href="检察院.html" target="_blank">清港检察院</a>
+        <a href="清港新闻网.html" target="_blank">清港新闻网</a>
+        <span>清港人大</span>
+        <span>清港政协</span>
+        <span>清廉清港</span>
+        <span>数字政府</span>
+    </div>
+
+    <!-- 版权信息 -->
+    <div class="footer">
+        清港市人民政府办公室主办 · 版权所有 清港市人民政府
+        <div class="icp">浙ICP备2025123456号  政府网站标识码：3302000012</div>
+    </div>
+</div>
+
+<!-- 引入Font Awesome图标库 -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</body>
+</html>

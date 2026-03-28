@@ -1,0 +1,695 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>清港城市公开数据平台 | 权威数据门户</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            min-height: 100vh;
+            /* 现代城市高楼背景，彰显权威与都市感 */
+            background: url('https://images.pexels.com/photos/466685/pexels-photo-466685.jpeg?auto=compress&cs=tinysrgb&w=1920&h=1080&fit=crop') center/cover no-repeat fixed;
+            color: #1a2a3a;
+        }
+
+        /* 全局直角 + 冷色调重置，强调专业权威，移除所有圆角与暖黄 */
+        .app-container,
+        .top-bar,
+        .main-content,
+        .profile-container,
+        .tab-btn,
+        .user-btn,
+        .back-btn,
+        .login-box,
+        .login-box input,
+        .login-box button,
+        .reply-comment,
+        .collection-item,
+        .post-item,
+        .memo-box,
+        .list-item,
+        .tabs,
+        .profile-section,
+        .profile-header,
+        footer,
+        button,
+        input {
+            border-radius: 0px !important;
+        }
+
+        .app-container {
+            position: relative;
+            z-index: 1;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .top-bar {
+            background-color: #1e2a36;  /* 深蓝灰权威色调，替代原先红色 */
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid #4a627a;
+            position: relative;
+            z-index: 2;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+        }
+
+        .logo h1 {
+            color: #ffffff;
+            font-size: 1.6rem;
+            font-weight: 600;
+            letter-spacing: 1px;
+        }
+        .logo p {
+            color: #cbdae9;
+            font-size: 0.7rem;
+            font-weight: 400;
+        }
+
+        .user-area {
+            position: relative;
+        }
+        .user-btn {
+            background: #2c3e4e;
+            border: 1px solid #5a7a9a;
+            padding: 8px 18px;
+            color: white;
+            font-weight: 500;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: 0.2s;
+            font-family: inherit;
+        }
+        .user-btn:hover {
+            background: #3a5568;
+            border-color: #8aadcc;
+        }
+
+        .main-content {
+            max-width: 1280px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+            flex: 1;
+            background: rgba(30, 35, 42, 0.65);
+            backdrop-filter: blur(12px);
+            box-shadow: 0 6px 16px rgba(0,0,0,0.15);
+            border: 1px solid rgba(80, 100, 120, 0.5);
+        }
+
+        .tabs {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 2px;
+            border-bottom: 2px solid #6c8eae;
+            margin-bottom: 2rem;
+            padding-top: 1rem;
+        }
+        .tab-btn {
+            background: transparent;
+            border: none;
+            padding: 12px 24px;
+            font-size: 1rem;
+            font-weight: 600;
+            color: #eef4ff;
+            cursor: pointer;
+            transition: 0.2s;
+            font-family: inherit;
+            border-bottom: 2px solid transparent;
+            margin-bottom: -2px;
+        }
+        .tab-btn.active {
+            color: #ffffff;
+            border-bottom-color: #ffffff;
+            background: rgba(108, 142, 174, 0.4);
+        }
+        .tab-btn:hover:not(.active) {
+            background: rgba(108, 142, 174, 0.2);
+            color: #ffffff;
+        }
+
+        .tab-pane {
+            display: none;
+            animation: fade 0.2s ease;
+            padding-bottom: 1.5rem;
+        }
+        .tab-pane.active {
+            display: block;
+        }
+
+        .list-item {
+            padding: 1rem 0;
+            border-bottom: 1px solid rgba(160, 180, 200, 0.4);
+        }
+        .list-item h3 {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 0.4rem;
+            color: #ffffff;
+        }
+        .list-item p {
+            color: #e0ecf9;
+            font-size: 0.9rem;
+            line-height: 1.4;
+        }
+        .reply-comment {
+            margin-top: 0.5rem;
+            padding-left: 1rem;
+            font-size: 0.8rem;
+            color: #cfdfef;
+            border-left: 3px solid #8aadcc;
+            background: rgba(40, 55, 70, 0.7);
+            padding: 0.4rem 0.8rem;
+        }
+        .reply-comment strong {
+            color: #ffc285;
+        }
+
+        @keyframes fade {
+            from { opacity: 0; transform: translateY(4px);}
+            to { opacity: 1; transform: translateY(0);}
+        }
+
+        footer {
+            text-align: center;
+            padding: 1.2rem;
+            font-size: 0.7rem;
+            color: #ccddee;
+            background: rgba(20, 28, 35, 0.8);
+            border-top: 1px solid rgba(90, 120, 140, 0.6);
+            margin-top: 2rem;
+        }
+
+        .profile-container {
+            max-width: 1280px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+            background: rgba(25, 32, 40, 0.75);
+            backdrop-filter: blur(12px);
+            overflow: hidden;
+            box-shadow: 0 6px 18px rgba(0,0,0,0.25);
+            border: 1px solid rgba(100, 130, 150, 0.5);
+        }
+        .profile-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.5rem 2rem;
+            border-bottom: 1px solid #4a6f8a;
+            background: rgba(30, 42, 54, 0.5);
+        }
+        .profile-header h2 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #ffffff;
+            letter-spacing: 1px;
+        }
+        .back-btn {
+            background: #2c4c6c;
+            border: 1px solid #6c8eae;
+            color: white;
+            padding: 8px 20px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: 0.2s;
+        }
+        .back-btn:hover {
+            background: #3e6080;
+        }
+        .profile-section {
+            padding: 1.5rem 2rem;
+            border-bottom: 1px solid rgba(80, 115, 135, 0.5);
+        }
+        .profile-section h3 {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #e0eefc;
+            margin-bottom: 1rem;
+            border-left: 3px solid #8aadcc;
+            padding-left: 0.8rem;
+        }
+        .collection-item, .post-item {
+            background: rgba(45, 62, 78, 0.75);
+            padding: 0.8rem 1rem;
+            margin-bottom: 0.8rem;
+            border: 1px solid rgba(100, 130, 155, 0.4);
+        }
+        .collection-item .title, .post-item .title {
+            font-weight: 600;
+            color: #f0f5fc;
+        }
+        .collection-item .desc, .post-item .desc {
+            font-size: 0.8rem;
+            color: #cbdae9;
+            margin-top: 0.3rem;
+        }
+        .post-item .time {
+            font-size: 0.7rem;
+            color: #b8cfec;
+            margin-top: 0.3rem;
+        }
+        .memo-box {
+            background: #1a2a34;
+            padding: 1rem;
+            font-family: 'Courier New', monospace;
+            font-size: 1rem;
+            word-break: break-all;
+            color: #cde1f0;
+            border: 1px solid #5a7c9a;
+        }
+
+        /* 登录模态框 — 全屏毛玻璃高楼背景 + 直角权威风格 */
+        .login-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(28px) brightness(1.02);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 200;
+            animation: glassFade 0.3s ease;
+        }
+        
+        @keyframes glassFade {
+            from { backdrop-filter: blur(0px); background: rgba(0,0,0,0); }
+            to { backdrop-filter: blur(28px) brightness(1.02); background: rgba(0, 0, 0, 0.4);}
+        }
+        
+        .login-box {
+            background: rgba(20, 28, 36, 0.85);
+            backdrop-filter: blur(20px);
+            padding: 2rem 2rem;
+            width: 340px;
+            text-align: center;
+            box-shadow: 0 20px 32px rgba(0,0,0,0.4);
+            border: 1px solid rgba(130, 170, 200, 0.6);
+        }
+        .login-box h3 {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: #ffffff;
+            letter-spacing: 1px;
+            margin-bottom: 0.3rem;
+        }
+        .login-sub {
+            font-size:0.75rem; 
+            margin-bottom: 1.5rem; 
+            color: #bbd2ec;
+            font-weight: 400;
+        }
+        .login-box input {
+            width: 100%;
+            padding: 12px 16px;
+            margin: 0.8rem 0;
+            border: 1px solid #5f7f9a;
+            background: rgba(255, 255, 255, 0.92);
+            font-size: 0.9rem;
+            font-family: monospace;
+            text-align: center;
+            box-shadow: none;
+            outline: none;
+            transition: 0.2s;
+            font-weight: 500;
+            color: #1e2e3e;
+        }
+        .login-box input:focus {
+            background: white;
+            border-color: #b0c4de;
+            box-shadow: 0 0 0 2px rgba(100, 150, 200, 0.5);
+        }
+        .login-box button {
+            background: #2c4c6c;
+            border: 1px solid #7a9cbc;
+            color: white;
+            padding: 12px;
+            width: 100%;
+            font-weight: 600;
+            cursor: pointer;
+            font-size: 1rem;
+            margin-top: 0.6rem;
+            transition: 0.2s;
+            letter-spacing: 1px;
+        }
+        .login-box button:hover {
+            background: #1e3a58;
+            border-color: #9abada;
+        }
+        .error-msg {
+            color: #ffb47b;
+            font-size: 0.75rem;
+            margin-top: 0.8rem;
+            min-height: 2rem;
+            font-weight: 500;
+        }
+        
+        /* 完全去除圆角, 所有边角锐利 */
+        .tab-btn, .user-btn, .back-btn, button, input, .login-box, .main-content, .profile-container, .collection-item, .post-item, .reply-comment, .memo-box {
+            border-radius: 0px;
+        }
+        
+        /* 移除所有暖黄色系，全部改为冷灰/蓝灰/白灰色调 */
+        .reply-comment strong {
+            color: #ffbc6e;
+        }
+        
+        @media (max-width: 780px) {
+            .main-content, .profile-container {
+                margin: 1rem;
+                padding: 0 1rem;
+            }
+            .tab-btn {
+                padding: 8px 14px;
+                font-size: 0.85rem;
+            }
+            .profile-section {
+                padding: 1rem;
+            }
+            .login-box {
+                width: 280px;
+                padding: 1.8rem;
+            }
+            .top-bar {
+                padding: 0.8rem 1rem;
+            }
+            .logo h1 {
+                font-size: 1.2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<!-- 登录模态框 - 全屏毛玻璃 + 直角权威风格，无任何emoji及演示码 -->
+<div id="loginModal" class="login-modal">
+    <div class="login-box">
+        <h3>清港城市公开数据平台</h3>
+        <div class="login-sub">权威数据 · 透明治理</div>
+        <input type="password" id="identityCode" placeholder="身份码" autocomplete="off">
+        <button id="loginBtn">验证身份</button>
+        <div id="loginError" class="error-msg"></div>
+        <!-- 完全移除演示码及任何图标提示 -->
+    </div>
+</div>
+
+<div id="appContainer" class="app-container" style="display: none;">
+    <div id="homeView" style="display: block;">
+        <div class="top-bar">
+            <div class="logo">
+                <h1>清港城市公开数据平台</h1>
+                <p>权威 · 透明 · 城市脉搏</p>
+            </div>
+            <div class="user-area">
+                <button class="user-btn" id="toProfileBtn">林述</button>
+            </div>
+        </div>
+
+        <div class="main-content">
+            <div class="tabs">
+                <button class="tab-btn active" data-tab="plan">城市规划</button>
+                <button class="tab-btn" data-tab="construction">建设</button>
+                <button class="tab-btn" data-tab="jobs">招聘信息</button>
+                <button class="tab-btn" data-tab="rental">租房信息</button>
+                <button class="tab-btn" data-tab="transport">公共交通信息</button>
+            </div>
+
+            <!-- 城市规划板块 -->
+            <div id="plan" class="tab-pane active">
+                <div class="list-item"><h3>清港东部新区控规修编 (2026-2030)</h3><p>打造产城融合示范区，新增生态公园2处，轨道交通站点3座，规划居住人口8万，配套学校5所、医疗中心1处。</p></div>
+                <div class="list-item"><h3>老城更新单元设计</h3><p>历史街区保护与基础设施提升，预计2027年启动，涉及面积约2.3平方公里，惠及居民1.2万户，保留历史建筑32处。</p></div>
+                <div class="list-item"><h3>滨海生态廊道规划</h3><p>连接湿地公园与滨江绿带，总长12公里，打造城市生态屏障，设置观鸟平台、慢行系统与科普驿站。</p></div>
+                <div class="list-item"><h3>清港北站TOD综合开发</h3><p>围绕高铁枢纽打造商业、办公、居住一体化街区，预计2030年建成，引入总部经济，新增就业岗位1.5万个。</p></div>
+                <div class="list-item"><h3>智慧城市示范区建设</h3><p>在清港科技城试点数字孪生平台，实现交通、能源、环境实时监测，2026年底完成一期工程。</p></div>
+            </div>
+
+            <!-- 建设板块 -->
+            <div id="construction" class="tab-pane">
+                <div class="list-item"><h3>清港西站综合枢纽工程</h3><p>主体结构已完成75%，预计2026年底投用，配套公交场站与P+R停车场，每日换乘能力提升3万人次。</p></div>
+                <div class="list-item"><h3>智慧水务二期项目</h3><p>管网智能化改造覆盖主城区，提升漏损控制率至12%以下，新增水质监测点40处，实现远程智能调度。</p></div>
+                <div class="list-item"><h3>清港体育中心扩建</h3><p>新增游泳馆与全民健身中心，2026年夏季开放，可承办区域性赛事，配套地下停车场800个。</p></div>
+                <div class="list-item"><h3>城市大脑三期工程</h3><p>交通、应急、环保数据融合，预计2026年底上线试运行，实现跨部门协同调度，事件响应效率提升30%。</p></div>
+                <div class="list-item"><h3>老旧小区加装电梯工程</h3><p>已完成申报112部，2026年计划再完成80部，同步推进适老化改造，惠及老年居民2600余人。</p></div>
+            </div>
+
+            <!-- 招聘信息板块 -->
+            <div id="jobs" class="tab-pane">
+                <div class="list-item">
+                    <h3>清港城市规划设计院</h3>
+                    <p>招聘城市规划师2名，要求注册规划师资格，3年以上经验，年薪25-35万，提供人才公寓与项目奖金。</p>
+                    <div class="reply-comment"><strong>张伟</strong> 评论：“有注册规划师证，已投递，希望有机会面谈。”</div>
+                    <div class="reply-comment"><strong>李敏</strong> 评论：“设计院口碑很好，工作氛围不错，祝大家顺利。”</div>
+                </div>
+                <div class="list-item">
+                    <h3>清港大数据局</h3>
+                    <p>数据治理工程师，熟悉Python/SQL，事业编制，应届生可报，享受人才引进补贴与住房支持。</p>
+                    <div class="reply-comment"><strong>王磊</strong> 评论：“已投简历，期待笔试通知！”</div>
+                </div>
+                <div class="list-item">
+                    <h3>清港轨道交通公司</h3>
+                    <p>招聘站务员、调度员若干，大专以上学历，提供住宿，五险一金齐全，带薪年假。</p>
+                    <div class="reply-comment"><strong>陈芳</strong> 评论：“调度员要求高吗？有相关经验优先？”</div>
+                </div>
+                <div class="list-item">
+                    <h3>清港生态公益基金会</h3>
+                    <p>招募项目专员2名，环境/社会学背景，参与湿地保护与社区发展项目，提供培训机会。</p>
+                    <div class="reply-comment"><strong>赵国强</strong> 评论：“已报名，非常希望参与湿地保护工作！”</div>
+                </div>
+                <div class="list-item">
+                    <h3>蔚蓝科技生态研究院 · 招聘启事</h3>
+                    <p>职位：生态数据分析师 / 环境模型研究员 / 政策研究专员。要求硕士及以上，环境科学、GIS或相关专业。提供有竞争力薪酬与科研平台，享受人才公寓。</p>
+                    <p>简历投递：hr@bluetech.eco  截止2024年12月31日。</p>
+                    <div class="reply-comment"><strong>宋文昭</strong> 回复：“已投递简历，望收到回复。”</div>
+                    <div class="reply-comment"><strong>刘洋</strong> 评论：“期待这个岗位，研究方向很契合！”</div>
+                </div>
+            </div>
+
+            <!-- 租房信息板块 -->
+            <div id="rental" class="tab-pane">
+                <div class="list-item"><h3>地铁口一居室</h3><p>清港大道站旁，35平，月租2200，精装全配，随时看房，押一付三，民水民电。</p>
+                    <div class="reply-comment"><strong>周涛</strong> 评论：“离地铁真的近，已约看房。”</div>
+                </div>
+                <div class="list-item"><h3>科技城人才公寓</h3><p>两室一厅，面向引进人才优惠申请，月租1800起，需提供人才认定证明，家具齐全。</p>
+                    <div class="reply-comment"><strong>吴静</strong> 评论：“正在申请人才认定，希望能租到。”</div>
+                </div>
+                <div class="list-item"><h3>老城区合租主卧</h3><p>近公交站，带阳台，月租1100，限女生，室友均为上班族，民水民电，可短租。</p>
+                    <div class="reply-comment"><strong>郑晓燕</strong> 评论：“房子还在吗？想实地看下。”</div>
+                </div>
+                <div class="list-item"><h3>清港南站旁整租两居</h3><p>精装修，拎包入住，月租2800，临近商圈与地铁，家电齐全，物业费已含。</p>
+                    <div class="reply-comment"><strong>孙建华</strong> 评论：“附近有学校吗？考虑孩子上学。”</div>
+                </div>
+                <div class="list-item"><h3>滨江花园三居室合租</h3><p>江景房，次卧1600，主卧2000，含物业费，可押一付一，交通便利。</p>
+                    <div class="reply-comment"><strong>林娜</strong> 评论：“江景很棒，有照片吗？”</div>
+                </div>
+            </div>
+
+            <!-- 公共交通信息板块 -->
+            <div id="transport" class="tab-pane">
+                <div class="list-item"><h3>地铁3号线延伸段开通</h3><p>2026年4月30日试运行，连接清港西站与大学城，高峰间隔5分钟，新增站点4座，全线Wi-Fi覆盖。</p></div>
+                <div class="list-item"><h3>公交线路优化调整</h3><p>新增微循环线路M1、M2，覆盖新建小区，同步加密早晚高峰班次，平均候车时间缩短3分钟。</p></div>
+                <div class="list-item"><h3>公共自行车站点更新</h3><p>新增50个无桩站点，支持扫码租车，前30分钟免费，覆盖主要居住区与商业区，投放新车800辆。</p></div>
+                <div class="list-item"><h3>清港-滨海新区快速公交BRT</h3><p>2026年7月动工，预计2028年通车，全程设站12座，设计时速60公里，配备新能源车辆。</p></div>
+                <div class="list-item"><h3>智慧公交电子站牌</h3><p>主城区已完成200块电子站牌升级，实时显示车辆到站信息与拥挤度，支持多语言提示。</p></div>
+            </div>
+        </div>
+        <footer>清港市数据资源管理局 监制 | 数据更新至2026年3月 · 权威发布</footer>
+    </div>
+
+    <!-- 个人主页视图 -->
+    <div id="profileView" style="display: none;">
+        <div class="top-bar">
+            <div class="logo">
+                <h1>清港城市公开数据平台</h1>
+                <p>个人中心</p>
+            </div>
+            <div class="user-area">
+                <button class="user-btn" id="backToHomeBtn">返回首页</button>
+            </div>
+        </div>
+        <div class="profile-container">
+            <div class="profile-header">
+                <h2>林述 · 个人主页</h2>
+            </div>
+            <div class="profile-section">
+                <h3>我的收藏</h3>
+                <div class="collection-item">
+                    <div class="title">清港生态保护红线规划</div>
+                    <div class="desc">发布于2025年12月，收藏于城市规划板块 | 重点关注湿地修复措施与监测数据</div>
+                </div>
+                <div class="collection-item">
+                    <div class="title">地铁3号线延伸段进展</div>
+                    <div class="desc">公共交通信息，收藏于2026年1月，通勤参考，关注开通时间</div>
+                </div>
+                <div class="collection-item">
+                    <div class="title">清港人才公寓申请指南</div>
+                    <div class="desc">租房信息板块，2026年2月收藏，已准备申请材料，等待开放申请</div>
+                </div>
+                <div class="collection-item">
+                    <div class="title">智慧城市示范区建设方案</div>
+                    <div class="desc">城市规划板块，2026年3月收藏，对数字孪生技术感兴趣</div>
+                </div>
+            </div>
+            <div class="profile-section">
+                <h3>我的发布</h3>
+                <div class="post-item">
+                    <div class="title">关于清港老城区改造的建议</div>
+                    <div class="desc">希望保留历史建筑的同时增加社区绿地，增设无障碍设施，保留原住民生活气息。</div>
+                    <div class="time">2026-02-15  · 来自城市规划板块 | 阅读 234次，获赞 17</div>
+                </div>
+                <div class="post-item">
+                    <div class="title">建议新增清港南站夜间公交线路</div>
+                    <div class="desc">夜间到达旅客增多，希望延长部分线路运营时间至23:30，方便晚归市民。</div>
+                    <div class="time">2026-03-05  · 来自公共交通信息 | 已被官方收录调研</div>
+                </div>
+                <div class="post-item">
+                    <div class="title">关于滨海生态廊道增设便民设施的倡议</div>
+                    <div class="desc">建议在廊道沿线增加直饮水点、休息亭和应急呼叫装置，提升市民体验。</div>
+                    <div class="time">2026-03-18  · 来自城市规划板块 | 获赞 32次，官方已回复考虑纳入二期设计</div>
+                </div>
+                <div class="post-item">
+                    <div class="title">清港东部新区教育资源配套建议</div>
+                    <div class="desc">随着新区人口增长，建议提前规划九年一贯制学校，引进优质教育品牌。</div>
+                    <div class="time">2026-03-25  · 来自城市规划板块 | 阅读 156次，教育局已关注</div>
+                </div>
+                <div class="post-item">
+                    <div class="title">鼓励绿色出行：建议增设共享单车电子围栏</div>
+                    <div class="desc">目前共享单车停放较乱，建议在重要点位设置电子围栏，规范停放秩序。</div>
+                    <div class="time">2026-03-28  · 来自公共交通信息 | 评论 9条，相关部门已列入计划</div>
+                </div>
+            </div>
+            <div class="profile-section">
+                <h3>私密备忘录</h3>
+                <div class="memo-box">zklvwoheorzhu（3）</div>
+                <div style="font-size:0.7rem; margin-top:0.5rem; color:#9abada; text-align:right;">仅本人可见 · 内部记录</div>
+            </div>
+        </div>
+        <footer>清港市数据资源管理局 监制 | 数据同步标准时刻</footer>
+    </div>
+</div>
+
+<script>
+    const CORRECT_PASS = "19951220";
+    let isLoggedIn = false;
+
+    const loginModal = document.getElementById('loginModal');
+    const appContainer = document.getElementById('appContainer');
+    const loginBtn = document.getElementById('loginBtn');
+    const identityInput = document.getElementById('identityCode');
+    const loginErrorDiv = document.getElementById('loginError');
+
+    const homeView = document.getElementById('homeView');
+    const profileView = document.getElementById('profileView');
+    const toProfileBtn = document.getElementById('toProfileBtn');
+    const backToHomeBtn = document.getElementById('backToHomeBtn');
+
+    function showMessage(text) {
+        const toast = document.createElement('div');
+        toast.textContent = text;
+        toast.style.position = 'fixed';
+        toast.style.bottom = '40px';
+        toast.style.left = '50%';
+        toast.style.transform = 'translateX(-50%)';
+        toast.style.backgroundColor = '#1e3a4d';
+        toast.style.color = 'white';
+        toast.style.padding = '10px 24px';
+        toast.style.fontSize = '0.85rem';
+        toast.style.zIndex = '300';
+        toast.style.fontWeight = '500';
+        toast.style.border = '1px solid #6c8eae';
+        toast.style.borderRadius = '0px';
+        document.body.appendChild(toast);
+        setTimeout(() => toast.remove(), 2600);
+    }
+
+    function handleLoginSuccess() {
+        isLoggedIn = true;
+        loginModal.style.display = 'none';
+        appContainer.style.display = 'flex';
+        showMessage('身份验证成功 | 欢迎访问清港权威数据平台');
+        homeView.style.display = 'block';
+        profileView.style.display = 'none';
+        switchTab('plan');
+    }
+
+    function attemptLogin() {
+        const code = identityInput.value.trim();
+        if (code === CORRECT_PASS) {
+            loginErrorDiv.innerText = '';
+            handleLoginSuccess();
+        } else {
+            loginErrorDiv.innerText = '身份码验证失败，请重新输入';
+            identityInput.value = '';
+            identityInput.focus();
+        }
+    }
+
+    loginBtn.addEventListener('click', attemptLogin);
+    identityInput.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') attemptLogin();
+    });
+
+    // tab切换逻辑
+    const panes = {
+        plan: document.getElementById('plan'),
+        construction: document.getElementById('construction'),
+        jobs: document.getElementById('jobs'),
+        rental: document.getElementById('rental'),
+        transport: document.getElementById('transport')
+    };
+    const tabBtns = document.querySelectorAll('.tab-btn');
+
+    function switchTab(tabId) {
+        Object.values(panes).forEach(pane => {
+            if (pane) pane.classList.remove('active');
+        });
+        if (panes[tabId]) panes[tabId].classList.add('active');
+        tabBtns.forEach(btn => {
+            const btnTab = btn.getAttribute('data-tab');
+            if (btnTab === tabId) {
+                btn.classList.add('active');
+            } else {
+                btn.classList.remove('active');
+            }
+        });
+    }
+
+    document.querySelectorAll('.tab-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            const tabId = btn.getAttribute('data-tab');
+            switchTab(tabId);
+        });
+    });
+
+    function showProfile() {
+        homeView.style.display = 'none';
+        profileView.style.display = 'block';
+    }
+
+    function showHome() {
+        profileView.style.display = 'none';
+        homeView.style.display = 'block';
+        switchTab('plan');
+    }
+
+    if (toProfileBtn) toProfileBtn.addEventListener('click', showProfile);
+    if (backToHomeBtn) backToHomeBtn.addEventListener('click', showHome);
+
+    window.addEventListener('load', () => {
+        loginModal.style.display = 'flex';
+        appContainer.style.display = 'none';
+        identityInput.focus();
+    });
+</script>
+</body>
+</html>

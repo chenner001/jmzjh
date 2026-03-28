@@ -1,0 +1,942 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>海边沙滩 · 极简桌面</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        /* 海边沙滩高清背景 */
+        body {
+            background: url('https://images.pexels.com/photos/753626/pexels-photo-753626.jpeg?auto=compress&cs=tinysrgb&w=1600') no-repeat center center fixed;
+            background-size: cover;
+            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue", sans-serif;
+            height: 100vh;
+            width: 100vw;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* 主容器：flex 列布局，小组件区域可滚动，dock 固定在底部 */
+        .main-container {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            width: 100%;
+            position: relative;
+            overflow-y: auto;
+            overflow-x: hidden;
+        }
+
+        /* 小组件区域：顶部毛玻璃卡片 */
+        .widget-area {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+            padding: 40px 20px;
+            min-height: 0;
+        }
+
+        /* 毛玻璃卡片通用样式 */
+        .glass-card {
+            background: rgba(255, 255, 255, 0.25);
+            backdrop-filter: blur(20px);
+            border-radius: 32px;
+            border: 0.5px solid rgba(255, 255, 255, 0.4);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+            width: 90%;
+            max-width: 380px;
+            padding: 20px 24px;
+            transition: all 0.2s;
+        }
+
+        /* 时间卡片 */
+        .time-card {
+            text-align: center;
+        }
+        .current-time {
+            font-size: 64px;
+            font-weight: 600;
+            color: white;
+            text-shadow: 0 2px 8px rgba(0,0,0,0.2);
+            letter-spacing: 2px;
+        }
+        .current-date {
+            font-size: 18px;
+            font-weight: 500;
+            color: rgba(255,255,255,0.9);
+            margin-top: 8px;
+        }
+
+        /* 天气卡片 */
+        .weather-card {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .weather-icon {
+            font-size: 48px;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2));
+        }
+        .weather-info {
+            text-align: right;
+        }
+        .weather-temp {
+            font-size: 32px;
+            font-weight: 600;
+            color: white;
+        }
+        .weather-desc {
+            font-size: 16px;
+            color: rgba(255,255,255,0.9);
+            margin-top: 4px;
+        }
+        .weather-location {
+            font-size: 14px;
+            color: rgba(255,255,255,0.7);
+            margin-top: 4px;
+        }
+
+        /* 底部 Dock 栏：图标水平居中 */
+        .dock {
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(30px);
+            border-top: 0.5px solid rgba(255,255,255,0.3);
+            padding: 12px 20px;
+            display: flex;
+            justify-content: center;
+            gap: 28px;
+            flex-wrap: wrap;
+            position: relative;
+            z-index: 10;
+        }
+
+        /* 图标样式 */
+        .app-icon {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            cursor: pointer;
+            transition: all 0.2s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+            width: 70px;
+            border-radius: 18px;
+            padding: 6px 0 4px;
+        }
+        .app-icon:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: scale(1.05);
+        }
+        .icon-bg {
+            width: 52px;
+            height: 52px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 6px;
+            background: rgba(255, 255, 255, 0.4);
+            backdrop-filter: blur(12px);
+            border-radius: 18px;
+            border: 0.5px solid rgba(255,255,255,0.3);
+        }
+        .icon-svg {
+            width: 28px;
+            height: 28px;
+            stroke: #1c1c1e;
+            stroke-width: 1.6;
+            fill: none;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+        .app-name {
+            font-size: 10px;
+            font-weight: 500;
+            color: white;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.3);
+        }
+
+        /* 右下角日历入口 */
+        .calendar-corner {
+            position: fixed;
+            bottom: 90px;
+            right: 20px;
+            width: 56px;
+            height: 56px;
+            background: rgba(255, 255, 255, 0.3);
+            backdrop-filter: blur(20px);
+            border-radius: 28px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.1);
+            transition: all 0.2s;
+            z-index: 100;
+            border: 0.5px solid rgba(255,255,255,0.4);
+        }
+        .calendar-corner:hover {
+            background: rgba(255, 255, 255, 0.5);
+            transform: scale(1.02);
+        }
+        .calendar-icon-svg {
+            width: 24px;
+            height: 24px;
+            stroke: #1c1c1e;
+            stroke-width: 1.5;
+            fill: none;
+        }
+        .calendar-label {
+            font-size: 9px;
+            font-weight: 500;
+            color: white;
+            text-shadow: 0 1px 1px rgba(0,0,0,0.2);
+            margin-top: 2px;
+        }
+
+        /* 模态框样式 */
+        .modal-mask {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.3);
+            backdrop-filter: blur(12px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+        }
+        .modal-container {
+            background: rgba(255, 255, 255, 0.96);
+            backdrop-filter: blur(40px);
+            border-radius: 32px;
+            width: 90%;
+            max-width: 400px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+            overflow: hidden;
+            animation: fadeIn 0.2s ease;
+            border: 0.5px solid rgba(0,0,0,0.1);
+        }
+        .modal-container.calendar-mini {
+            position: fixed;
+            bottom: 100px;
+            right: 28px;
+            top: auto;
+            left: auto;
+            width: 340px;
+            max-width: calc(100vw - 40px);
+            transform: none;
+            margin: 0;
+            animation: slideUp 0.2s ease;
+        }
+        .modal-mask.calendar-mask {
+            background: transparent;
+            backdrop-filter: none;
+            justify-content: flex-end;
+            align-items: flex-end;
+        }
+        .modal-mask.calendar-mask .modal-container.calendar-mini {
+            pointer-events: auto;
+            margin: 0 28px 28px 0;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.96);}
+            to { opacity: 1; transform: scale(1);}
+        }
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(20px);}
+            to { opacity: 1; transform: translateY(0);}
+        }
+
+        .modal-header {
+            padding: 16px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 0.5px solid rgba(0,0,0,0.08);
+            font-weight: 590;
+            font-size: 17px;
+            color: #1c1c1e;
+        }
+        .close-modal {
+            font-size: 22px;
+            cursor: pointer;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 30px;
+            background: rgba(0,0,0,0.05);
+        }
+        .close-modal:hover {
+            background: rgba(0,0,0,0.12);
+        }
+        .modal-body {
+            padding: 20px;
+            color: #1c1c1e;
+        }
+
+        /* 提示行样式 */
+        .notice-hint {
+            background: rgba(0, 122, 255, 0.1);
+            border-radius: 20px;
+            padding: 10px 16px;
+            margin-bottom: 20px;
+            text-align: center;
+            font-size: 14px;
+            color: #007aff;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        /* 拨号盘 */
+        .dialer-screen {
+            background: #f2f2f6;
+            border-radius: 24px;
+            padding: 16px;
+            margin-bottom: 20px;
+            text-align: right;
+            font-size: 32px;
+            letter-spacing: 1px;
+            font-weight: 500;
+            font-family: monospace;
+            color: #000;
+            overflow-x: auto;
+            white-space: nowrap;
+            min-height: 78px;
+            border: 0.5px solid rgba(0,0,0,0.05);
+        }
+        .dialer-buttons {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+        .dial-btn {
+            background: #e9e9ef;
+            border-radius: 60px;
+            padding: 14px 0;
+            text-align: center;
+            font-size: 28px;
+            font-weight: 450;
+            color: #1c1c1e;
+            cursor: pointer;
+            transition: 0.08s linear;
+        }
+        .dial-btn:active {
+            background: #d1d1d6;
+            transform: scale(0.96);
+        }
+        .green-call {
+            background: #34c759;
+            color: white;
+            font-weight: 600;
+            font-size: 18px;
+            border-radius: 60px;
+            text-align: center;
+            padding: 14px;
+            cursor: pointer;
+        }
+        .delete-btn {
+            background: #ff3b30;
+            color: white;
+        }
+        .symbol-btn {
+            background: #e1e1e8;
+        }
+
+        /* 登录表单 & 密码输入框 */
+        .input-group {
+            margin-bottom: 20px;
+        }
+        .input-group label {
+            display: block;
+            font-size: 14px;
+            font-weight: 500;
+            margin-bottom: 6px;
+            color: #3a3a3c;
+        }
+        .input-field {
+            width: 100%;
+            padding: 12px 14px;
+            background: #f2f2f6;
+            border: 0.5px solid rgba(0,0,0,0.08);
+            border-radius: 14px;
+            font-size: 16px;
+            font-family: monospace;
+            outline: none;
+        }
+        .login-btn, .confirm-pwd-btn {
+            background: #007aff;
+            color: white;
+            border: none;
+            width: 100%;
+            padding: 12px;
+            border-radius: 28px;
+            font-weight: 590;
+            font-size: 17px;
+            cursor: pointer;
+            margin-top: 8px;
+        }
+        .error-msg {
+            color: #ff3b30;
+            font-size: 13px;
+            margin-top: 12px;
+            text-align: center;
+        }
+
+        /* 日历网格 */
+        .calendar-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        .month-year {
+            font-size: 18px;
+            font-weight: 590;
+        }
+        .nav-btn {
+            background: rgba(0,0,0,0.05);
+            border: none;
+            color: #007aff;
+            font-size: 18px;
+            padding: 6px 14px;
+            border-radius: 30px;
+            cursor: pointer;
+            font-weight: 500;
+        }
+        .weekdays {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            text-align: center;
+            font-size: 12px;
+            font-weight: 500;
+            margin-bottom: 12px;
+            color: #8e8e93;
+        }
+        .calendar-days {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 6px;
+        }
+        .cal-day {
+            text-align: center;
+            padding: 8px 4px;
+            border-radius: 28px;
+            font-size: 14px;
+            cursor: default;
+            background: transparent;
+            transition: 0.05s linear;
+            position: relative;
+        }
+        .cal-day.today {
+            background: #007aff;
+            color: white;
+            font-weight: 500;
+        }
+        .cal-day.highlight {
+            background: #ff9f0a;
+            color: #1c1c1e;
+            font-weight: 600;
+        }
+        .birthday-note {
+            font-size: 8px;
+            display: block;
+            background: rgba(0,0,0,0.7);
+            border-radius: 12px;
+            padding: 2px 4px;
+            margin-top: 2px;
+            color: white;
+            white-space: nowrap;
+            position: absolute;
+            bottom: -18px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: max-content;
+            pointer-events: none;
+            font-weight: normal;
+        }
+        .other-month {
+            color: #c6c6c8;
+        }
+
+        /* 便签 */
+        .notes-area {
+            background: #fffdf7;
+            border-radius: 24px;
+            padding: 20px;
+            border: 0.5px solid rgba(0,0,0,0.05);
+        }
+        .note-title {
+            font-weight: 590;
+            font-size: 18px;
+            margin-bottom: 16px;
+            border-left: 3px solid #ff9f0a;
+            padding-left: 12px;
+        }
+        .note-account {
+            background: #f9f9fb;
+            padding: 12px;
+            border-radius: 16px;
+            margin: 12px 0;
+            font-family: monospace;
+            font-size: 14px;
+        }
+        .confirm-buttons {
+            display: flex;
+            gap: 16px;
+            justify-content: center;
+            margin-top: 24px;
+        }
+        .confirm-btn {
+            padding: 8px 24px;
+            border-radius: 40px;
+            font-weight: 500;
+            cursor: pointer;
+            border: none;
+        }
+        .confirm-yes { background: #007aff; color: white; }
+        .confirm-no { background: #e5e5ea; color: #1c1c1e; }
+        .bottom-birthday-hint {
+            font-size: 11px;
+            margin-top: 14px;
+            color: #6c6c70;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+<div class="main-container">
+    <!-- 小组件区域 -->
+    <div class="widget-area">
+        <div class="glass-card time-card">
+            <div class="current-time" id="clockTime">--:--</div>
+            <div class="current-date" id="clockDate">2026年7月3日 周五</div>
+        </div>
+        <div class="glass-card weather-card">
+            <div class="weather-icon" id="weatherIcon">☀️</div>
+            <div class="weather-info">
+                <div class="weather-temp" id="weatherTemp">28°C</div>
+                <div class="weather-desc" id="weatherDesc">晴，海风拂面</div>
+                <div class="weather-location" id="weatherLocation">黄金海岸</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 底部 Dock 栏 -->
+    <div class="dock">
+        <div class="app-icon" data-app="browser">
+            <div class="icon-bg"><svg class="icon-svg" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a15 15 0 0 0 0 18 15 15 0 0 0 0-18z"/></svg></div>
+            <span class="app-name">浏览器</span>
+        </div>
+        <div class="app-icon" data-app="wechat">
+            <div class="icon-bg"><svg class="icon-svg" viewBox="0 0 24 24"><path d="M8 12h.01M12 12h.01M16 12h.01M21 16c0 2.5-2 4.5-4.5 4.5-1.2 0-2.3-.5-3.2-1.2l-3.3 1 1-2.5C9 16.5 8 15 8 13c0-2.8 2.5-5 5.5-5S19 10.2 19 13c0 1-.4 2-1 2.8.6.7 1 1.5 1 2.2z"/><path d="M5 15c0-3.3 2.7-6 6-6 3.3 0 6 2.7 6 6"/></svg></div>
+            <span class="app-name">微信</span>
+        </div>
+        <div class="app-icon" data-app="mail">
+            <div class="icon-bg"><svg class="icon-svg" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 7L2 7"/></svg></div>
+            <span class="app-name">邮箱</span>
+        </div>
+        <div class="app-icon" data-app="secure">
+            <div class="icon-bg"><svg class="icon-svg" viewBox="0 0 24 24"><rect x="5" y="11" width="14" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div>
+            <span class="app-name">加密通讯</span>
+        </div>
+        <div class="app-icon" data-app="phone">
+            <div class="icon-bg"><svg class="icon-svg" viewBox="0 0 24 24"><rect x="5" y="2" width="14" height="20" rx="2"/><line x1="12" y1="18" x2="12" y2="18" stroke-width="2"/></svg></div>
+            <span class="app-name">手机</span>
+        </div>
+        <div class="app-icon" data-app="memo">
+            <div class="icon-bg"><svg class="icon-svg" viewBox="0 0 24 24"><path d="M17 3l4 4-7 7H10v-4l7-7z"/><path d="M4 20h16"/><rect x="4" y="4" width="4" height="12"/></svg></div>
+            <span class="app-name">备忘录</span>
+        </div>
+    </div>
+</div>
+
+<!-- 右下角日历入口 -->
+<div class="calendar-corner" id="calendarCornerBtn">
+    <svg class="calendar-icon-svg" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+    <span class="calendar-label">日历</span>
+</div>
+
+<script>
+    // 打开本地 HTML 文件
+    function openLocalHtml(fileName) {
+        window.open(fileName, '_blank');
+    }
+
+    let currentModal = null;
+    function closeModal() { if(currentModal) { currentModal.remove(); currentModal = null; } }
+
+    // 邮箱登录弹窗
+    function openMailLoginModal() {
+        if(currentModal) closeModal();
+        const mask = document.createElement('div');
+        mask.className = 'modal-mask';
+        const modalDiv = document.createElement('div');
+        modalDiv.className = 'modal-container';
+        modalDiv.innerHTML = `
+            <div class="modal-header">
+                <span>登录邮箱</span>
+                <div class="close-modal">✕</div>
+            </div>
+            <div class="modal-body">
+                <div class="input-group">
+                    <label>邮箱账号</label>
+                    <input type="text" class="input-field" id="loginEmail" placeholder="请输入邮箱账号">
+                </div>
+                <div class="input-group">
+                    <label>密码</label>
+                    <input type="password" class="input-field" id="loginPwd" placeholder="请输入密码">
+                </div>
+                <button class="login-btn" id="doLoginBtn">登录</button>
+                <div id="loginErrorMsg" class="error-msg"></div>
+            </div>
+        `;
+        mask.appendChild(modalDiv);
+        document.body.appendChild(mask);
+        currentModal = mask;
+
+        const closeX = modalDiv.querySelector('.close-modal');
+        const loginBtn = modalDiv.querySelector('#doLoginBtn');
+        const errorDiv = modalDiv.querySelector('#loginErrorMsg');
+
+        const handleLogin = () => {
+            const email = modalDiv.querySelector('#loginEmail').value.trim();
+            const pwd = modalDiv.querySelector('#loginPwd').value;
+            if(email === "linshu@ayzt.com" && pwd === "20160606") {
+                closeModal();
+                openLocalHtml('邮箱.html');
+            } else {
+                errorDiv.innerText = "账号或密码错误";
+            }
+        };
+        loginBtn.onclick = handleLogin;
+        closeX.onclick = () => closeModal();
+        mask.onclick = (e) => { if(e.target === mask) closeModal(); };
+        modalDiv.querySelector('#loginPwd').addEventListener('keypress', (e) => { if(e.key === 'Enter') handleLogin(); });
+    }
+
+    // 加密通讯：密码弹窗 + 📢 提示
+    function openSecurePasswordModal() {
+        if(currentModal) closeModal();
+        const mask = document.createElement('div');
+        mask.className = 'modal-mask';
+        const modalDiv = document.createElement('div');
+        modalDiv.className = 'modal-container';
+        modalDiv.innerHTML = `
+            <div class="modal-header">
+                <span>🔒 加密通讯</span>
+                <div class="close-modal">✕</div>
+            </div>
+            <div class="modal-body">
+                <div class="notice-hint">
+                    <span>📢</span> 安全验证区域
+                </div>
+                <div class="input-group">
+                    <label>请输入解锁密码</label>
+                    <input type="password" class="input-field" id="securePwd" placeholder="密码" autocomplete="off">
+                </div>
+                <button class="confirm-pwd-btn" id="secureConfirmBtn">验证</button>
+                <div id="secureErrorMsg" class="error-msg"></div>
+            </div>
+        `;
+        mask.appendChild(modalDiv);
+        document.body.appendChild(mask);
+        currentModal = mask;
+
+        const closeX = modalDiv.querySelector('.close-modal');
+        const confirmBtn = modalDiv.querySelector('#secureConfirmBtn');
+        const errorDiv = modalDiv.querySelector('#secureErrorMsg');
+        const pwdInput = modalDiv.querySelector('#securePwd');
+
+        const handleVerify = () => {
+            const pwd = pwdInput.value.trim();
+            if(pwd.toLowerCase() === "whistleblower") {
+                closeModal();
+                openLocalHtml('加密通话软件.html');
+            } else {
+                errorDiv.innerText = "密码错误";
+                pwdInput.value = "";
+                pwdInput.focus();
+            }
+        };
+        confirmBtn.onclick = handleVerify;
+        closeX.onclick = () => closeModal();
+        mask.onclick = (e) => { if(e.target === mask) closeModal(); };
+        pwdInput.addEventListener('keypress', (e) => { if(e.key === 'Enter') handleVerify(); });
+        setTimeout(() => pwdInput.focus(), 50);
+    }
+
+    // 拨号盘（非特定号码无反应）
+    let currentPhoneNumber = "";
+    function openDialerModal() {
+        if(currentModal) closeModal();
+        const mask = document.createElement('div');
+        mask.className = 'modal-mask';
+        const modalDiv = document.createElement('div');
+        modalDiv.className = 'modal-container';
+        modalDiv.style.maxWidth = "360px";
+        modalDiv.innerHTML = `
+            <div class="modal-header">
+                <span>拨号键盘</span>
+                <div class="close-modal">✕</div>
+            </div>
+            <div class="modal-body">
+                <div class="dialer-screen" id="dialerScreen"></div>
+                <div class="dialer-buttons" id="dialerDigits">
+                    ${[1,2,3,4,5,6,7,8,9].map(n => `<div class="dial-btn" data-digit="${n}">${n}</div>`).join('')}
+                </div>
+                <div class="dialer-buttons" style="grid-template-columns: repeat(3,1fr); gap:12px; margin-top:0;">
+                    <div class="dial-btn symbol-btn" data-digit="*">*</div>
+                    <div class="dial-btn" data-digit="0">0</div>
+                    <div class="dial-btn symbol-btn" data-digit="#">#</div>
+                </div>
+                <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap:12px; margin-top:8px;">
+                    <div class="dial-btn symbol-btn" id="specialHyphen" data-digit="-">-</div>
+                    <div class="green-call" id="callBtn">拨号</div>
+                    <div class="dial-btn delete-btn" id="deleteBtn">⌫</div>
+                </div>
+            </div>
+        `;
+        mask.appendChild(modalDiv);
+        document.body.appendChild(mask);
+        currentModal = mask;
+        const screenDiv = modalDiv.querySelector('#dialerScreen');
+        const updateScreen = () => { screenDiv.innerText = currentPhoneNumber || ""; };
+        updateScreen();
+
+        const allDigits = modalDiv.querySelectorAll('[data-digit]');
+        allDigits.forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const digit = btn.getAttribute('data-digit');
+                currentPhoneNumber += digit;
+                updateScreen();
+            });
+        });
+        modalDiv.querySelector('#specialHyphen')?.addEventListener('click', () => { currentPhoneNumber += '-'; updateScreen(); });
+        modalDiv.querySelector('#deleteBtn').addEventListener('click', () => { currentPhoneNumber = currentPhoneNumber.slice(0,-1); updateScreen(); });
+
+        const callBtn = modalDiv.querySelector('#callBtn');
+        const showConfirm = (msg, onYes) => {
+            const confirmMask = document.createElement('div');
+            confirmMask.className = 'modal-mask';
+            const confirmDiv = document.createElement('div');
+            confirmDiv.className = 'modal-container confirm-modal';
+            confirmDiv.innerHTML = `
+                <div class="modal-header"><span>确认</span><div class="close-modal">✕</div></div>
+                <div class="modal-body"><p>${msg}</p><div class="confirm-buttons"><button class="confirm-btn confirm-yes">是</button><button class="confirm-btn confirm-no">否</button></div></div>
+            `;
+            confirmMask.appendChild(confirmDiv);
+            document.body.appendChild(confirmMask);
+            const closeX = confirmDiv.querySelector('.close-modal');
+            const yesBtn = confirmDiv.querySelector('.confirm-yes');
+            const noBtn = confirmDiv.querySelector('.confirm-no');
+            const cleanup = (result) => { confirmMask.remove(); if(result === true && onYes) onYes(); };
+            yesBtn.onclick = () => cleanup(true);
+            noBtn.onclick = () => cleanup(false);
+            closeX.onclick = () => cleanup(false);
+            confirmMask.onclick = (e) => { if(e.target === confirmMask) cleanup(false); };
+        };
+
+        callBtn.onclick = () => {
+            const num = currentPhoneNumber;
+            if(num === "0574-1236732") {
+                showConfirm("是否要拨打政府电话举报？", () => openLocalHtml('政府举报.html'));
+            } else if(num === "0574-1230952") {
+                showConfirm("是否要拨打检察院电话举报？", () => openLocalHtml('司法举报.html'));
+            } else if(num === "0574-1236888") {
+                showConfirm("是否要拨打新闻网电话举报？", () => openLocalHtml('公开报道.html'));
+            }
+            // 其他号码无任何反应
+        };
+        const closeX = modalDiv.querySelector('.close-modal');
+        closeX.onclick = () => closeModal();
+        mask.onclick = (e) => { if(e.target === mask) closeModal(); };
+    }
+
+    // 备忘录
+    function openMemoModal() {
+        if(currentModal) closeModal();
+        const mask = document.createElement('div');
+        mask.className = 'modal-mask';
+        const modalDiv = document.createElement('div');
+        modalDiv.className = 'modal-container';
+        modalDiv.style.maxWidth = "400px";
+        modalDiv.innerHTML = `
+            <div class="modal-header"><span>备忘录</span><div class="close-modal">✕</div></div>
+            <div class="modal-body">
+                <div class="notes-area">
+                    <div class="note-title">便签</div>
+                    <div class="note-content">
+                        <p><strong>账户备忘</strong></p>
+                        <div class="note-account">
+                            邮箱账号：linshu@ayzt.com<br>
+                            密码：里程碑日期
+                        </div>
+                        <p style="margin-top:16px; font-style:italic;">重要提醒</p>
+                    </div>
+                </div>
+            </div>
+        `;
+        mask.appendChild(modalDiv);
+        document.body.appendChild(mask);
+        currentModal = mask;
+        const closeX = modalDiv.querySelector('.close-modal');
+        closeX.onclick = () => closeModal();
+        mask.onclick = (e) => { if(e.target === mask) closeModal(); };
+    }
+
+    // 日历（右下小窗）
+    let calYear = 2026, calMonth = 6;
+    const highlightDate = { year: 2026, month: 11, day: 20 };
+    const todayDateObj = { year: 2026, month: 6, day: 3 };
+
+    function openCalendarMini() {
+        if(currentModal) closeModal();
+        const mask = document.createElement('div');
+        mask.className = 'modal-mask calendar-mask';
+        const modalDiv = document.createElement('div');
+        modalDiv.className = 'modal-container calendar-mini';
+        modalDiv.innerHTML = `
+            <div class="modal-header"><span>日历</span><div class="close-modal">✕</div></div>
+            <div class="modal-body" id="calendarMiniBody">
+                <div class="calendar-header">
+                    <button class="nav-btn" id="prevMonthMini">◀</button>
+                    <div class="month-year" id="monthYearMini"></div>
+                    <button class="nav-btn" id="nextMonthMini">▶</button>
+                </div>
+                <div class="weekdays"><span>日</span><span>一</span><span>二</span><span>三</span><span>四</span><span>五</span><span>六</span></div>
+                <div class="calendar-days" id="calendarDaysMini"></div>
+                <div id="bottomHint" class="bottom-birthday-hint"></div>
+            </div>
+        `;
+        mask.appendChild(modalDiv);
+        document.body.appendChild(mask);
+        currentModal = mask;
+
+        const bottomHintDiv = modalDiv.querySelector('#bottomHint');
+
+        function renderMini() {
+            const year = calYear, month = calMonth;
+            const firstDay = new Date(year, month, 1).getDay();
+            const daysInMonth = new Date(year, month+1, 0).getDate();
+            const prevMonthDays = new Date(year, month, 0).getDate();
+            const grid = modalDiv.querySelector('#calendarDaysMini');
+            const monthDisplay = modalDiv.querySelector('#monthYearMini');
+            monthDisplay.innerText = `${year}年 ${month+1}月`;
+            grid.innerHTML = "";
+
+            const isDecember = (month === 11);
+            if(isDecember) {
+                bottomHintDiv.innerText = "🎂 2026.12.20 31岁生日快乐";
+            } else {
+                bottomHintDiv.innerText = "";
+            }
+
+            for(let i=0; i<firstDay; i++) {
+                const prev = prevMonthDays - firstDay + i + 1;
+                const div = document.createElement('div'); div.className = 'cal-day other-month'; div.innerText = prev;
+                grid.appendChild(div);
+            }
+            for(let d=1; d<=daysInMonth; d++) {
+                const div = document.createElement('div'); div.className = 'cal-day'; div.innerText = d;
+                if(year === todayDateObj.year && month === todayDateObj.month && d === todayDateObj.day) div.classList.add('today');
+                if(isDecember && year === highlightDate.year && month === highlightDate.month && d === highlightDate.day) {
+                    div.classList.add('highlight');
+                    const noteSpan = document.createElement('span');
+                    noteSpan.className = 'birthday-note';
+                    noteSpan.innerText = '🎂31岁生日快乐';
+                    div.appendChild(noteSpan);
+                }
+                grid.appendChild(div);
+            }
+            const total = 42;
+            let current = grid.children.length;
+            for(let i=current; i<total; i++) {
+                const next = i - current + 1;
+                const div = document.createElement('div'); div.className = 'cal-day other-month'; div.innerText = next;
+                grid.appendChild(div);
+            }
+        }
+        renderMini();
+
+        const prevBtn = modalDiv.querySelector('#prevMonthMini');
+        const nextBtn = modalDiv.querySelector('#nextMonthMini');
+        prevBtn.onclick = () => {
+            if(calMonth === 0) { calMonth = 11; calYear--; } else calMonth--;
+            renderMini();
+        };
+        nextBtn.onclick = () => {
+            if(calMonth === 11) { calMonth = 0; calYear++; } else calMonth++;
+            renderMini();
+        };
+        const closeX = modalDiv.querySelector('.close-modal');
+        closeX.onclick = () => closeModal();
+        mask.onclick = (e) => { if(e.target === mask) closeModal(); };
+    }
+
+    // 小组件：时间实时更新，日期固定为 2026年7月3日 周五
+    function updateTime() {
+        const now = new Date();
+        const hours = now.getHours().toString().padStart(2, '0');
+        const minutes = now.getMinutes().toString().padStart(2, '0');
+        const timeStr = `${hours}:${minutes}`;
+        document.getElementById('clockTime').innerText = timeStr;
+        document.getElementById('clockDate').innerText = "2026年7月3日 周五";
+    }
+    updateTime();
+    setInterval(updateTime, 1000);
+
+    // 天气模拟（海边天气）
+    const weatherData = {
+        icon: "☀️",
+        temp: "28°C",
+        desc: "晴，海风拂面",
+        location: "黄金海岸"
+    };
+    document.getElementById('weatherIcon').innerText = weatherData.icon;
+    document.getElementById('weatherTemp').innerText = weatherData.temp;
+    document.getElementById('weatherDesc').innerText = weatherData.desc;
+    document.getElementById('weatherLocation').innerText = weatherData.location;
+
+    // 应用点击事件
+    document.querySelectorAll('.app-icon').forEach(icon => {
+        icon.addEventListener('click', (e) => {
+            const app = icon.getAttribute('data-app');
+            if(app === 'browser') {
+                openLocalHtml('搜索.html');
+            } else if(app === 'wechat') {
+                openLocalHtml('微信.html');
+            } else if(app === 'mail') {
+                openMailLoginModal();
+            } else if(app === 'secure') {
+                openSecurePasswordModal();
+            } else if(app === 'phone') {
+                openDialerModal();
+            } else if(app === 'memo') {
+                openMemoModal();
+            }
+        });
+    });
+    document.getElementById('calendarCornerBtn').addEventListener('click', () => openCalendarMini());
+</script>
+</body>
+</html>

@@ -1,0 +1,686 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>微信 · 侦探工作台</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            /* 确保所有文字可以被鼠标选中 */
+            user-select: text;
+        }
+
+        body {
+            background: #2e2e2e;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            font-family: 'Segoe UI', 'Microsoft YaHei', 'Helvetica Neue', Helvetica, 'PingFang SC', '微软雅黑', sans-serif;
+        }
+
+        /* 主窗口 — 真实微信电脑版风格 */
+        .wechat-desktop {
+            width: 1100px;
+            height: 700px;
+            background: #f5f5f5;
+            border-radius: 12px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(0, 0, 0, 0.05);
+            display: flex;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* 左侧边栏 (联系人列表 + 底部工具栏) */
+        .sidebar {
+            width: 280px;
+            background: #2c2f36;
+            display: flex;
+            flex-direction: column;
+            border-right: 1px solid #1e1f23;
+        }
+
+        /* 我的信息栏 (简洁头部) */
+        .profile-header {
+            padding: 18px 16px;
+            background: #2c2f36;
+            border-bottom: 1px solid #3a3e46;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .avatar-sm {
+            width: 36px;
+            height: 36px;
+            background: #07c160;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 18px;
+            color: white;
+        }
+        .user-info h4 {
+            color: #e9edf2;
+            font-size: 15px;
+            font-weight: 500;
+        }
+        .user-info p {
+            color: #8b8f9a;
+            font-size: 12px;
+            margin-top: 2px;
+        }
+
+        /* 联系人列表区域 可滚动 */
+        .contacts-scroll {
+            flex: 1;
+            overflow-y: auto;
+            padding: 8px 0;
+        }
+        .contacts-scroll::-webkit-scrollbar {
+            width: 6px;
+        }
+        .contacts-scroll::-webkit-scrollbar-track {
+            background: #23262c;
+        }
+        .contacts-scroll::-webkit-scrollbar-thumb {
+            background: #4b4f5a;
+            border-radius: 4px;
+        }
+
+        /* 单个联系人条目 */
+        .contact-item {
+            display: flex;
+            align-items: center;
+            padding: 12px 16px;
+            gap: 12px;
+            cursor: pointer;
+            transition: background 0.15s;
+            border-left: 3px solid transparent;
+        }
+        .contact-item.active {
+            background: #3a3f48;
+            border-left-color: #07c160;
+        }
+        .contact-item:hover:not(.active) {
+            background: #353a43;
+        }
+        .contact-avatar {
+            width: 44px;
+            height: 44px;
+            background: #40444e;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 18px;
+            color: #cdd2e0;
+            flex-shrink: 0;
+        }
+        .contact-info {
+            flex: 1;
+            min-width: 0;
+        }
+        .contact-name {
+            font-size: 15px;
+            font-weight: 500;
+            color: #f0f2f5;
+            margin-bottom: 4px;
+        }
+        .contact-preview {
+            font-size: 12px;
+            color: #8b8f9a;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        /* 左下角朋友圈按钮区域 */
+        .footer-tools {
+            padding: 14px 16px;
+            border-top: 1px solid #3a3e46;
+            background: #2c2f36;
+        }
+        .moments-btn {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: #3a3f48;
+            padding: 8px 12px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+            color: #e9edf2;
+        }
+        .moments-btn:hover {
+            background: #4a4f5a;
+        }
+        .moments-btn span:first-child {
+            font-size: 20px;
+        }
+        .moments-btn span:last-child {
+            font-size: 14px;
+            font-weight: 500;
+        }
+        .moments-btn.active {
+            background: #07c160;
+            color: white;
+        }
+
+        /* 右侧主区域 */
+        .main-panel {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            background: #eef0f2;
+            overflow: hidden;
+        }
+
+        /* 聊天头部 */
+        .chat-header {
+            padding: 16px 24px;
+            background: #ffffff;
+            border-bottom: 1px solid #e2e4e8;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.02);
+        }
+        .chat-header h2 {
+            font-size: 18px;
+            font-weight: 600;
+            color: #1f2a3a;
+        }
+
+        /* 聊天记录区域 */
+        .chat-messages-area {
+            flex: 1;
+            overflow-y: auto;
+            padding: 20px 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            background: #eef0f2;
+        }
+        .message-row {
+            display: flex;
+            width: 100%;
+        }
+        .message-row.me {
+            justify-content: flex-end;
+        }
+        .bubble {
+            max-width: 70%;
+            padding: 8px 14px;
+            border-radius: 12px;
+            font-size: 14px;
+            line-height: 1.45;
+            word-break: break-word;
+            box-shadow: 0 1px 1px rgba(0,0,0,0.05);
+        }
+        .message-row.other .bubble {
+            background: #ffffff;
+            border: 1px solid #e6e9ef;
+            color: #1f2a3a;
+            border-top-left-radius: 4px;
+        }
+        .message-row.me .bubble {
+            background: #07c160;
+            color: white;
+            border-top-right-radius: 4px;
+        }
+        .sender-name {
+            font-size: 11px;
+            margin-bottom: 4px;
+            color: #8d93a0;
+            padding-left: 6px;
+        }
+        .message-row.me .sender-name {
+            text-align: right;
+            padding-right: 6px;
+        }
+
+        /* 朋友圈样式 */
+        .moments-container {
+            flex: 1;
+            overflow-y: auto;
+            background: #f2f4f8;
+            padding: 20px 28px;
+        }
+        .moment-card {
+            background: white;
+            border-radius: 16px;
+            margin-bottom: 20px;
+            padding: 16px 20px;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.04);
+            transition: 0.1s;
+        }
+        .moment-header {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+        .moment-avatar {
+            width: 44px;
+            height: 44px;
+            background: #bec3cc;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 18px;
+            color: #2c3e4e;
+            flex-shrink: 0;
+        }
+        .moment-info {
+            flex: 1;
+        }
+        .moment-name {
+            font-weight: 600;
+            font-size: 15px;
+            color: #1a2c3e;
+        }
+        .moment-time {
+            font-size: 11px;
+            color: #9aa3b0;
+            margin-top: 4px;
+        }
+        .moment-content {
+            font-size: 15px;
+            line-height: 1.48;
+            color: #2c3e4e;
+            margin: 8px 0 10px 0;
+            padding-left: 56px;
+        }
+        .moment-action {
+            padding-left: 56px;
+            font-size: 12px;
+            color: #8f99ab;
+            border-top: 1px solid #eff0f2;
+            padding-top: 10px;
+            margin-top: 6px;
+            display: flex;
+            gap: 20px;
+        }
+        .moment-action span {
+            cursor: default;
+        }
+
+        /* 占位聊天底部提示 */
+        .chat-tip {
+            text-align: center;
+            font-size: 12px;
+            color: #b0b7c4;
+            margin-top: 12px;
+        }
+
+        /* 滚动条美化 */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #e2e6ec;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #c1c9d2;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+<div class="wechat-desktop">
+    <!-- 左侧区域 -->
+    <div class="sidebar">
+        <div class="profile-header">
+            <div class="avatar-sm">侦</div>
+            <div class="user-info">
+                <h4>暗夜调查者</h4>
+                <p>ID: detective_x</p>
+            </div>
+        </div>
+
+        <div class="contacts-scroll" id="contactsList">
+            <!-- 动态js渲染联系人列表 -->
+        </div>
+
+        <div class="footer-tools">
+            <div class="moments-btn" id="momentsToggleBtn">
+                <span>📷</span>
+                <span>朋友圈</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- 右侧动态面板 -->
+    <div class="main-panel" id="mainPanel">
+        <!-- 动态内容: 聊天模式 / 朋友圈模式 动态渲染 -->
+    </div>
+</div>
+
+<script>
+    // ---------- 辅助函数：移除字符串中的emoji（确保朋友圈绝对无任何表情符号）----------
+    function removeEmoji(text) {
+        // 匹配常见emoji（包括基本多文种平面、符号、装饰符等）
+        const emojiRegex = /[\u{1F600}-\u{1F64F}\u{1F300}-\u{1F5FF}\u{1F680}-\u{1F6FF}\u{1F700}-\u{1F77F}\u{1F780}-\u{1F7FF}\u{1F800}-\u{1F8FF}\u{1F900}-\u{1F9FF}\u{1FA00}-\u{1FA6F}\u{1FA70}-\u{1FAFF}\u{2600}-\u{26FF}\u{2700}-\u{27BF}\u{FE0F}\u{1F1E6}-\u{1F1FF}]/gu;
+        return text.replace(emojiRegex, '').trim();
+    }
+
+    // ---------- 数据定义 ----------
+    const contactsData = [
+        {
+            id: "sujianqiu",
+            name: "苏见秋",
+            avatar: "苏",
+            messages: [
+                { sender: "苏见秋", text: "侦探，我这儿只有一份很模糊的名单，已经发到你邮箱了，注意查收。" },
+                { sender: "me", text: "收到。我会仔细调查这条线索，有进展立刻同步。" }
+            ]
+        },
+        {
+            id: "laozheng",
+            name: "老郑",
+            avatar: "郑",
+            messages: [
+                { sender: "me", text: "郑叔，您是退休刑警，经验丰富，有不懂的地方还要多向您请教。" },
+                { sender: "老郑", text: "哈哈哈，客气了！对了，有个城市公开数据平台也许能发现点什么。" },
+                { sender: "老郑", text: "另外，如果看到什么看不懂的乱码，试试凯撒密码，老方法有时候挺管用。" }
+            ]
+        },
+        {
+            id: "hejiaoshou",
+            name: "何教授",
+            avatar: "何",
+            messages: [
+                { sender: "me", text: "何教授，我突然有点迷茫，要是发现真相后不知道该怎么办……" },
+                { sender: "何教授", text: "每一个真相都是一把双刃剑。揭露可能带来正义，也可能伤害无辜；隐瞒或许维持平静，却会留下遗憾。不同结局会影响你的信念和未来道路，但追寻真相的过程会让你真正成长。无论结果如何，忠于内心即可。" }
+            ]
+        },
+        {
+            id: "zhangnvshi",
+            name: "张女士",
+            avatar: "张",
+            messages: [
+                { sender: "张女士", text: "侦探您好，我家猫咪“团子”走丢三天了，能帮忙找找吗？附近监控太少了。" },
+                { sender: "me", text: "别着急，我会帮您留意社区线索，并张贴寻猫启事，也会问问附近爱猫人士，请放心。" }
+            ]
+        },
+        {
+            id: "chenxiansheng",
+            name: "陈先生",
+            avatar: "陈",
+            messages: [
+                { sender: "陈先生", text: "我怀疑合伙人在账目上做手脚，想请您帮忙调查一些公开商业数据。" },
+                { sender: "me", text: "明白您的顾虑。我会在法律允许范围内梳理工商信息和公开报表，给出客观分析。" }
+            ]
+        },
+        {
+            id: "zhoujie",
+            name: "周姐（书店店主）",
+            avatar: "周",
+            messages: [
+                { sender: "周姐", text: "小侦探，店里最近总有人半夜撬门，可以帮我分析下监控角度吗？" },
+                { sender: "me", text: "没问题，我今晚帮您调整监控位置，再加强周边巡查，有异常立刻联系您。" }
+            ]
+        }
+    ];
+
+    // 朋友圈数据：删除苏见秋和老郑的，添加其他人的个人生活内容（无emoji）
+    // 保留原有其他人的部分内容（感谢侦探等），同时新增个人生活朋友圈
+    const momentsData = [
+        // 我自己的那条（保留，2016.6.6）
+        {
+            id: "my_moment_1",
+            userName: "暗夜调查者",
+            avatar: "侦",
+            content: "解决了当侦探以来的第一个案子！好有成就感！",
+            time: "2016.6.6",
+            isSelf: true
+        },
+        // 何教授：保留原有哲理内容，再新增一条个人生活
+        {
+            id: "he_moment_1",
+            userName: "何教授",
+            avatar: "何",
+            content: "真相的重量往往超乎想象，但逃避只会让迷雾更浓。给勇敢的调查者点赞。",
+            time: "2026.6.9",
+            isSelf: false
+        },
+        {
+            id: "he_moment_2",
+            userName: "何教授",
+            avatar: "何",
+            content: "在图书馆发现一本珍贵的旧书，如获至宝。安静阅读的下午，很是惬意。",
+            time: "2026.7.19",
+            isSelf: false
+        },
+        // 张女士：保留原有感谢内容，新增猫咪日常
+        {
+            id: "zhang_moment_1",
+            userName: "张女士",
+            avatar: "张",
+            content: "感谢侦探！团子今天自己跑回来了，还带了邻居家的小鱼干 太感谢了！",
+            time: "2026.6.10",
+            isSelf: false
+        },
+        {
+            id: "zhang_moment_2",
+            userName: "张女士",
+            avatar: "张",
+            content: "团子学会开门了，真是个机灵鬼。每天都有新惊喜。",
+            time: "2026.7.20",
+            isSelf: false
+        },
+        // 陈先生：保留原有感谢，新增家庭生活
+        {
+            id: "chen_moment_1",
+            userName: "陈先生",
+            avatar: "陈",
+            content: "多亏侦探梳理的工商资料，避免了一次重大失误。专业且靠谱。",
+            time: "2026.6.11",
+            isSelf: false
+        },
+        {
+            id: "chen_moment_2",
+            userName: "陈先生",
+            avatar: "陈",
+            content: "难得全家人一起吃饭，简单又幸福。",
+            time: "2026.7.18",
+            isSelf: false
+        },
+        // 周姐（书店店主）：保留原有感谢，新增书店日常
+        {
+            id: "zhou_moment_1",
+            userName: "周姐（书店店主）",
+            avatar: "周",
+            content: "侦探帮忙调整监控后，晚上安心多了。今天店里还多了几位爱看推理小说的客人。",
+            time: "2026.6.12",
+            isSelf: false
+        },
+        {
+            id: "zhou_moment_2",
+            userName: "周姐（书店店主）",
+            avatar: "周",
+            content: "今天书店来了几位小读者，安安静静看书的样子真美好。",
+            time: "2026.7.22",
+            isSelf: false
+        }
+    ];
+
+    // 对朋友圈内容进行二次净化（确保无emoji残留）
+    for (let moment of momentsData) {
+        moment.content = removeEmoji(moment.content);
+    }
+
+    // 辅助: 获取最后一条消息摘要 (含发送者标识)
+    function getLastMessagePreview(contact) {
+        const lastMsg = contact.messages[contact.messages.length - 1];
+        if (!lastMsg) return "暂无消息";
+        const senderName = lastMsg.sender === "me" ? "我" : lastMsg.sender;
+        let content = lastMsg.text;
+        if (content.length > 28) content = content.slice(0, 26) + "...";
+        return `${senderName}: ${content}`;
+    }
+
+    // 渲染左侧联系人列表 + 摘要 (所有文字均可选中)
+    function renderContactsList(activeContactId) {
+        const container = document.getElementById("contactsList");
+        if (!container) return;
+        container.innerHTML = "";
+        contactsData.forEach(contact => {
+            const preview = getLastMessagePreview(contact);
+            const div = document.createElement("div");
+            div.className = `contact-item ${activeContactId === contact.id ? 'active' : ''}`;
+            div.setAttribute("data-id", contact.id);
+            div.innerHTML = `
+                <div class="contact-avatar">${escapeHtml(contact.avatar)}</div>
+                <div class="contact-info">
+                    <div class="contact-name">${escapeHtml(contact.name)}</div>
+                    <div class="contact-preview">${escapeHtml(preview)}</div>
+                </div>
+            `;
+            div.addEventListener("click", (e) => {
+                e.stopPropagation();
+                switchToChatMode(contact.id);
+            });
+            container.appendChild(div);
+        });
+    }
+
+    // 简单防XSS
+    function escapeHtml(str) {
+        if (!str) return '';
+        return str.replace(/[&<>]/g, function(m) {
+            if(m === '&') return '&amp;';
+            if(m === '<') return '&lt;';
+            if(m === '>') return '&gt;';
+            return m;
+        }).replace(/[\uD800-\uDBFF][\uDC00-\uDFFF]/g, function(c) {
+            return c;
+        });
+    }
+
+    // 渲染聊天记录 (右侧)
+    function renderChatMessages(contactId) {
+        const contact = contactsData.find(c => c.id === contactId);
+        if (!contact) return;
+        const mainPanel = document.getElementById("mainPanel");
+        if (!mainPanel) return;
+        // 构建聊天界面html
+        let messagesHtml = `<div class="chat-header"><h2>${escapeHtml(contact.name)}</h2></div>`;
+        messagesHtml += `<div class="chat-messages-area" id="chatMessagesArea">`;
+        contact.messages.forEach(msg => {
+            const isMe = msg.sender === "me";
+            const senderDisplay = isMe ? "我" : msg.sender;
+            messagesHtml += `
+                <div class="message-row ${isMe ? 'me' : 'other'}">
+                    <div style="max-width:80%">
+                        <div class="sender-name">${escapeHtml(senderDisplay)}</div>
+                        <div class="bubble">${escapeHtml(msg.text).replace(/\n/g, '<br>')}</div>
+                    </div>
+                </div>
+            `;
+        });
+        messagesHtml += `<div class="chat-tip">—— 仅展示历史对话 ——</div>`;
+        messagesHtml += `</div>`;
+        mainPanel.innerHTML = messagesHtml;
+        // 滚动到底部
+        setTimeout(() => {
+            const msgArea = document.getElementById("chatMessagesArea");
+            if(msgArea) msgArea.scrollTop = msgArea.scrollHeight;
+        }, 20);
+    }
+
+    // 朋友圈渲染 (无任何emoji，且已删除苏见秋和老郑，新增个人生活)
+    function renderMoments() {
+        const mainPanel = document.getElementById("mainPanel");
+        if (!mainPanel) return;
+        let momentsHtml = `<div class="chat-header"><h2>📱 朋友圈</h2></div>`;
+        momentsHtml += `<div class="moments-container">`;
+        // 倒序排列（较新的在上面）
+        const sortedMoments = [...momentsData].reverse();
+        sortedMoments.forEach(m => {
+            // 确保内容绝对无emoji（二次保障）
+            const cleanContent = removeEmoji(m.content);
+            momentsHtml += `
+                <div class="moment-card">
+                    <div class="moment-header">
+                        <div class="moment-avatar">${escapeHtml(m.avatar)}</div>
+                        <div class="moment-info">
+                            <div class="moment-name">${escapeHtml(m.userName)}</div>
+                            <div class="moment-time">${escapeHtml(m.time)}</div>
+                        </div>
+                    </div>
+                    <div class="moment-content">${escapeHtml(cleanContent)}</div>
+                    <div class="moment-action">
+                        <span>❤️ 赞</span>
+                        <span>💬 评论</span>
+                    </div>
+                </div>
+            `;
+        });
+        momentsHtml += `</div>`;
+        mainPanel.innerHTML = momentsHtml;
+    }
+
+    // 当前模式: 'chat' 或 'moments'
+    let currentMode = 'chat';
+    let currentContactId = contactsData[0].id; // 默认苏见秋
+
+    // 切换至聊天模式并选中某个联系人
+    function switchToChatMode(contactId) {
+        currentMode = 'chat';
+        currentContactId = contactId;
+        // 更新左侧高亮
+        renderContactsList(currentContactId);
+        // 渲染聊天界面
+        renderChatMessages(currentContactId);
+        // 左下角按钮样式恢复非激活
+        const momentsBtn = document.getElementById("momentsToggleBtn");
+        if(momentsBtn) momentsBtn.classList.remove("active");
+    }
+
+    // 切换到朋友圈模式
+    function switchToMomentsMode() {
+        currentMode = 'moments';
+        // 移除联系人高亮 (清除active样式)
+        renderContactsList(null);
+        // 渲染朋友圈
+        renderMoments();
+        // 左下角按钮高亮
+        const momentsBtn = document.getElementById("momentsToggleBtn");
+        if(momentsBtn) momentsBtn.classList.add("active");
+    }
+
+    // 事件绑定和初始化
+    function init() {
+        // 初始默认选中第一个联系人苏见秋，聊天模式
+        renderContactsList(currentContactId);
+        renderChatMessages(currentContactId);
+        currentMode = 'chat';
+        const momentsBtn = document.getElementById("momentsToggleBtn");
+        if(momentsBtn) {
+            momentsBtn.addEventListener("click", (e) => {
+                e.stopPropagation();
+                if(currentMode === 'moments') {
+                    // 已在朋友圈模式，重新刷新即可（保持数据最新）
+                    renderMoments();
+                } else {
+                    switchToMomentsMode();
+                }
+            });
+        }
+        // 全局确保所有文字可选中（CSS已处理，无额外拦截）
+    }
+
+    // 启动
+    window.addEventListener("DOMContentLoaded", () => {
+        init();
+    });
+</script>
+</body>
+</html>

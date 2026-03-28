@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>失踪人员名单 · 回声不在之人</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #ffffff;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem;
+            font-family: 'Segoe UI', 'Courier New', 'Times New Roman', '宋体', monospace;
+        }
+
+        .archive {
+            width: auto;
+            background: #d2b48c;
+            box-shadow: 0 20px 35px -12px rgba(0, 0, 0, 0.3);
+            border-radius: 4px;
+            border: 1px solid #b87c4f;
+            padding: 2rem 1.8rem 2.5rem 1.8rem;
+        }
+
+        h1 {
+            font-size: 3rem;
+            text-align: center;
+            letter-spacing: 8px;
+            font-weight: 700;
+            color: #3e2a1f;
+            text-shadow: 2px 2px 0 rgba(0, 0, 0, 0.05);
+            font-family: 'Times New Roman', '宋体', serif;
+            margin-bottom: 2rem;
+            border-bottom: 2px solid #b87c4f;
+            padding-bottom: 0.8rem;
+        }
+
+        .grid-list {
+            overflow-x: auto;
+            border: 1px solid #c9a86b;
+            background: #fef2e0;
+            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .missing-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.85rem;
+            font-family: 'Courier New', 'SF Mono', monospace;
+            white-space: nowrap;
+        }
+
+        .missing-table th {
+            background: #e2cfaa;
+            color: #3e2a1f;
+            padding: 14px 8px;
+            font-weight: 700;
+            border-bottom: 2px solid #c2a16b;
+            border-right: 1px solid #dbbc8c;
+            font-size: 0.85rem;
+            letter-spacing: 1px;
+        }
+
+        .missing-table td {
+            padding: 12px 8px;
+            border-bottom: 1px solid #e2cfb0;
+            border-right: 1px solid #e7d6b8;
+            vertical-align: middle;
+            color: #2c241a;
+        }
+
+        .missing-table tr:hover td {
+            background: #f9efdd;
+        }
+    </style>
+</head>
+<body>
+<div class="archive">
+    <h1>失踪人员名单</h1>
+    <div class="grid-list">
+        <table class="missing-table" id="missingTable">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>姓名</th>
+                    <th>社保档案号</th>
+                    <th>身份证号码</th>
+                </tr>
+            </thead>
+            <tbody id="tableBody">
+                <!-- 动态生成 -->
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script>
+    // 原始数据（未打码）
+    const rawData = [
+        { id: 1, name: "陈远华", socialId: "HB2023-481256", idCard: "320101199101032367" },
+        { id: 2, name: "李素芬", socialId: "SH2022-672341", idCard: "320101199202038912" },
+        { id: 3, name: "王建国", socialId: "ZJ2021-590234", idCard: "320101199303044529" },
+        { id: 4, name: "张明霞", socialId: "HB2023-129087", idCard: "320101199404056741" },
+        { id: 5, name: "刘永强", socialId: "SH2022-903452", idCard: "320101199505063180" },
+        { id: 6, name: "赵美琳", socialId: "ZJ2021-344875", idCard: "320101199606075623" },
+        { id: 7, name: "周德福", socialId: "HB2023-765431", idCard: "320101199707089072" },
+        { id: 8, name: "吴秀英", socialId: "SH2022-238996", idCard: "320101199808091458" },
+        { id: 9, name: "郑志远", socialId: "ZJ2021-801274", idCard: "320101199910106690" },
+        { id: 10, name: "林婉清", socialId: "HB2023-456781", idCard: "320101200011013327" },
+        { id: 11, name: "郭建平", socialId: "SH2022-547823", idCard: "320101200112020145" },
+        { id: 12, name: "唐雅茹", socialId: "ZJ2021-690132", idCard: "320101200203037891" },
+        { id: 13, name: "孙大勇", socialId: "HB2023-902173", idCard: "320101200304042364" },
+        { id: 14, name: "宋文昭", socialId: "SH2022-114578", idCard: "xxxxxxxxxxxxxx8965" },
+        { id: 15, name: "许春梅", socialId: "ZJ2021-357924", idCard: "320101200506064732" },
+        { id: 16, name: "何志明", socialId: "HB2023-668543", idCard: "320101200607075509" },
+        { id: 17, name: "沈雪琴", socialId: "SH2022-992013", idCard: "320101200708081246" }
+    ];
+
+    const BLACK_BLOCK = '■';
+
+    // 确定性哈希函数（基于字符串，返回 0 ~ 2^31-1 之间的整数）
+    function hashCode(str) {
+        let hash = 0;
+        for (let i = 0; i < str.length; i++) {
+            hash = ((hash << 5) - hash) + str.charCodeAt(i);
+            hash |= 0; // 转换为32位整数
+        }
+        return Math.abs(hash);
+    }
+
+    // 从哈希值中提取一系列随机索引（确定性）
+    function getDeterministicIndices(seedStr, totalLength, count) {
+        const indices = [];
+        const seed = hashCode(seedStr);
+        let a = 1664525;
+        let c = 1013904223;
+        let m = 2 ** 32;
+        let current = seed;
+        const maxAttempts = 100;
+        for (let i = 0; i < count && indices.length < count; i++) {
+            let idx;
+            do {
+                current = (a * current + c) % m;
+                idx = Math.abs(current) % totalLength;
+            } while (indices.includes(idx) && indices.length < totalLength);
+            if (!indices.includes(idx)) indices.push(idx);
+        }
+        return indices;
+    }
+
+    // 固定打码姓名：1-2个字符
+    function maskName(name) {
+        if (!name) return name;
+        const len = name.length;
+        const hash = hashCode(name);
+        const maskCount = (hash % 2 === 0) ? 1 : 2;
+        if (maskCount >= len) return BLACK_BLOCK.repeat(len);
+        const indices = getDeterministicIndices(name + '_name', len, maskCount);
+        const chars = name.split('');
+        for (let idx of indices) {
+            chars[idx] = BLACK_BLOCK;
+        }
+        return chars.join('');
+    }
+
+    // 固定打码社保档案号：2-5个字符
+    function maskSocialId(socialId) {
+        if (!socialId) return socialId;
+        const len = socialId.length;
+        const hash = hashCode(socialId);
+        const maskCount = 2 + (hash % 4);
+        if (maskCount >= len) return BLACK_BLOCK.repeat(len);
+        const indices = getDeterministicIndices(socialId + '_social', len, maskCount);
+        const chars = socialId.split('');
+        for (let idx of indices) {
+            chars[idx] = BLACK_BLOCK;
+        }
+        return chars.join('');
+    }
+
+    // 固定打码身份证号：前六位固定黑色方块，剩余部分随机打码
+    function maskIdCard(idCard) {
+        if (!idCard) return idCard;
+        // 前六位替换为6个黑色方块
+        let masked = BLACK_BLOCK.repeat(6) + idCard.substring(6);
+        const tail = masked.substring(6);
+        if (!tail) return masked;
+        const tailLen = tail.length;
+        if (tailLen === 0) return masked;
+        const hash = hashCode(idCard);
+        let maskCount = Math.max(1, Math.min(tailLen, Math.floor(tailLen * (0.2 + (hash % 20) / 100))));
+        maskCount = Math.min(tailLen, Math.max(1, maskCount));
+        const indices = getDeterministicIndices(idCard + '_idcard', tailLen, maskCount);
+        const chars = tail.split('');
+        for (let idx of indices) {
+            chars[idx] = BLACK_BLOCK;
+        }
+        return masked.substring(0, 6) + chars.join('');
+    }
+
+    // 将字符串中所有 x 或 X 替换为黑色方块
+    function replaceXWithBlackBlock(str) {
+        if (!str) return str;
+        return str.replace(/[xX]/g, BLACK_BLOCK);
+    }
+
+    // 生成表格行（打码固定）
+    function renderTable() {
+        const tbody = document.getElementById('tableBody');
+        if (!tbody) return;
+        tbody.innerHTML = '';
+        rawData.forEach(person => {
+            const row = document.createElement('tr');
+            // 编号
+            const tdId = document.createElement('td');
+            tdId.textContent = person.id;
+            row.appendChild(tdId);
+            // 姓名（固定打码）
+            const tdName = document.createElement('td');
+            tdName.textContent = maskName(person.name);
+            row.appendChild(tdName);
+            // 社保档案号（固定打码）
+            const tdSocial = document.createElement('td');
+            tdSocial.textContent = maskSocialId(person.socialId);
+            row.appendChild(tdSocial);
+            
+            // 身份证号特殊处理：宋文昭（id=14）将所有 x 替换为 ■，不再额外打码
+            let idCardDisplay;
+            if (person.id === 14) {
+                // 先替换所有 x 为 ■
+                let processed = replaceXWithBlackBlock(person.idCard);
+                // 再确保前六位也是 ■（但已经是了，不过为了保险，如果替换后长度可能变化？不会）
+                // 直接使用替换后的结果
+                idCardDisplay = processed;
+            } else {
+                // 其他人员正常打码
+                idCardDisplay = maskIdCard(person.idCard);
+            }
+            const tdIdCard = document.createElement('td');
+            tdIdCard.textContent = idCardDisplay;
+            row.appendChild(tdIdCard);
+            
+            tbody.appendChild(row);
+        });
+    }
+
+    // 页面加载时渲染
+    renderTable();
+</script>
+</body>
+</html>

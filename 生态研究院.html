@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>生态研究院 · 历史档案</title>
+    <!-- Font Awesome 6 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #eef2f8;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+            color: #1e2f3f;
+            line-height: 1.5;
+        }
+
+        @import url('https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&display=swap');
+
+        .archive-container {
+            max-width: 1280px;
+            width: 100%;
+            margin: 2rem auto;
+            background: #ffffff;
+        }
+
+        /* 头部 */
+        .header {
+            background: #ffffff;
+            padding: 24px 32px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 20px;
+            border-bottom: 1px solid #eef2f8;
+        }
+        .institute-name h1 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #0a2b44;
+            letter-spacing: -0.3px;
+        }
+        .institute-name p {
+            font-size: 0.7rem;
+            color: #6c86a3;
+            margin-top: 4px;
+        }
+        .deprecated-badge {
+            background: #f0f4f9;
+            padding: 6px 14px;
+            font-size: 0.75rem;
+            font-weight: 500;
+            color: #5e6f8d;
+            border: 1px solid #e2e8f0;
+        }
+
+        /* 导航栏 */
+        .nav-tabs {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+            background: #ffffff;
+            padding: 0 32px;
+            border-bottom: 1px solid #eef2f8;
+        }
+        .tab-btn {
+            background: transparent;
+            border: none;
+            padding: 14px 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: #4a627a;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-family: inherit;
+            border-bottom: 2px solid transparent;
+            margin-bottom: -1px;
+        }
+        .tab-btn.active {
+            color: #0a66c2;
+            border-bottom-color: #0a66c2;
+        }
+        .tab-btn:hover:not(.active) {
+            color: #0a66c2;
+        }
+
+        /* 主内容区 */
+        .content-pane {
+            padding: 32px;
+            background: #ffffff;
+            min-height: 520px;
+        }
+
+        /* 各页面内容样式 */
+        .page-content {
+            display: none;
+            animation: fadeIn 0.2s ease;
+        }
+        .page-content.active {
+            display: block;
+        }
+
+        /* 停用快照页面 */
+        .snapshot-message {
+            text-align: center;
+            padding: 60px 20px;
+        }
+        .snapshot-message .icon {
+            font-size: 3.5rem;
+            margin-bottom: 20px;
+            color: #8ba0bc;
+        }
+        .snapshot-message h2 {
+            font-size: 1.6rem;
+            font-weight: 600;
+            color: #1e3a5f;
+            margin-bottom: 12px;
+        }
+        .snapshot-message p {
+            font-size: 0.95rem;
+            max-width: 500px;
+            margin: 0 auto;
+            line-height: 1.6;
+            color: #6c86a3;
+        }
+
+        /* 通用信息块样式 */
+        .info-block {
+            border-top: 1px solid #eef2f8;
+            padding-top: 0;
+        }
+        .info-block h3 {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #0a2b44;
+            margin-bottom: 16px;
+        }
+        .info-block p, .info-block li {
+            font-size: 0.9rem;
+            color: #2c3e50;
+            line-height: 1.6;
+        }
+        .info-block ul {
+            list-style: none;
+            padding-left: 0;
+        }
+        .info-block li {
+            margin-bottom: 8px;
+            padding-left: 20px;
+            position: relative;
+        }
+        .info-block li:before {
+            content: "•";
+            color: #0a66c2;
+            font-weight: bold;
+            position: absolute;
+            left: 0;
+        }
+        .research-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 24px;
+            margin-top: 8px;
+        }
+        .research-item {
+            flex: 1;
+            min-width: 200px;
+        }
+        .research-item strong {
+            color: #0a66c2;
+            display: block;
+            margin-bottom: 6px;
+        }
+        .archive-citation {
+            font-style: italic;
+            background: #fafcff;
+            padding: 16px;
+            border-left: 3px solid #0a66c2;
+            font-size: 0.85rem;
+            color: #4a627a;
+            margin-top: 20px;
+        }
+
+        /* 荣誉墙表格样式 */
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            margin: 0 0 28px 0;
+        }
+        .data-table th {
+            background: #f8fafd;
+            color: #1e3a5f;
+            font-weight: 600;
+            padding: 14px 16px;
+            text-align: left;
+            border-bottom: 1px solid #eef2f8;
+            font-size: 0.85rem;
+            letter-spacing: 0.3px;
+        }
+        .data-table td {
+            padding: 14px 16px;
+            border-bottom: 1px solid #f0f4fa;
+            font-size: 0.85rem;
+            color: #2c3e50;
+        }
+        .data-table tbody tr {
+            filter: blur(2px);
+            transition: filter 0.2s ease, background 0.2s;
+        }
+        .data-table tbody tr:hover {
+            filter: blur(0);
+            background: #fafeff;
+        }
+        .data-table thead tr {
+            filter: blur(0);
+        }
+
+        .archival-note {
+            text-align: center;
+            font-size: 0.7rem;
+            color: #b91c1c;
+            font-weight: 500;
+            letter-spacing: 0.3px;
+            opacity: 0;
+            transition: opacity 0.2s ease;
+            cursor: default;
+            margin-top: 8px;
+        }
+        .archival-note:hover {
+            opacity: 1;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(6px);}
+            to { opacity: 1; transform: translateY(0);}
+        }
+
+        footer {
+            background: #fafcff;
+            padding: 16px 32px;
+            font-size: 0.7rem;
+            color: #7f8e9e;
+            text-align: center;
+            border-top: 1px solid #eef2f8;
+        }
+
+        @media (max-width: 780px) {
+            .content-pane {
+                padding: 20px;
+            }
+            .data-table th, .data-table td {
+                padding: 10px 12px;
+                font-size: 0.75rem;
+            }
+            .tab-btn {
+                padding: 10px 14px;
+                font-size: 0.8rem;
+            }
+            .header {
+                padding: 18px 24px;
+            }
+            .research-grid {
+                flex-direction: column;
+                gap: 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="archive-container">
+    <div class="header">
+        <div class="institute-name">
+            <h1>生态研究院</h1>
+            <p>Institute of Ecology · 历史档案</p>
+        </div>
+        <div class="deprecated-badge">该网址已停用 · 快照存档</div>
+    </div>
+
+    <div class="nav-tabs">
+        <button class="tab-btn active" data-page="home">首页快照</button>
+        <button class="tab-btn" data-page="overview">机构概况</button>
+        <button class="tab-btn" data-page="research">重点研究领域</button>
+        <button class="tab-btn" data-page="archives">历史档案摘录</button>
+        <button class="tab-btn" data-page="honor">员工荣誉墙</button>
+    </div>
+
+    <div class="content-pane">
+        <!-- 首页快照：仅停用提示 -->
+        <div id="page-home" class="page-content active">
+            <div class="snapshot-message">
+                <div class="icon"><i class="fas fa-archive"></i></div>
+                <h2>该网址已停用</h2>
+                <p>根据生态研究院档案管理条例，原官网于2026年2月正式关闭。当前页面为静态历史快照，仅供内部查阅。<br>如需最新资讯，请联络院务办公室。</p>
+            </div>
+        </div>
+
+        <!-- 机构概况 -->
+        <div id="page-overview" class="page-content">
+            <div class="info-block">
+                <h3>机构概况</h3>
+                <p>生态研究院成立于2010年，是国家级生态保护与可持续发展研究机构。建院以来，承担国家重点研发计划、自然科学基金项目等课题120余项，在生物多样性保护、生态修复技术、环境政策研究等领域取得多项突破性成果。研究院下设5个研究中心、2个野外科学观测站，与全球20余所高校及科研机构建立合作网络。</p>
+                <p style="margin-top: 16px;">研究院现有科研人员150余人，其中高级职称占比45%，拥有博士学位的研究人员超过70%。近年来，研究院主导编制了多项国家级生态标准，并深度参与国际生态保护公约的制定工作。</p>
+            </div>
+        </div>
+
+        <!-- 重点研究领域 -->
+        <div id="page-research" class="page-content">
+            <div class="info-block">
+                <h3>重点研究领域</h3>
+                <div class="research-grid">
+                    <div class="research-item">
+                        <strong>生物多样性保护</strong>
+                        <p>濒危物种栖息地修复、生态廊道规划、自然保护地管理体系研究、物种迁徙监测技术。</p>
+                    </div>
+                    <div class="research-item">
+                        <strong>生态系统修复</strong>
+                        <p>退化湿地恢复、矿山复垦技术、土壤污染生态风险评估、城市棕地治理方案。</p>
+                    </div>
+                    <div class="research-item">
+                        <strong>环境政策与社会</strong>
+                        <p>生态补偿机制设计、环境法规实施评估、公众参与决策模型、绿色金融政策研究。</p>
+                    </div>
+                    <div class="research-item">
+                        <strong>气候变化适应</strong>
+                        <p>碳汇监测与核算、韧性城市设计、极端气候事件生态响应、低碳技术转化路径。</p>
+                    </div>
+                </div>
+                <div class="archive-citation" style="margin-top: 24px;">
+                    注：以上研究领域依托研究院5个中心实验室及两个野外台站开展，近五年承担国家级项目47项。
+                </div>
+            </div>
+        </div>
+
+        <!-- 历史档案摘录 -->
+        <div id="page-archives" class="page-content">
+            <div class="info-block">
+                <h3>历史档案摘录</h3>
+                <ul>
+                    <li>2015年 牵头编制《长江流域生态保护规划纲要》</li>
+                    <li>2017年 建成全国首个省级生态数据库平台</li>
+                    <li>2019年 获联合国“生态系统恢复十年”合作伙伴认证</li>
+                    <li>2021年 发布《中国生态保护红线评估报告》</li>
+                    <li>2023年 启动“静默者计划”专项档案整理工作</li>
+                    <li>2024年 完成全国首个城市生态安全评估标准制定</li>
+                </ul>
+                <div class="archive-citation">
+                    注：以上信息均依据研究院最后一次公开年报（2025年）整理，部分项目已移交上级管理部门。原始档案存放于院史馆第三库房。
+                </div>
+            </div>
+        </div>
+
+        <!-- 荣誉墙 -->
+        <div id="page-honor" class="page-content">
+            <table class="data-table" id="peopleTable">
+                <thead>
+                    <tr>
+                        <th>编号</th>
+                        <th>姓名</th>
+                        <th>社保档案号</th>
+                        <th>身份证号码</th>
+                    </tr>
+                </thead>
+                <tbody id="tableBody">
+                    <!-- 动态生成17行 -->
+                </tbody>
+            </table>
+            <div class="archival-note">* 已转至非活跃档案库 *</div>
+        </div>
+    </div>
+
+    <footer>生态研究院 · 历史档案系统 | 数据最后同步：2026.03</footer>
+</div>
+
+<script>
+    // 十七位失踪人员数据（完整）
+    const missingPersons = [
+        { id: 1, name: "陈远华", socialId: "HB2023-481256", idCard: "320101199101032367" },
+        { id: 2, name: "李素芬", socialId: "SH2022-672341", idCard: "320101199202038912" },
+        { id: 3, name: "王建国", socialId: "ZJ2021-590234", idCard: "320101199303044529" },
+        { id: 4, name: "张明霞", socialId: "HB2023-129087", idCard: "320101199404056741" },
+        { id: 5, name: "刘永强", socialId: "SH2022-903452", idCard: "320101199505063180" },
+        { id: 6, name: "赵美琳", socialId: "ZJ2021-344875", idCard: "320101199606075623" },
+        { id: 7, name: "周德福", socialId: "HB2023-765431", idCard: "320101199707089072" },
+        { id: 8, name: "吴秀英", socialId: "SH2022-238996", idCard: "320101199808091458" },
+        { id: 9, name: "郑志远", socialId: "ZJ2021-801274", idCard: "320101199910106690" },
+        { id: 10, name: "林婉清", socialId: "HB2023-456781", idCard: "320101200011013327" },
+        { id: 11, name: "郭建平", socialId: "SH2022-547823", idCard: "320101200112020145" },
+        { id: 12, name: "唐雅茹", socialId: "ZJ2021-690132", idCard: "320101200203037891" },
+        { id: 13, name: "孙大勇", socialId: "HB2023-902173", idCard: "320101200304042364" },
+        { id: 14, name: "宋文昭", socialId: "SH2022-114578", idCard: "xxxxxxxxxxxxxx8965" },
+        { id: 15, name: "许春梅", socialId: "ZJ2021-357924", idCard: "320101200506064732" },
+        { id: 16, name: "何志明", socialId: "HB2023-668543", idCard: "320101200607075509" },
+        { id: 17, name: "沈雪琴", socialId: "SH2022-992013", idCard: "320101200708081246" }
+    ];
+
+    // 渲染荣誉墙表格
+    function renderHonorTable() {
+        const tbody = document.getElementById('tableBody');
+        if (!tbody) return;
+        tbody.innerHTML = '';
+        missingPersons.forEach(person => {
+            const row = document.createElement('tr');
+            const tdId = document.createElement('td');
+            tdId.textContent = person.id;
+            const tdName = document.createElement('td');
+            tdName.textContent = person.name;
+            const tdSocial = document.createElement('td');
+            tdSocial.textContent = person.socialId;
+            const tdIdCard = document.createElement('td');
+            tdIdCard.textContent = person.idCard;
+            row.appendChild(tdId);
+            row.appendChild(tdName);
+            row.appendChild(tdSocial);
+            row.appendChild(tdIdCard);
+            tbody.appendChild(row);
+        });
+    }
+
+    // 页面切换逻辑
+    const tabs = document.querySelectorAll('.tab-btn');
+    const pages = {
+        home: document.getElementById('page-home'),
+        overview: document.getElementById('page-overview'),
+        research: document.getElementById('page-research'),
+        archives: document.getElementById('page-archives'),
+        honor: document.getElementById('page-honor')
+    };
+
+    function switchPage(pageId) {
+        // 隐藏所有页面
+        Object.values(pages).forEach(page => {
+            if (page) page.classList.remove('active');
+        });
+        // 显示目标页面
+        if (pages[pageId]) pages[pageId].classList.add('active');
+        // 更新按钮激活样式
+        tabs.forEach(btn => {
+            if (btn.getAttribute('data-page') === pageId) {
+                btn.classList.add('active');
+            } else {
+                btn.classList.remove('active');
+            }
+        });
+    }
+
+    // 绑定导航按钮事件
+    tabs.forEach(btn => {
+        btn.addEventListener('click', () => {
+            const pageId = btn.getAttribute('data-page');
+            switchPage(pageId);
+        });
+    });
+
+    // 初始化渲染荣誉墙表格
+    renderHonorTable();
+
+    // 默认首页（home已激活）
+</script>
+</body>
+</html>

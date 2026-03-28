@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>清港新闻网 - 权威资讯 服务民生</title>
+    <!-- Font Awesome 6 (免费图标库) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: #f6f8fa;
+            font-family: 'Segoe UI', '微软雅黑', Roboto, 'Helvetica Neue', sans-serif;
+            color: #1e2a3e;
+            line-height: 1.5;
+        }
+
+        /* 顶部红底白字（新闻网常见风格） */
+        .top-nav {
+            background: #c60a0a;
+            color: white;
+            padding: 0.5rem 2rem;
+            font-size: 0.8rem;
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+        .top-nav .date {
+            font-weight: 300;
+        }
+        .top-nav .links a {
+            color: #fff;
+            text-decoration: none;
+            margin-left: 1.2rem;
+            opacity: 0.85;
+        }
+        .top-nav .links a:hover {
+            opacity: 1;
+            text-decoration: underline;
+        }
+
+        /* 主头部 - 已删除搜索框 */
+        .header {
+            background: white;
+            padding: 1.2rem 2rem;
+            display: flex;
+            align-items: center;
+            border-bottom: 1px solid #e2e8f0;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.02);
+        }
+        .logo h1 {
+            font-size: 2rem;
+            font-weight: 800;
+            color: #c60a0a;
+            letter-spacing: 1px;
+        }
+        .logo p {
+            font-size: 0.7rem;
+            color: #5a6e7c;
+            margin-top: 4px;
+        }
+
+        /* 导航栏 */
+        .nav-bar {
+            background: #fff;
+            border-bottom: 2px solid #c60a0a;
+            padding: 0 2rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.03);
+        }
+        .nav-bar ul {
+            display: flex;
+            list-style: none;
+            flex-wrap: wrap;
+        }
+        .nav-bar li a {
+            display: block;
+            padding: 0.9rem 1.2rem;
+            color: #1e2a3e;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.95rem;
+            transition: 0.2s;
+        }
+        .nav-bar li a:hover {
+            color: #c60a0a;
+        }
+        .nav-bar li:first-child a {
+            color: #c60a0a;
+            border-bottom: 2px solid #c60a0a;
+            margin-bottom: -2px;
+        }
+
+        /* 主体网格布局 */
+        .main-grid {
+            max-width: 1300px;
+            margin: 1.5rem auto;
+            padding: 0 1.5rem;
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 2rem;
+        }
+
+        /* 左侧主内容区 - 头条无图片 */
+        .headline {
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            margin-bottom: 1.5rem;
+        }
+        .headline-content {
+            padding: 1.2rem;
+        }
+        .headline-content h2 {
+            font-size: 1.6rem;
+            margin-bottom: 0.5rem;
+            color: #1e2a3e;
+        }
+        .headline-content p {
+            color: #4a5b6e;
+            margin-bottom: 0.8rem;
+        }
+        .meta {
+            font-size: 0.75rem;
+            color: #8a9bb0;
+        }
+
+        .section-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            border-left: 4px solid #c60a0a;
+            padding-left: 0.8rem;
+            margin: 1rem 0 1rem;
+            color: #1e2a3e;
+        }
+
+        .news-list {
+            background: white;
+            border-radius: 8px;
+            padding: 0.2rem 0;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+        .news-item {
+            padding: 1rem 1.2rem;
+            border-bottom: 1px solid #edf2f7;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 1rem;
+            transition: background 0.2s;
+        }
+        .news-item:hover {
+            background: #fef9f9;
+        }
+        .news-info h3 {
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 0.3rem;
+        }
+        .news-info p {
+            font-size: 0.8rem;
+            color: #5a6e7c;
+        }
+        .news-date {
+            font-size: 0.7rem;
+            color: #8f9eb2;
+            white-space: nowrap;
+        }
+
+        /* 右侧边栏 */
+        .sidebar-card {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            margin-bottom: 1.5rem;
+            overflow: hidden;
+        }
+        .sidebar-title {
+            background: #f9fafb;
+            padding: 0.8rem 1.2rem;
+            font-weight: 700;
+            font-size: 1.1rem;
+            border-left: 3px solid #c60a0a;
+            border-bottom: 1px solid #edf2f7;
+            color: #1e2a3e;
+        }
+        .sidebar-list {
+            list-style: none;
+        }
+        .sidebar-list li {
+            padding: 0.8rem 1.2rem;
+            border-bottom: 1px dashed #edf2f7;
+            font-size: 0.9rem;
+        }
+        .sidebar-list li a {
+            text-decoration: none;
+            color: #2c3e4e;
+            display: block;
+        }
+        .sidebar-list li a:hover {
+            color: #c60a0a;
+        }
+        .hot-num {
+            display: inline-block;
+            background: #c60a0a;
+            color: white;
+            font-size: 0.7rem;
+            width: 1.4rem;
+            text-align: center;
+            border-radius: 4px;
+            margin-right: 0.6rem;
+        }
+
+        /* 底部 */
+        .footer {
+            background: #1e2f3a;
+            color: #cddfe7;
+            margin-top: 2rem;
+            padding: 2rem 2rem 1rem;
+            text-align: center;
+            font-size: 0.8rem;
+        }
+        .footer-links {
+            margin-bottom: 1rem;
+        }
+        .footer-links a {
+            color: #b0c4de;
+            text-decoration: none;
+            margin: 0 1rem;
+        }
+        .footer-links a:hover {
+            text-decoration: underline;
+        }
+        .copyright {
+            font-size: 0.7rem;
+            border-top: 1px solid #2c4454;
+            padding-top: 1rem;
+            margin-top: 0.5rem;
+        }
+
+        @media (max-width: 900px) {
+            .main-grid {
+                grid-template-columns: 1fr;
+                padding: 0 1rem;
+            }
+            .header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 0.8rem;
+            }
+            .nav-bar ul {
+                overflow-x: auto;
+                padding: 0.5rem 0;
+            }
+            .headline-content h2 {
+                font-size: 1.2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<!-- 顶部工具栏 -->
+<div class="top-nav">
+    <div class="date"><i class="far fa-calendar-alt"></i> 2026年3月28日 星期六</div>
+    <div class="links">
+        <a href="#">设为首页</a>
+        <a href="#">收藏本站</a>
+        <a href="#">投稿邮箱</a>
+    </div>
+</div>
+
+<!-- 主头部（已删除搜索栏） -->
+<div class="header">
+    <div class="logo">
+        <h1>清港新闻网</h1>
+        <p>Qinggang News · 权威资讯 服务民生</p>
+    </div>
+</div>
+
+<!-- 导航栏 -->
+<div class="nav-bar">
+    <ul>
+        <li><a href="#">首页</a></li>
+        <li><a href="#">要闻</a></li>
+        <li><a href="#">经济</a></li>
+        <li><a href="#">民生</a></li>
+        <li><a href="#">文旅</a></li>
+        <li><a href="#">法治</a></li>
+        <li><a href="#">教育</a></li>
+        <li><a href="#">专题</a></li>
+    </ul>
+</div>
+
+<!-- 主体内容 -->
+<div class="main-grid">
+    <!-- 左侧主要区域 -->
+    <div>
+        <!-- 头条新闻（无图片） -->
+        <div class="headline">
+            <div class="headline-content">
+                <h2>清港港区年吞吐量突破3亿吨 跻身全球前十强港</h2>
+                <p>随着智慧港口建设全面提速，清港港区2025年货物吞吐量达3.12亿吨，集装箱吞吐量突破1200万标箱，成为长三角南翼重要枢纽港。市长林志远表示，将加速打造绿色低碳的现代化港口集群。</p>
+                <div class="meta"><i class="far fa-clock"></i> 2026-03-28 07:30 &nbsp;|&nbsp; 来源：清港日报</div>
+            </div>
+        </div>
+
+        <!-- 要闻栏目 -->
+        <div class="section-title">要闻 · 推荐</div>
+        <div class="news-list">
+            <div class="news-item">
+                <div class="news-info">
+                    <h3>清港与杭州签署深化数字经济合作协议 共建“数字走廊”</h3>
+                    <p>双方将在人工智能、跨境电商、数字治理等领域展开深度合作，首批重点项目总投资超150亿元。</p>
+                </div>
+                <div class="news-date">03-28</div>
+            </div>
+            <div class="news-item">
+                <div class="news-info">
+                    <h3>全国首个海洋碳汇交易平台在清港正式上线</h3>
+                    <p>平台首日完成红树林碳汇交易23万吨，标志着我市在蓝碳经济发展中走在全国前列。</p>
+                </div>
+                <div class="news-date">03-27</div>
+            </div>
+            <div class="news-item">
+                <div class="news-info">
+                    <h3>清港市2026年十大民生实事项目出炉 新增学位5000个</h3>
+                    <p>涵盖教育医疗、老旧小区改造、养老服务等，预计总投资32亿元，惠及百万市民。</p>
+                </div>
+                <div class="news-date">03-26</div>
+            </div>
+            <div class="news-item">
+                <div class="news-info">
+                    <h3>清港湾跨海大桥正式合龙 届时市区至新区仅需15分钟</h3>
+                    <p>这座全长8.2公里的跨海大桥将于国庆前通车，极大缓解两岸交通压力。</p>
+                </div>
+                <div class="news-date">03-25</div>
+            </div>
+        </div>
+
+        <!-- 经济·财经 -->
+        <div class="section-title">经济 · 观察</div>
+        <div class="news-list">
+            <div class="news-item">
+                <div class="news-info">
+                    <h3>清港市一季度GDP预计增长7.2% 战略性新兴产业贡献突出</h3>
+                    <p>新能源汽车、集成电路产业增速分别达到28%和35%，经济发展韧性持续显现。</p>
+                </div>
+                <div class="news-date">03-28</div>
+            </div>
+            <div class="news-item">
+                <div class="news-info">
+                    <h3>清港综保区跨境电商进出口额突破200亿元 同比增长45%</h3>
+                    <p>“前店后仓”模式升级，跨境电商零售进口业务领跑全省。</p>
+                </div>
+                <div class="news-date">03-27</div>
+            </div>
+        </div>
+
+        <!-- 民生·社会 -->
+        <div class="section-title">民生 · 服务</div>
+        <div class="news-list">
+            <div class="news-item">
+                <div class="news-info">
+                    <h3>清港市新增社区食堂50家 老年助餐服务覆盖率达90%</h3>
+                    <p>老年人凭市民卡可享受优惠套餐，15分钟养老服务圈基本形成。</p>
+                </div>
+                <div class="news-date">03-26</div>
+            </div>
+            <div class="news-item">
+                <div class="news-info">
+                    <h3>清港地铁3号线东延线今日空载试运行 预计6月开通</h3>
+                    <p>线路全长12公里，设站8座，将有效串联新城与老城核心区。</p>
+                </div>
+                <div class="news-date">03-25</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 右侧边栏 -->
+    <div>
+        <!-- 热点排行 -->
+        <div class="sidebar-card">
+            <div class="sidebar-title"><i class="fas fa-chart-line"></i> 热点排行</div>
+            <ul class="sidebar-list">
+                <li><a href="#"><span class="hot-num">1</span> 清港港区吞吐量再创新高，全球排名跃升</a></li>
+                <li><a href="#"><span class="hot-num">2</span> 2026年清港市中小学招生政策发布</a></li>
+                <li><a href="#"><span class="hot-num">3</span> 清港湾跨海大桥合龙仪式隆重举行</a></li>
+                <li><a href="#"><span class="hot-num">4</span> 清港市春季房交会开幕，购房补贴力度加大</a></li>
+                <li><a href="#"><span class="hot-num">5</span> 清港海关查获走私冻品案，涉案价值超千万</a></li>
+            </ul>
+        </div>
+
+        <!-- 最新公告 -->
+        <div class="sidebar-card">
+            <div class="sidebar-title"><i class="fas fa-bullhorn"></i> 便民公告</div>
+            <ul class="sidebar-list">
+                <li><a href="#">清港市2026年事业单位公开招聘公告</a></li>
+                <li><a href="#">关于新城大道施工期间交通管制的通告</a></li>
+                <li><a href="#">清港市图书馆延长开放时间至晚上9点</a></li>
+                <li><a href="#">3月31日“春风行动”大型招聘会等你来</a></li>
+            </ul>
+        </div>
+
+        <!-- 文旅清港 -->
+        <div class="sidebar-card">
+            <div class="sidebar-title"><i class="fas fa-umbrella-beach"></i> 文旅清港</div>
+            <ul class="sidebar-list">
+                <li><a href="#">2026清港海湾音乐节定档5月1日-3日</a></li>
+                <li><a href="#">清港非遗“渔灯舞”亮相央视《远方的家》</a></li>
+                <li><a href="#">春季赏花地图发布：桃花、樱花、油菜花海等你打卡</a></li>
+                <li><a href="#">清港海鲜美食节启幕 百种地道小海鲜受热捧</a></li>
+            </ul>
+        </div>
+
+        <!-- 联系方式 -->
+        <div class="sidebar-card">
+            <div class="sidebar-title"><i class="fas fa-address-card"></i> 联系我们</div>
+            <div style="padding: 1rem; font-size: 0.85rem; line-height: 1.6;">
+                <p><i class="fas fa-phone"></i> 新闻热线：0574-1236888</p>
+                <p><i class="fas fa-envelope"></i> 投稿邮箱：news@qinggangnews.cn</p>
+                <p><i class="fas fa-map-marker-alt"></i> 地址：清港市新城大道99号 清港新闻传媒中心</p>
+                <p><i class="fas fa-clock"></i> 值班时间：8:30-22:00</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 底部 -->
+<div class="footer">
+    <div class="footer-links">
+        <a href="#">关于我们</a>
+        <a href="#">版权声明</a>
+        <a href="#">广告服务</a>
+        <a href="#">人才招聘</a>
+        <a href="#">网站地图</a>
+        <a href="#">投稿须知</a>
+    </div>
+    <div>互联网新闻信息服务许可证：33120250012   |   广播电视节目制作经营许可证：（浙）字第005号</div>
+    <div class="copyright">
+        Copyright © 2026 清港新闻网 版权所有  未经授权禁止复制或镜像<br>
+        本网站所刊登的新闻信息均为清港新闻网版权所有，未经协议授权，禁止下载使用。
+    </div>
+</div>
+
+</body>
+</html>

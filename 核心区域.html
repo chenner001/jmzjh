@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>蔚蓝科技 · 内部网络核心区域</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: #000000;
+            font-family: 'Segoe UI', 'Courier New', 'Fira Code', monospace;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #ff3333;
+            padding: 1.5rem;
+        }
+
+        /* 主容器 - 黑底红字核心区 */
+        .core-container {
+            max-width: 780px;
+            width: 100%;
+            text-align: center;
+            background: transparent;
+            border: 1px solid rgba(255, 51, 51, 0.3);
+            padding: 2.5rem 2rem;
+            backdrop-filter: blur(0px);
+        }
+
+        /* 头部装饰线 */
+        .core-header {
+            margin-bottom: 2.5rem;
+            position: relative;
+        }
+
+        .core-header h1 {
+            font-size: 1.2rem;
+            font-weight: 500;
+            letter-spacing: 3px;
+            color: #ff4d4d;
+            text-transform: uppercase;
+            border-bottom: 1px solid #ff3333;
+            display: inline-block;
+            padding-bottom: 0.5rem;
+            font-family: monospace;
+        }
+
+        /* 欢迎语区域 - 增加神秘感 */
+        .welcome-area {
+            margin: 2rem 0 2.5rem 0;
+        }
+
+        .welcome-text {
+            font-size: 2.3rem;
+            font-weight: 500;
+            letter-spacing: 2px;
+            color: #ff3333;
+            text-shadow: 0 0 8px #ff0000, 0 0 3px #ff3333, 0 0 12px rgba(255, 0, 0, 0.6);
+            font-family: 'Courier New', 'Fira Code', monospace;
+            font-style: normal;
+            background: linear-gradient(135deg, #ff4444 0%, #aa2222 100%);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            text-shadow: none;
+            -webkit-text-stroke: 0.5px #ff4444;
+            filter: drop-shadow(0 0 6px #aa2222);
+        }
+        /* 兼容不支持背景裁剪的浏览器 */
+        @supports not (background-clip: text) {
+            .welcome-text {
+                color: #ff5555;
+                text-shadow: 0 0 6px #ff0000;
+            }
+        }
+
+        .sub-line {
+            font-size: 0.7rem;
+            color: #882222;
+            margin-top: 0.6rem;
+            font-family: monospace;
+            border-left: 2px solid #ff5555;
+            padding-left: 0.8rem;
+            display: inline-block;
+            letter-spacing: 1px;
+        }
+
+        /* 搜索框区域 */
+        .search-section {
+            margin: 2rem 0 0.5rem;
+        }
+
+        .search-wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .search-input-group {
+            width: 100%;
+            max-width: 480px;
+            position: relative;
+        }
+
+        .search-input {
+            width: 100%;
+            background: #0a0a0a;
+            border: 1.5px solid #ff4444;
+            padding: 0.9rem 1.2rem;
+            font-size: 1rem;
+            font-family: 'Fira Code', monospace;
+            color: #ff6666;
+            outline: none;
+            transition: all 0.2s ease;
+            border-radius: 0px;
+            letter-spacing: 0.3px;
+        }
+
+        .search-input:focus {
+            border-color: #ff7777;
+            background-color: #111111;
+            box-shadow: 0 0 10px rgba(255, 68, 68, 0.3);
+        }
+
+        .search-input::placeholder {
+            color: #882222;
+            font-family: monospace;
+            font-size: 0.85rem;
+        }
+
+        .search-btn {
+            background: #1a0000;
+            border: 1px solid #ff5555;
+            color: #ff5c5c;
+            padding: 0.7rem 2rem;
+            font-size: 0.9rem;
+            font-family: monospace;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            margin-top: 0.5rem;
+            letter-spacing: 1px;
+        }
+
+        .search-btn:hover {
+            background: #330000;
+            border-color: #ff7777;
+            color: #ff8888;
+            box-shadow: 0 0 6px #ff3a3a;
+        }
+
+        /* 结果区域已移除所有反馈内容，仅保留占位（无显示） */
+        .result-area {
+            display: none;
+        }
+
+        .footnote {
+            margin-top: 2.8rem;
+            font-size: 0.65rem;
+            color: #5a2a2a;
+            letter-spacing: 1px;
+            border-top: 1px solid #2a1a1a;
+            padding-top: 1.2rem;
+            font-family: monospace;
+        }
+
+        @media (max-width: 550px) {
+            .core-container {
+                padding: 1.5rem;
+            }
+            .welcome-text {
+                font-size: 1.8rem;
+            }
+            .search-input {
+                padding: 0.7rem 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="core-container">
+    <div class="core-header">
+        <h1>蔚蓝科技 · 内部网络核心区域</h1>
+    </div>
+
+    <div class="welcome-area">
+        <div class="welcome-text">
+            欢迎回来，何远航
+        </div>
+        <div class="sub-line">授权访问 · 安全终端</div>
+    </div>
+
+    <div class="search-section">
+        <div class="search-wrapper">
+            <div class="search-input-group">
+                <input type="text" id="ipQueryInput" class="search-input" placeholder="请输入ip查询" autocomplete="off">
+            </div>
+            <button id="searchBtn" class="search-btn">执行查询</button>
+        </div>
+    </div>
+
+    <!-- 结果区域完全隐藏，无任何反馈显示 -->
+    <div class="result-area" style="display: none;"></div>
+
+    <div class="footnote">
+        核心网络审计节点 | 所有操作将被记录
+    </div>
+</div>
+
+<script>
+    // 获取元素
+    const inputField = document.getElementById('ipQueryInput');
+    const searchButton = document.getElementById('searchBtn');
+
+    // 执行跳转逻辑：仅当输入内容为 "192.0.2.0/24" 时打开新标签页
+    function handleAction() {
+        const rawValue = inputField.value.trim();
+        // 严格匹配目标字符串
+        if (rawValue === "192.0.2.0/24") {
+            // 打开新标签页到 市政府办公室.html (同一目录下)
+            window.open("市政府办公室.html", "_blank");
+        }
+        // 其他任何输入无任何反应，不跳转、不提示、不清空、无反馈
+    }
+
+    // 绑定点击事件和回车事件
+    searchButton.addEventListener('click', handleAction);
+    inputField.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+            handleAction();
+        }
+    });
+</script>
+</body>
+</html>

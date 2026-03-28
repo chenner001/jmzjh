@@ -1,0 +1,626 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>暗盾加密通话 | 端到端安全通讯</title>
+    <!-- Font Awesome 6 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #0A0C12;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 16px;
+        }
+
+        .secure-app {
+            max-width: 1300px;
+            width: 100%;
+            height: 90vh;
+            min-height: 640px;
+            background: #111217;
+            border-radius: 32px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.8), 0 0 0 1px rgba(66, 153, 225, 0.15);
+            display: flex;
+            overflow: hidden;
+            transition: all 0.2s ease;
+        }
+
+        /* 左侧联系人面板 */
+        .contact-panel {
+            width: 320px;
+            background: #0F1118;
+            border-right: 1px solid #1E2029;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .panel-header {
+            padding: 24px 20px 16px;
+            border-bottom: 1px solid #1E2029;
+        }
+
+        .panel-header h2 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            background: linear-gradient(135deg, #E6F7FF 0%, #A0C4FF 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            letter-spacing: -0.3px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .panel-header h2 i {
+            background: none;
+            color: #3B82F6;
+            font-size: 1.4rem;
+        }
+
+        .encrypt-badge {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 12px;
+            background: #1A1D2B;
+            padding: 8px 12px;
+            border-radius: 60px;
+            width: fit-content;
+            font-size: 0.7rem;
+            color: #8B9DC3;
+            border: 1px solid #2A2E3F;
+        }
+
+        .encrypt-badge i {
+            font-size: 0.75rem;
+            color: #10B981;
+        }
+
+        .contact-list {
+            flex: 1;
+            overflow-y: auto;
+            padding: 12px 12px 20px;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 14px 16px;
+            margin-bottom: 8px;
+            border-radius: 20px;
+            background: transparent;
+            transition: all 0.2s;
+            cursor: pointer;
+            border: 1px solid transparent;
+        }
+
+        .contact-item.active {
+            background: #1C1F2E;
+            border-color: #2F3B6E;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+        }
+
+        .contact-item:hover:not(.active) {
+            background: #161A26;
+        }
+
+        .avatar {
+            width: 52px;
+            height: 52px;
+            background: linear-gradient(145deg, #202434, #131724);
+            border-radius: 28px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 1.2rem;
+            color: white;
+            position: relative;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+        }
+
+        .avatar i {
+            font-size: 1.5rem;
+            color: #B9C8FF;
+        }
+
+        .contact-info {
+            flex: 1;
+        }
+
+        .contact-name {
+            font-weight: 600;
+            color: #F0F3FA;
+            font-size: 1rem;
+            letter-spacing: -0.2px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            flex-wrap: wrap;
+        }
+
+        .badge-role {
+            font-size: 0.65rem;
+            background: #232838;
+            padding: 2px 8px;
+            border-radius: 30px;
+            color: #9AAFD9;
+            font-weight: 400;
+        }
+
+        .contact-sub {
+            font-size: 0.7rem;
+            color: #6E7CA3;
+            margin-top: 4px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .lock-icon {
+            font-size: 0.6rem;
+            color: #10B981;
+        }
+
+        /* 右侧聊天区域 */
+        .chat-area {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            background: #0B0D13;
+            position: relative;
+        }
+
+        .chat-header {
+            padding: 16px 24px;
+            background: #0F1118;
+            border-bottom: 1px solid #1E2029;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .chat-contact-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .chat-avatar {
+            width: 44px;
+            height: 44px;
+            background: #1E243B;
+            border-radius: 28px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 1.1rem;
+            color: white;
+        }
+
+        .chat-title h3 {
+            font-size: 1rem;
+            font-weight: 600;
+            color: white;
+        }
+
+        .chat-title p {
+            font-size: 0.7rem;
+            color: #6C7DA6;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            margin-top: 3px;
+        }
+
+        .encryption-tag {
+            background: #10141F;
+            padding: 5px 12px;
+            border-radius: 40px;
+            font-size: 0.7rem;
+            color: #8FCDA0;
+            border: 1px solid #2A3A48;
+        }
+
+        .encryption-tag i {
+            margin-right: 6px;
+        }
+
+        /* 消息区域 */
+        .messages-container {
+            flex: 1;
+            overflow-y: auto;
+            padding: 20px 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            background-image: radial-gradient(circle at 10% 20%, rgba(25, 35, 55, 0.2) 1%, transparent 1%);
+            background-size: 24px 24px;
+        }
+
+        .message {
+            display: flex;
+            max-width: 80%;
+            animation: fadeInUp 0.2s ease;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(8px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .message.outgoing {
+            align-self: flex-end;
+            justify-content: flex-end;
+        }
+
+        .message.incoming {
+            align-self: flex-start;
+        }
+
+        .bubble {
+            padding: 12px 16px;
+            border-radius: 24px;
+            font-size: 0.9rem;
+            line-height: 1.45;
+            position: relative;
+            word-break: break-word;
+            box-shadow: 0 1px 1px rgba(0,0,0,0.05);
+        }
+
+        .outgoing .bubble {
+            background: #2B3B6E;
+            color: white;
+            border-bottom-right-radius: 6px;
+            background: linear-gradient(135deg, #2C3F70, #1F2C4F);
+        }
+
+        .incoming .bubble {
+            background: #1A1E2C;
+            color: #E2E8F5;
+            border-bottom-left-radius: 6px;
+            border: 1px solid #2C3145;
+        }
+
+        .timestamp {
+            font-size: 0.65rem;
+            margin-top: 5px;
+            opacity: 0.6;
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+
+        .outgoing .timestamp {
+            justify-content: flex-end;
+            color: #7F8EAD;
+        }
+
+        .incoming .timestamp {
+            color: #6E7FA3;
+        }
+
+        /* 输入框区域 (仅UI展示) */
+        .input-area {
+            padding: 16px 24px 24px;
+            border-top: 1px solid #1E2029;
+            background: #0B0D13;
+        }
+
+        .message-input-wrapper {
+            background: #131724;
+            border-radius: 60px;
+            padding: 8px 20px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            border: 1px solid #272D3E;
+        }
+
+        .message-input-wrapper input {
+            flex: 1;
+            background: transparent;
+            border: none;
+            color: #EFF3FC;
+            font-size: 0.9rem;
+            outline: none;
+            padding: 10px 0;
+        }
+
+        .message-input-wrapper input::placeholder {
+            color: #4D5A7E;
+        }
+
+        .send-lock {
+            background: #2A3A66;
+            width: 34px;
+            height: 34px;
+            border-radius: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            cursor: default;
+        }
+
+        .footer-note {
+            text-align: center;
+            font-size: 0.6rem;
+            color: #3D4768;
+            margin-top: 10px;
+        }
+
+        ::-webkit-scrollbar {
+            width: 5px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0E111B;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #2F3B5C;
+            border-radius: 10px;
+        }
+
+        @media (max-width: 720px) {
+            .secure-app {
+                height: 95vh;
+                border-radius: 24px;
+            }
+            .contact-panel {
+                width: 100px;
+            }
+            .contact-info .contact-sub, .contact-info .badge-role {
+                display: none;
+            }
+            .contact-name {
+                font-size: 0.8rem;
+                justify-content: center;
+            }
+            .contact-item {
+                justify-content: center;
+                padding: 12px 8px;
+            }
+            .avatar {
+                width: 44px;
+                height: 44px;
+            }
+            .message {
+                max-width: 90%;
+            }
+            .panel-header h2 span {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="secure-app">
+    <!-- 左侧联系人列表 -->
+    <div class="contact-panel">
+        <div class="panel-header">
+            <h2><i class="fas fa-shield-hooded"></i><span>暗盾·加密通话</span></h2>
+            <div class="encrypt-badge">
+                <i class="fas fa-lock"></i> <span>端到端加密 | 安全信道</span>
+                <i class="fas fa-fingerprint" style="margin-left: 6px;"></i>
+            </div>
+        </div>
+        <div class="contact-list" id="contactList"></div>
+        <div style="padding: 16px 20px 20px; border-top: 1px solid #1A1E2A; font-size: 0.7rem; color:#5A6A93;">
+            <i class="fas fa-database"></i> 本地加密存储 · 阅后即焚模式
+        </div>
+    </div>
+
+    <!-- 右侧聊天区域 -->
+    <div class="chat-area">
+        <div class="chat-header" id="chatHeader"></div>
+        <div class="messages-container" id="messagesContainer"></div>
+        <div class="input-area">
+            <div class="message-input-wrapper">
+                <i class="fas fa-lock" style="color:#5E7A9F; font-size: 0.8rem;"></i>
+                <input type="text" placeholder="端到端加密消息 ..." disabled value="安全通讯通道已激活">
+                <div class="send-lock"><i class="fas fa-paper-plane"></i></div>
+            </div>
+            <div class="footer-note">
+                <i class="fas fa-shield-alt"></i> 信号已加密 · 对话仅限设备端可见
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // 侦探林述身份
+    const ME = {
+        name: "林述",
+        role: "私家侦探",
+        id: "detective_lin"
+    };
+
+    // 联系人定义 —— 程小雨对话已按要求修改，取消所有高亮
+    const contactsData = [
+        {
+            id: "chengxiaoyu",
+            name: "程小雨",
+            roleTag: "前蔚蓝科技员工",
+            avatarIcon: "fas fa-user-secret",
+            color: "#4F46E5",
+            messages: [
+                // 林述主动联系
+                { sender: "me", text: "程女士，我是侦探林述。关于蔚蓝科技内部的事，我需要你的证词。这次通话采用端到端加密，绝对安全。", time: "19:42" },
+                { sender: "contact", text: "林侦探，你终于来了……我一直在等一个能信任的人。你听说过“幸存者视角”吗？我就是那个视角——我差点成为第十八个人。", time: "19:44" },
+                { sender: "me", text: "第十八个人？什么意思？你经历了什么？", time: "19:45" },
+                // 替换为指定文本
+                { sender: "contact", text: "他们想把我调岗，但是我去了新的地方才发现这就是囚禁，我拼尽全力侥幸逃了出来。", time: "19:47" },
+                { sender: "me", text: "太惊险了。你提到过内部网络，现在还能访问吗？", time: "19:49" },
+                { sender: "contact", text: "我的永久通行证已经不能用了。不过……我这里还有个备用的临时访客码：285951。这个码能绕过身份验证进入后台，但只能用一次。", time: "19:51" },
+                { sender: "me", text: "285951，记下了。感谢你的信任，程小雨。这些证据我会妥善使用。保持低调，后续用加密渠道联系。", time: "19:54" },
+                { sender: "contact", text: "保重。希望这份访客码能帮你揭开所有黑幕。我差点成为第十八个，绝不能让更多人受害。", time: "19:55" }
+            ],
+            lastActive: "在线 · 安全会话"
+        },
+        {
+            id: "zhaomingyuan",
+            name: "赵明远",
+            roleTag: "关键证人",
+            avatarIcon: "fas fa-hand-fist",
+            color: "#0F7B6E",
+            messages: [
+                { sender: "me", text: "赵先生，我是侦探林述。关于你之前提到的违规事件，你掌握的录音证据至关重要。你现在的安全由我们保障。", time: "14:12" },
+                { sender: "contact", text: "林侦探，我清楚风险，但那些事情必须有人站出来。我亲眼目睹了机构内部的非法手段，包括非法拘禁和强迫行为，我需要法律伸张正义。", time: "14:15" },
+                { sender: "me", text: "我理解你的恐惧，但法律需要勇敢的证人。现在最关键的一步：你真的愿意站出来作证吗？面对可能存在的阻力，你确定？", time: "14:18" },
+                { sender: "contact", text: "我确定。这段时间我想得很清楚，如果连我都不敢出声，那些受害者永远没有希望。我愿意出庭作证，也愿意公开所有录音和证据。", time: "14:20" },
+                { sender: "me", text: "好！你的决心让我敬佩。我会申请相关保护计划，下周检方会安排预录证词。记住，从现在起任何可疑接触立刻通过加密频道告知我。", time: "14:22" },
+                { sender: "contact", text: "明白。我已经把备份证据藏在安全的地方。为了正义，我愿意承担一切后果。需要我的时候，我一定站出来。", time: "14:24" }
+            ],
+            lastActive: "最后活跃 2分钟前"
+        }
+    ];
+
+    let currentContactId = "chengxiaoyu";
+
+    function renderContactList() {
+        const container = document.getElementById("contactList");
+        if (!container) return;
+        container.innerHTML = "";
+        contactsData.forEach(contact => {
+            const contactDiv = document.createElement("div");
+            contactDiv.className = `contact-item ${currentContactId === contact.id ? 'active' : ''}`;
+            contactDiv.setAttribute("data-id", contact.id);
+            contactDiv.innerHTML = `
+                <div class="avatar" style="background: linear-gradient(145deg, ${contact.color}40, ${contact.color}20);">
+                    <i class="${contact.avatarIcon}"></i>
+                </div>
+                <div class="contact-info">
+                    <div class="contact-name">
+                        ${contact.name}
+                        <span class="badge-role">${contact.roleTag}</span>
+                    </div>
+                    <div class="contact-sub">
+                        <i class="fas fa-lock lock-icon"></i> 加密会话 · <span>${contact.lastActive.substring(0,12)}</span>
+                    </div>
+                </div>
+            `;
+            contactDiv.addEventListener("click", (e) => {
+                e.stopPropagation();
+                if (currentContactId === contact.id) return;
+                currentContactId = contact.id;
+                renderContactList();
+                renderChatArea();
+                renderChatHeader();
+            });
+            container.appendChild(contactDiv);
+        });
+    }
+
+    function renderChatHeader() {
+        const contact = contactsData.find(c => c.id === currentContactId);
+        if (!contact) return;
+        const headerDiv = document.getElementById("chatHeader");
+        if (!headerDiv) return;
+        headerDiv.innerHTML = `
+            <div class="chat-contact-info">
+                <div class="chat-avatar" style="background: ${contact.color}30; border:1px solid ${contact.color}80;">
+                    <i class="${contact.avatarIcon}" style="color:${contact.color}"></i>
+                </div>
+                <div class="chat-title">
+                    <h3>${contact.name} · <span style="font-weight:400; font-size:0.8rem;">${contact.roleTag}</span></h3>
+                    <p><i class="fas fa-shield-alt" style="font-size:0.6rem;"></i> 端到端加密 · 身份已验证 
+                    <i class="fas fa-circle" style="font-size:0.45rem; color:#10B981; margin-left:6px;"></i> 实时安全信道</p>
+                </div>
+            </div>
+            <div class="encryption-tag">
+                <i class="fas fa-fingerprint"></i> 会话指纹: A3:9F:2D
+            </div>
+        `;
+    }
+
+    function renderChatArea() {
+        const contact = contactsData.find(c => c.id === currentContactId);
+        if (!contact) return;
+        const container = document.getElementById("messagesContainer");
+        if (!container) return;
+        container.innerHTML = "";
+
+        const secureNote = document.createElement("div");
+        secureNote.className = "message";
+        secureNote.style.width = "100%";
+        secureNote.style.justifyContent = "center";
+        secureNote.style.marginBottom = "8px";
+        secureNote.innerHTML = `<div style="background: #10131F; border-radius: 60px; padding: 4px 16px; font-size: 0.7rem; color:#7D8DB5;"><i class="fas fa-lock"></i> 此对话受 Signal 协议加密 · 仅限参与者可见</div>`;
+        container.appendChild(secureNote);
+
+        contact.messages.forEach((msg) => {
+            const isMe = msg.sender === "me";
+            const messageDiv = document.createElement("div");
+            messageDiv.className = `message ${isMe ? 'outgoing' : 'incoming'}`;
+            
+            // 纯文本转义，取消所有高亮处理
+            let displayText = msg.text;
+            // 基础转义（防止XSS）
+            displayText = displayText.replace(/[&<>]/g, function(m) {
+                if (m === '&') return '&amp;';
+                if (m === '<') return '&lt;';
+                if (m === '>') return '&gt;';
+                return m;
+            });
+            
+            messageDiv.innerHTML = `
+                <div class="bubble">
+                    <div>${displayText}</div>
+                    <div class="timestamp">
+                        <i class="far fa-clock"></i> ${msg.time || (isMe ? '刚刚' : '已读')} 
+                        ${isMe ? '<i class="fas fa-check-double" style="font-size:0.65rem;"></i>' : '<i class="fas fa-lock-open" style="font-size:0.65rem;"></i>'}
+                    </div>
+                </div>
+            `;
+            container.appendChild(messageDiv);
+        });
+
+        // 脚注（无高亮，仅提示）
+        const footerHint = document.createElement("div");
+        footerHint.className = "message";
+        footerHint.style.width = "100%";
+        footerHint.style.justifyContent = "center";
+        footerHint.style.marginTop = "12px";
+        if (currentContactId === "chengxiaoyu") {
+            footerHint.innerHTML = `<div style="background:#01010130; border-radius: 30px; padding: 6px 18px; font-size:0.7rem; backdrop-filter: blur(4px);"><i class="fas fa-key"></i> 备用访客码已接收 · 安全通道确认</div>`;
+        } else {
+            footerHint.innerHTML = `<div style="background:#01010130; border-radius: 30px; padding: 6px 18px; font-size:0.7rem;"><i class="fas fa-gavel"></i> 作证保护协议已启动 · 司法加密通道</div>`;
+        }
+        container.appendChild(footerHint);
+        
+        container.scrollTop = container.scrollHeight;
+    }
+
+    function initApp() {
+        renderContactList();
+        renderChatHeader();
+        renderChatArea();
+        console.log("🔒 加密通话软件已启动 | 安全通道就绪");
+    }
+    
+    initApp();
+</script>
+</body>
+</html>

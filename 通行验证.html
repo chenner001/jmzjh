@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>蔚蓝科技 · 通行验证</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: #ffffff;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1.5rem;
+        }
+
+        /* 主容器 */
+        .auth-container {
+            width: 100%;
+            max-width: 480px;
+            text-align: center;
+        }
+
+        /* 标题装饰 */
+        .title {
+            font-size: 1.5rem;
+            font-weight: 500;
+            color: #1c1c1e;
+            margin-bottom: 2rem;
+            letter-spacing: -0.3px;
+        }
+
+        /* iOS风格搜索框 */
+        .ios-input {
+            width: 100%;
+            padding: 0.9rem 1.2rem;
+            font-size: 1rem;
+            font-family: inherit;
+            background-color: #f9f9fb;
+            border: 1px solid #e5e5ea;
+            border-radius: 12px;
+            outline: none;
+            transition: all 0.2s ease;
+            color: #000000;
+            text-align: left;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+        }
+
+        .ios-input:focus {
+            border-color: #007aff;
+            background-color: #ffffff;
+            box-shadow: 0 0 0 3px rgba(0, 122, 255, 0.1);
+        }
+
+        .ios-input::placeholder {
+            color: #8e8e93;
+            font-weight: 400;
+        }
+
+        /* 简单提示 */
+        .hint-text {
+            margin-top: 1.2rem;
+            font-size: 0.8rem;
+            color: #8e8e93;
+        }
+
+        /* 响应式调整 */
+        @media (max-width: 480px) {
+            .auth-container {
+                max-width: 90%;
+            }
+            .title {
+                font-size: 1.3rem;
+            }
+            .ios-input {
+                padding: 0.8rem 1rem;
+                font-size: 0.95rem;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="auth-container">
+    <div class="title">通行验证</div>
+    <input type="text" id="accessCode" class="ios-input" placeholder="请输入通行证或临时访客码" autocomplete="off" autocapitalize="off" spellcheck="false">
+    <div class="hint-text">请输入有效凭证</div>
+</div>
+
+<script>
+    const inputField = document.getElementById('accessCode');
+
+    // 处理输入（按回车即触发验证）
+    function handleVerification() {
+        let rawValue = inputField.value.trim();
+        if (rawValue === "") return;  // 空值无反应
+
+        // 不区分大小写比较 ODIN
+        if (rawValue.toUpperCase() === "ODIN") {
+            window.open("核心区域.html", "_blank");
+        } 
+        // 精确匹配数字 285951
+        else if (rawValue === "285951") {
+            window.open("公共区域.html", "_blank");
+        }
+        // 其他任何输入无反应（不提示、不清空、不跳转）
+    }
+
+    // 监听回车键
+    inputField.addEventListener('keypress', function(event) {
+        if (event.key === 'Enter') {
+            event.preventDefault();
+            handleVerification();
+        }
+    });
+</script>
+</body>
+</html>

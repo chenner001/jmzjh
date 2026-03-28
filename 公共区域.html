@@ -1,0 +1,687 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>蔚蓝科技 | 内部公共门户</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #f0f4f8;
+            font-family: 'Inter', 'Segoe UI', 'Roboto', system-ui, -apple-system, sans-serif;
+            line-height: 1.5;
+            color: #1a2f3e;
+            padding: 0;
+            margin: 0;
+        }
+
+        .internal-container {
+            max-width: 1320px;
+            margin: 0 auto;
+            background: #ffffff;
+            box-shadow: none;
+            border: none;
+        }
+
+        .top-banner {
+            background: linear-gradient(95deg, #0b3b4f 0%, #1a5e6e 100%);
+            width: 100%;
+            padding: 1rem 2rem;
+            border-bottom: 1px solid #0e4a5e;
+        }
+
+        .banner-content {
+            max-width: 1320px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .banner-left {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #ffffff;
+            letter-spacing: 0.3px;
+            background: rgba(255,255,255,0.1);
+            padding: 0.2rem 0.8rem;
+            border-left: 3px solid #bcddcc;
+        }
+
+        .banner-right {
+            font-size: 0.8rem;
+            color: #d9ece6;
+            font-family: monospace;
+        }
+
+        .dashboard {
+            padding: 1.8rem 2rem 2rem 2rem;
+            background: #ffffff;
+        }
+
+        .info-bar {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            margin-bottom: 1.8rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+            border-bottom: 1px solid #e9edf2;
+            padding-bottom: 0.8rem;
+        }
+
+        .time-display {
+            font-family: monospace;
+            font-size: 0.85rem;
+            color: #4a6c7c;
+            background: #f7fafc;
+            padding: 0.3rem 0.9rem;
+            border: 1px solid #e2eaf0;
+        }
+
+        .nav-tabs {
+            display: flex;
+            flex-wrap: wrap;
+            border-bottom: 1px solid #e2e8f0;
+            margin-bottom: 2rem;
+            gap: 0.2rem;
+        }
+
+        .tab-btn {
+            background: transparent;
+            border: none;
+            padding: 0.7rem 1.8rem;
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: #587b8c;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-family: inherit;
+            border-bottom: 2px solid transparent;
+            margin-bottom: -1px;
+        }
+
+        .tab-btn.active {
+            color: #0c6b5e;
+            border-bottom-color: #0c6b5e;
+        }
+
+        .tab-btn:hover:not(.active) {
+            color: #1a5f6e;
+            background-color: #fafdff;
+        }
+
+        .tab-pane {
+            display: none;
+            animation: fade 0.2s ease;
+        }
+
+        .tab-pane.active {
+            display: block;
+        }
+
+        @keyframes fade {
+            from { opacity: 0; transform: translateY(5px);}
+            to { opacity: 1; transform: translateY(0);}
+        }
+
+        .list-item {
+            border-bottom: 1px solid #ecf1f5;
+            background: #ffffff;
+        }
+
+        .item-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 0.5rem 1rem 0;
+            cursor: pointer;
+            background: #ffffff;
+            transition: background 0.15s;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .item-header:hover {
+            background-color: #fafcfe;
+        }
+
+        .item-title {
+            font-weight: 600;
+            color: #1c5a66;
+            letter-spacing: -0.2px;
+        }
+
+        .item-meta {
+            font-size: 0.8rem;
+            color: #819eae;
+        }
+
+        .expand-icon {
+            font-family: monospace;
+            font-size: 1rem;
+            color: #8dabbc;
+            font-weight: 500;
+        }
+
+        .item-detail {
+            display: none;
+            padding: 0.2rem 0.5rem 1.2rem 0;
+            border-top: 1px dashed #eef3f7;
+            background: #ffffff;
+            font-size: 0.9rem;
+            color: #2c4958;
+            line-height: 1.6;
+        }
+
+        .item-detail.active {
+            display: block;
+        }
+
+        .detail-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 0.5rem;
+        }
+
+        .detail-table th,
+        .detail-table td {
+            border-bottom: 1px solid #eef2f6;
+            padding: 0.5rem 0.2rem;
+            text-align: left;
+            font-size: 0.85rem;
+        }
+
+        .detail-table th {
+            font-weight: 600;
+            color: #2e7a8c;
+            width: 36%;
+        }
+
+        .total-highlight {
+            font-weight: 700;
+            color: #1c7c6b;
+        }
+
+        .progress-step {
+            margin: 0.5rem 0;
+            padding-left: 1rem;
+            border-left: 2px solid #cde0e8;
+        }
+
+        .step-done {
+            color: #1f826b;
+        }
+
+        .step-current {
+            font-weight: 600;
+            color: #1b6273;
+        }
+
+        .stat-summary {
+            background: #f8fbfc;
+            padding: 0.7rem 1rem;
+            margin-bottom: 1.2rem;
+            display: flex;
+            gap: 1.5rem;
+            flex-wrap: wrap;
+            border-left: 3px solid #2d828e;
+            font-size: 0.8rem;
+            color: #386d7a;
+        }
+
+        .stat-item {
+            font-weight: 500;
+        }
+
+        .stat-number {
+            font-weight: 700;
+            color: #226f7a;
+            margin-left: 0.3rem;
+        }
+
+        .message-board {
+            margin-top: 0.2rem;
+        }
+
+        .message-list {
+            border-top: 1px solid #eef2f7;
+        }
+
+        .message-item {
+            padding: 1rem 0;
+            border-bottom: 1px solid #eef2f7;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .message-header {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: baseline;
+            font-size: 0.8rem;
+            color: #678f9c;
+        }
+
+        .message-author {
+            font-weight: 600;
+            color: #1f6575;
+        }
+
+        .message-dept {
+            background: #ecf3f6;
+            padding: 0.1rem 0.5rem;
+            font-size: 0.7rem;
+        }
+
+        .message-time {
+            font-family: monospace;
+            font-size: 0.7rem;
+        }
+
+        .message-content {
+            font-size: 0.9rem;
+            color: #2c4a57;
+            line-height: 1.45;
+            padding-right: 0.5rem;
+        }
+
+        footer {
+            text-align: center;
+            font-size: 0.7rem;
+            color: #90aebb;
+            padding: 1.2rem;
+            border-top: 1px solid #e9f0f3;
+            background: #ffffff;
+        }
+
+        @media (max-width: 720px) {
+            .top-banner {
+                padding: 0.7rem 1rem;
+            }
+            .dashboard {
+                padding: 1rem;
+            }
+            .tab-btn {
+                padding: 0.5rem 1rem;
+                font-size: 0.8rem;
+            }
+            .item-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            .message-header {
+                flex-direction: column;
+                gap: 0.3rem;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="internal-container">
+    <div class="top-banner">
+        <div class="banner-content">
+            <div class="banner-left">蔚蓝科技 AZURE TECH</div>
+            <div class="banner-right">内部协作门户 · 透明· 高效 · 信任</div>
+        </div>
+    </div>
+
+    <div class="dashboard">
+        <div class="info-bar">
+            <div class="time-display" id="currentDateTime"></div>
+        </div>
+
+        <div class="nav-tabs">
+            <button class="tab-btn active" data-tab="salary">薪酬单</button>
+            <button class="tab-btn" data-tab="announce">公司公告</button>
+            <button class="tab-btn" data-tab="expense">报销进度</button>
+            <button class="tab-btn" data-tab="training">培训计划</button>
+            <button class="tab-btn" data-tab="message">员工留言交流</button>
+        </div>
+
+        <!-- 工资条面板 -->
+        <div id="salaryPanel" class="tab-pane active">
+            <div class="stat-summary" id="salaryStats"></div>
+            <div id="salaryList"></div>
+        </div>
+
+        <!-- 公告面板 -->
+        <div id="announcePanel" class="tab-pane">
+            <div class="stat-summary"><span class="stat-item">最新内部动态</span><span class="stat-item">共 <span id="announceCount" class="stat-number"></span> 条通告</span></div>
+            <div id="announceList"></div>
+        </div>
+
+        <!-- 报销审批面板 -->
+        <div id="expensePanel" class="tab-pane">
+            <div class="stat-summary"><span class="stat-item">当前报销单状态</span><span class="stat-item">待跟进: <span id="pendingExpenseCount" class="stat-number"></span></span></div>
+            <div id="expenseList"></div>
+        </div>
+
+        <!-- 培训面板 -->
+        <div id="trainingPanel" class="tab-pane">
+            <div class="stat-summary"><span class="stat-item">本月重点赋能计划</span><span class="stat-item">场次: <span id="trainingCount" class="stat-number"></span></span></div>
+            <div id="trainingList"></div>
+        </div>
+
+        <!-- 员工留言交流面板（仅展示，无发布/删除功能） -->
+        <div id="messagePanel" class="tab-pane">
+            <div class="message-board">
+                <div class="stat-summary"><span class="stat-item">员工心声 · 交流园地</span><span class="stat-item">共 <span id="messageCount" class="stat-number"></span> 条留言</span></div>
+                <div class="message-list" id="messageListContainer"></div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        蔚蓝科技 · 内部公共区域 | 数据仅供查阅 | 沟通创造价值
+    </footer>
+</div>
+
+<script>
+    // ======================== 全部数据（日期限定 2026.01.01 - 2026.03.27） ========================
+    // 1. 工资条 (总实发约100万，在职人数显示固定为42)
+    const salaryData = [
+        { id: 1, name: "张振国", dept: "研发中心", basic: "18500.00", performance: "4200.00", transport: "500.00", meal: "600.00", totalGross: "23800.00", socialSecurity: "1980.00", housingFund: "2220.00", tax: "1250.00", netPay: "18350.00" },
+        { id: 2, name: "李敏华", dept: "产品部", basic: "17200.00", performance: "3800.00", transport: "500.00", meal: "600.00", totalGross: "22100.00", socialSecurity: "1850.00", housingFund: "2100.00", tax: "1120.00", netPay: "17030.00" },
+        { id: 3, name: "王致远", dept: "算法实验室", basic: "21000.00", performance: "5500.00", transport: "800.00", meal: "600.00", totalGross: "27900.00", socialSecurity: "2300.00", housingFund: "2600.00", tax: "1850.00", netPay: "21150.00" },
+        { id: 4, name: "陈思羽", dept: "市场部", basic: "14800.00", performance: "3200.00", transport: "500.00", meal: "600.00", totalGross: "19100.00", socialSecurity: "1650.00", housingFund: "1800.00", tax: "890.00", netPay: "14760.00" },
+        { id: 5, name: "赵明远", dept: "运营部", basic: "16200.00", performance: "3500.00", transport: "500.00", meal: "600.00", totalGross: "20800.00", socialSecurity: "1750.00", housingFund: "1950.00", tax: "1020.00", netPay: "16080.00" },
+        { id: 6, name: "周若云", dept: "人力资源部", basic: "15600.00", performance: "3100.00", transport: "500.00", meal: "600.00", totalGross: "19800.00", socialSecurity: "1700.00", housingFund: "1880.00", tax: "950.00", netPay: "15270.00" },
+        { id: 7, name: "吴海生", dept: "研发中心", basic: "19500.00", performance: "4800.00", transport: "500.00", meal: "600.00", totalGross: "25400.00", socialSecurity: "2050.00", housingFund: "2350.00", tax: "1380.00", netPay: "19620.00" },
+        { id: 8, name: "郑秋怡", dept: "产品部", basic: "16800.00", performance: "3600.00", transport: "500.00", meal: "600.00", totalGross: "21500.00", socialSecurity: "1800.00", housingFund: "2000.00", tax: "1050.00", netPay: "16650.00" },
+        { id: 9, name: "孙立诚", dept: "算法实验室", basic: "22500.00", performance: "6200.00", transport: "800.00", meal: "600.00", totalGross: "30100.00", socialSecurity: "2450.00", housingFund: "2800.00", tax: "2150.00", netPay: "22700.00" },
+        { id: 10, name: "林芳菲", dept: "市场部", basic: "15200.00", performance: "3300.00", transport: "500.00", meal: "600.00", totalGross: "19600.00", socialSecurity: "1680.00", housingFund: "1850.00", tax: "920.00", netPay: "15150.00" },
+        { id: 11, name: "郭建平", dept: "运营部", basic: "15800.00", performance: "3400.00", transport: "500.00", meal: "600.00", totalGross: "20300.00", socialSecurity: "1720.00", housingFund: "1900.00", tax: "990.00", netPay: "15690.00" },
+        { id: 12, name: "宋雅芝", dept: "人力资源部", basic: "14900.00", performance: "3000.00", transport: "500.00", meal: "600.00", totalGross: "19000.00", socialSecurity: "1620.00", housingFund: "1750.00", tax: "860.00", netPay: "14770.00" },
+        { id: 13, name: "高天宇", dept: "研发中心", basic: "20200.00", performance: "5100.00", transport: "500.00", meal: "600.00", totalGross: "26400.00", socialSecurity: "2150.00", housingFund: "2450.00", tax: "1480.00", netPay: "20320.00" },
+        { id: 14, name: "卢欣然", dept: "产品部", basic: "17600.00", performance: "3900.00", transport: "500.00", meal: "600.00", totalGross: "22600.00", socialSecurity: "1900.00", housingFund: "2150.00", tax: "1150.00", netPay: "17400.00" },
+        { id: 15, name: "沈志远", dept: "算法实验室", basic: "23800.00", performance: "6800.00", transport: "800.00", meal: "600.00", totalGross: "32000.00", socialSecurity: "2600.00", housingFund: "3000.00", tax: "2450.00", netPay: "23950.00" },
+        { id: 16, name: "姜敏", dept: "市场部", basic: "16100.00", performance: "3450.00", transport: "500.00", meal: "600.00", totalGross: "20650.00", socialSecurity: "1740.00", housingFund: "1920.00", tax: "1010.00", netPay: "15980.00" },
+        { id: 17, name: "崔浩", dept: "运营部", basic: "16600.00", performance: "3550.00", transport: "500.00", meal: "600.00", totalGross: "21250.00", socialSecurity: "1780.00", housingFund: "1980.00", tax: "1070.00", netPay: "16420.00" },
+        { id: 18, name: "石静", dept: "人力资源部", basic: "14400.00", performance: "2800.00", transport: "500.00", meal: "600.00", totalGross: "18300.00", socialSecurity: "1580.00", housingFund: "1700.00", tax: "800.00", netPay: "14220.00" },
+        { id: 19, name: "欧阳雪", dept: "研发中心", basic: "21200.00", performance: "5400.00", transport: "500.00", meal: "600.00", totalGross: "27700.00", socialSecurity: "2250.00", housingFund: "2600.00", tax: "1620.00", netPay: "21230.00" },
+        { id: 20, name: "傅家明", dept: "产品部", basic: "18200.00", performance: "4100.00", transport: "500.00", meal: "600.00", totalGross: "23400.00", socialSecurity: "1980.00", housingFund: "2250.00", tax: "1250.00", netPay: "17920.00" },
+        { id: 21, name: "夏雨桐", dept: "算法实验室", basic: "24800.00", performance: "7200.00", transport: "800.00", meal: "600.00", totalGross: "33400.00", socialSecurity: "2750.00", housingFund: "3200.00", tax: "2700.00", netPay: "24750.00" },
+        { id: 22, name: "钟雅琳", dept: "市场部", basic: "15500.00", performance: "3250.00", transport: "500.00", meal: "600.00", totalGross: "19850.00", socialSecurity: "1690.00", housingFund: "1880.00", tax: "940.00", netPay: "15340.00" },
+        { id: 23, name: "魏志强", dept: "运营部", basic: "16900.00", performance: "3650.00", transport: "500.00", meal: "600.00", totalGross: "21650.00", socialSecurity: "1820.00", housingFund: "2020.00", tax: "1100.00", netPay: "16730.00" },
+        { id: 24, name: "谭晓彤", dept: "人力资源部", basic: "15100.00", performance: "3050.00", transport: "500.00", meal: "600.00", totalGross: "19250.00", socialSecurity: "1650.00", housingFund: "1800.00", tax: "890.00", netPay: "14910.00" },
+        { id: 25, name: "贺宇轩", dept: "研发中心", basic: "20500.00", performance: "5200.00", transport: "500.00", meal: "600.00", totalGross: "26800.00", socialSecurity: "2180.00", housingFund: "2500.00", tax: "1520.00", netPay: "20600.00" }
+    ];
+
+    // 2. 公告 (已删除“蔚蓝科技伦理委员会申诉通道更新”，移除“清港国际医疗中心”及“GitLab、Jenkins及”)
+    const announceData = [
+        { id: 1, title: "关于2026年第一季度绩效考核结果公示", date: "2026年3月25日", dept: "人力资源部", content: "第一季度绩效考核已完成，各部门绩效面谈安排在3月28日至4月2日，详细结果可联系HRBP查询。奖金核算将随4月工资发放。" },
+        { id: 2, title: "研发中心服务器升级维护通告", date: "2026年3月10日", dept: "信息技术部", content: "兹定于3月28日 02:00-06:00 对核心服务器进行硬件升级，期间内网部分开发环境将短暂中断，请提前保存工作进度。" },
+        { id: 3, title: "春季全员健康体检预约通知", date: "2026年3月5日", dept: "行政部", content: "2026年度春季体检时间为3月15日至3月27日，合作机构为指定体检中心。请通过内网链接预约时段，体检报告将由公司统一领取并密封发放。" },
+        { id: 4, title: "关于2026年考勤制度优化的说明", date: "2026年2月20日", dept: "人力资源部", content: "自4月1日起，弹性工作制调整为每日核心工作时间10:00-16:00，每月允许累计远程办公不超过4天。详情请参阅内部制度文档。" },
+        { id: 5, title: "蔚蓝科技第一季度优秀员工表彰", date: "2026年3月22日", dept: "总裁办", content: "恭喜研发中心张振国、产品部李敏华、算法实验室王致远获得第一季度优秀员工奖，颁奖典礼将于3月30日15:00在B座报告厅举行。" }
+    ];
+
+    // 3. 报销 (含清港慈心康复中心合作项目)
+    const expenseData = [
+        { id: 1, title: "差旅费 (上海-北京)", applicant: "张振国", amount: "2,850.00", date: "2026-03-12", status: "财务审核中", steps: [{ name: "部门审批", status: "completed", time: "2026-03-14" },{ name: "财务初审", status: "current", time: "2026-03-18" },{ name: "出纳打款", status: "pending", time: "预计3月28日" }], detail: "行程: 3月8日-3月10日 上海-北京高铁往返，住宿2晚，费用合规。" },
+        { id: 2, title: "办公用品采购", applicant: "李敏华", amount: "1,240.00", date: "2026-03-05", status: "已通过 · 待打款", steps: [{ name: "部门审批", status: "completed", time: "2026-03-07" },{ name: "财务初审", status: "completed", time: "2026-03-09" },{ name: "出纳打款", status: "current", time: "预计3月27日前" }], detail: "采购清单: 无线鼠标10个、笔记本套装20套、会议摄像头1台。" },
+        { id: 3, title: "技术图书购置", applicant: "王致远", amount: "890.00", date: "2026-02-28", status: "已完成打款", steps: [{ name: "部门审批", status: "completed", time: "2026-03-01" },{ name: "财务初审", status: "completed", time: "2026-03-03" },{ name: "出纳打款", status: "completed", time: "2026-03-07" }], detail: "书目: 《机器学习系统设计》《数据伦理导论》共5册，已入库。" },
+        { id: 4, title: "团队建设活动经费", applicant: "陈思羽", amount: "3,200.00", date: "2026-03-15", status: "部门审批中", steps: [{ name: "部门审批", status: "current", time: "2026-03-18" },{ name: "财务初审", status: "pending", time: "待部门通过" },{ name: "出纳打款", status: "pending", time: "待定" }], detail: "市场部团建活动预算，含场地租赁及餐饮，预计4月上旬举行。" },
+        { id: 5, title: "服务器配件采购", applicant: "赵明远", amount: "4,750.00", date: "2026-03-01", status: "财务审核完成", steps: [{ name: "部门审批", status: "completed", time: "2026-03-03" },{ name: "财务初审", status: "completed", time: "2026-03-06" },{ name: "出纳打款", status: "pending", time: "预计3月26日" }], detail: "采购SSD硬盘8块，内存条16条，用于研发测试环境扩容。" },
+        { id: 6, title: "线上课程平台订阅", applicant: "周若云", amount: "2,100.00", date: "2026-02-25", status: "已完成打款", steps: [{ name: "部门审批", status: "completed", time: "2026-02-27" },{ name: "财务初审", status: "completed", time: "2026-03-01" },{ name: "出纳打款", status: "completed", time: "2026-03-05" }], detail: "Udemy企业版年度订阅，供全员技术学习使用。" },
+        { id: 7, title: "清港慈心康复中心合作项目-设备采购", applicant: "吴海生", amount: "128,000.00", date: "2026-03-20", status: "财务初审中", steps: [{ name: "部门审批", status: "completed", time: "2026-03-22" },{ name: "财务初审", status: "current", time: "2026-03-25" },{ name: "出纳打款", status: "pending", time: "预计4月5日" }], detail: "康复训练智能辅助设备采购，用于慈心康复中心合作项目一期硬件部署，含智能手环20套、生物反馈仪8台。" },
+        { id: 8, title: "清港慈心康复中心合作项目-技术咨询费", applicant: "王致远", amount: "45,000.00", date: "2026-03-10", status: "部门审批中", steps: [{ name: "部门审批", status: "current", time: "2026-03-24" },{ name: "财务初审", status: "pending", time: "待部门通过" },{ name: "出纳打款", status: "pending", time: "待定" }], detail: "康复中心数据平台技术方案咨询，涉及数据接口标准及隐私保护设计。" },
+        { id: 9, title: "清港慈心康复中心合作项目-差旅及会议", applicant: "陈思羽", amount: "18,500.00", date: "2026-03-18", status: "已完成打款", steps: [{ name: "部门审批", status: "completed", time: "2026-03-19" },{ name: "财务初审", status: "completed", time: "2026-03-21" },{ name: "出纳打款", status: "completed", time: "2026-03-24" }], detail: "项目启动会及现场调研差旅，往返杭州-清港，住宿及会议场地费用。" }
+    ];
+
+    // 4. 培训 (删除何远航相关内容)
+    const trainingData = [
+        { id: 1, title: "AI伦理与合规研讨", date: "2026年3月20日", time: "14:00-16:30", location: "B座 3F 阶梯会议室", lecturer: "蔚蓝科技技术委员会", target: "全员开放", detail: "本次研讨将围绕欧盟AI法案、企业内部伦理审查机制展开，现场设问答环节。建议研发、法务及产品岗位同事参加。" },
+        { id: 2, title: "高性能计算架构实践", date: "2026年3月12日", time: "10:30-12:00", location: "线上 (Zoom会议)", lecturer: "王致远 (算法架构师)", target: "研发中心、算法实验室", detail: "分享分布式训练优化经验、GPU集群调度策略，并演示最新基准测试结果。" },
+        { id: 3, title: "新员工入职导引 (第1期)", date: "2026年3月5日", time: "09:00-17:00", location: "A座 2F 培训室", lecturer: "人力资源部", target: "2026年第一季度入职新员工", detail: "内容包括公司文化、OA系统操作、信息安全规范、薪酬福利详解，午餐统一安排。" },
+        { id: 4, title: "数据可视化最佳实践", date: "2026年3月18日", time: "15:00-17:00", location: "线上直播", lecturer: "陈思羽 (市场部)", target: "全员", detail: "基于Tableau及Python的可视化案例分享，适合运营、市场及数据分析岗位。" },
+        { id: 5, title: "跨部门沟通与协作工作坊", date: "2026年3月25日", time: "13:30-16:00", location: "A座 1F 创新空间", lecturer: "外部讲师 林婉清", target: "主管及以上", detail: "提升横向协作效率，解决项目推进中的沟通障碍，结合案例实战演练。" }
+    ];
+
+    // 5. 留言板数据（仅展示）
+    let messagesData = [
+        { id: 1, name: "李敏华", dept: "产品部", content: "建议公司内部知识库增加交互设计模板板块，方便跨部门复用设计资产。", timestamp: "2026-03-15 10:32:15" },
+        { id: 2, name: "王致远", dept: "算法实验室", content: "GPU资源申请流程已优化，最近调度效率提升明显，感谢IT支持。", timestamp: "2026-03-20 16:20:03" },
+        { id: 3, name: "陈思羽", dept: "市场部", content: "第二季度市场活动筹备中，需要设计部支持视觉物料，已发协作邮件请查收。", timestamp: "2026-03-18 09:15:47" },
+        { id: 4, name: "赵明远", dept: "运营部", content: "新OA审批流偶尔卡顿，技术同事反馈下稳定性问题，多谢。", timestamp: "2026-03-10 14:50:22" },
+        { id: 5, name: "张振国", dept: "研发中心", content: "建议将技术分享录屏上传内网，方便后续回看学习。", timestamp: "2026-03-22 11:24:08" },
+        { id: 6, name: "周若云", dept: "人力资源部", content: "新员工入职培训反馈很好，建议每季度增设一次专项业务培训。", timestamp: "2026-03-17 09:05:33" },
+        { id: 7, name: "何云峰", dept: "信息技术部", content: "服务器升级计划已公告，请大家3月28日凌晨避开作业，感谢理解。", timestamp: "2026-03-23 14:12:47" }
+    ];
+
+    // ---------- 辅助渲染函数 ----------
+    function renderSalaryList() {
+        const container = document.getElementById('salaryList');
+        if(!container) return;
+        container.innerHTML = '';
+        salaryData.forEach(emp => {
+            const div = document.createElement('div');
+            div.className = 'list-item';
+            div.innerHTML = `
+                <div class="item-header" data-id="${emp.id}" data-type="salary">
+                    <span class="item-title">${emp.name} · ${emp.dept}</span>
+                    <span class="item-meta">实发: ¥ ${emp.netPay} | 2026年03月</span>
+                    <span class="expand-icon">[ + ]</span>
+                </div>
+                <div class="item-detail" id="salary-detail-${emp.id}"></div>
+            `;
+            container.appendChild(div);
+        });
+        document.querySelectorAll('#salaryList .item-header').forEach(header => {
+            header.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const id = header.getAttribute('data-id');
+                toggleDetail(`salary-detail-${id}`, header);
+                const detailDiv = document.getElementById(`salary-detail-${id}`);
+                if(detailDiv && detailDiv.innerHTML === '') {
+                    const emp = salaryData.find(s => s.id == id);
+                    if(emp) detailDiv.innerHTML = generateSalaryDetail(emp);
+                }
+            });
+        });
+        const totalNet = salaryData.reduce((sum, e) => sum + parseFloat(e.netPay), 0);
+        const statsDiv = document.getElementById('salaryStats');
+        if(statsDiv) statsDiv.innerHTML = `<span class="stat-item">本月薪酬总实发: ¥${totalNet.toFixed(2)}</span><span class="stat-item">在职人数: 42</span>`;
+    }
+
+    function generateSalaryDetail(emp) {
+        return `<table class="detail-table">
+            <tr><th>基本工资</th><td>¥ ${emp.basic}</td></tr>
+            <tr><th>绩效奖金</th><td>¥ ${emp.performance}</td></tr>
+            <tr><th>交通补贴</th><td>¥ ${emp.transport}</td></tr>
+            <tr><th>餐补</th><td>¥ ${emp.meal}</td></tr>
+            <tr><th>应发合计</th><td class="total-highlight">¥ ${emp.totalGross}</td></tr>
+            <tr><th>社保个人部分</th><td>¥ ${emp.socialSecurity}</td></tr>
+            <tr><th>公积金个人部分</th><td>¥ ${emp.housingFund}</td></tr>
+            <tr><th>个人所得税</th><td>¥ ${emp.tax}</td></tr>
+            <tr><th>实发工资</th><td class="total-highlight">¥ ${emp.netPay}</td></tr>
+          </table><div style="margin-top:0.4rem; font-size:0.7rem;">发放日期: 2026年3月31日</div>`;
+    }
+
+    function renderAnnounceList() {
+        const container = document.getElementById('announceList');
+        if(!container) return;
+        container.innerHTML = '';
+        announceData.forEach(item => {
+            const div = document.createElement('div');
+            div.className = 'list-item';
+            div.innerHTML = `<div class="item-header" data-id="${item.id}" data-type="announce"><span class="item-title">${item.title}</span><span class="item-meta">${item.date} · ${item.dept}</span><span class="expand-icon">[ + ]</span></div><div class="item-detail" id="announce-detail-${item.id}"></div>`;
+            container.appendChild(div);
+        });
+        document.querySelectorAll('#announceList .item-header').forEach(header => {
+            header.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const id = header.getAttribute('data-id');
+                toggleDetail(`announce-detail-${id}`, header);
+                const detailDiv = document.getElementById(`announce-detail-${id}`);
+                if(detailDiv && detailDiv.innerHTML === '') {
+                    const ann = announceData.find(a => a.id == id);
+                    if(ann) detailDiv.innerHTML = `<div>${ann.content}</div>`;
+                }
+            });
+        });
+        document.getElementById('announceCount').innerText = announceData.length;
+    }
+
+    function renderExpenseList() {
+        const container = document.getElementById('expenseList');
+        if(!container) return;
+        container.innerHTML = '';
+        expenseData.forEach(item => {
+            const div = document.createElement('div');
+            div.className = 'list-item';
+            div.innerHTML = `<div class="item-header" data-id="${item.id}" data-type="expense"><span class="item-title">${item.title} · ${item.applicant}</span><span class="item-meta">¥ ${item.amount} | ${item.status}</span><span class="expand-icon">[ + ]</span></div><div class="item-detail" id="expense-detail-${item.id}"></div>`;
+            container.appendChild(div);
+        });
+        document.querySelectorAll('#expenseList .item-header').forEach(header => {
+            header.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const id = header.getAttribute('data-id');
+                toggleDetail(`expense-detail-${id}`, header);
+                const detailDiv = document.getElementById(`expense-detail-${id}`);
+                if(detailDiv && detailDiv.innerHTML === '') {
+                    const exp = expenseData.find(e => e.id == id);
+                    if(exp) detailDiv.innerHTML = generateExpenseDetail(exp);
+                }
+            });
+        });
+        const pending = expenseData.filter(e => e.status.includes("审核中") || e.status.includes("待打款") || e.status.includes("部门审批中")).length;
+        document.getElementById('pendingExpenseCount').innerText = pending;
+    }
+
+    function generateExpenseDetail(exp) {
+        let stepsHtml = '';
+        exp.steps.forEach(step => {
+            let statusClass = '', statusText = '';
+            if(step.status === 'completed') { statusClass = 'step-done'; statusText = '✓ 已完成'; }
+            else if(step.status === 'current') { statusClass = 'step-current'; statusText = '● 进行中'; }
+            else { statusText = '○ 待处理'; }
+            stepsHtml += `<div class="progress-step"><span class="${statusClass}">${step.name}</span> (${step.time}) ${statusText}</div>`;
+        });
+        return `<div><strong>申请详情：</strong> ${exp.detail}</div><div style="margin-top:0.8rem;"><strong>审批流程：</strong></div>${stepsHtml}<div style="margin-top:0.5rem;">提交日期: ${exp.date}</div>`;
+    }
+
+    function renderTrainingList() {
+        const container = document.getElementById('trainingList');
+        if(!container) return;
+        container.innerHTML = '';
+        trainingData.forEach(item => {
+            const div = document.createElement('div');
+            div.className = 'list-item';
+            div.innerHTML = `<div class="item-header" data-id="${item.id}" data-type="training"><span class="item-title">${item.title}</span><span class="item-meta">${item.date} ${item.time} · ${item.location}</span><span class="expand-icon">[ + ]</span></div><div class="item-detail" id="training-detail-${item.id}"></div>`;
+            container.appendChild(div);
+        });
+        document.querySelectorAll('#trainingList .item-header').forEach(header => {
+            header.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const id = header.getAttribute('data-id');
+                toggleDetail(`training-detail-${id}`, header);
+                const detailDiv = document.getElementById(`training-detail-${id}`);
+                if(detailDiv && detailDiv.innerHTML === '') {
+                    const train = trainingData.find(t => t.id == id);
+                    if(train) detailDiv.innerHTML = `<div><strong>讲师：</strong> ${train.lecturer}</div><div><strong>面向对象：</strong> ${train.target}</div><div style="margin-top:0.5rem;">${train.detail}</div><div style="margin-top:0.4rem; font-size:0.75rem;">地点: ${train.location}</div>`;
+                }
+            });
+        });
+        document.getElementById('trainingCount').innerText = trainingData.length;
+    }
+
+    function renderMessagesOnly() {
+        const container = document.getElementById('messageListContainer');
+        if(!container) return;
+        if(messagesData.length === 0) {
+            container.innerHTML = '<div style="padding:1rem 0; color:#8da5b2;">暂无留言</div>';
+            return;
+        }
+        container.innerHTML = '';
+        [...messagesData].reverse().forEach(msg => {
+            const msgDiv = document.createElement('div');
+            msgDiv.className = 'message-item';
+            msgDiv.innerHTML = `
+                <div class="message-header">
+                    <div><span class="message-author">${escapeHtml(msg.name)}</span>  <span class="message-dept">${escapeHtml(msg.dept)}</span></div>
+                    <div class="message-time">${msg.timestamp}</div>
+                </div>
+                <div class="message-content">${escapeHtml(msg.content)}</div>
+            `;
+            container.appendChild(msgDiv);
+        });
+        document.getElementById('messageCount').innerText = messagesData.length;
+    }
+
+    function escapeHtml(str) {
+        if(!str) return '';
+        return str.replace(/[&<>]/g, function(m) {
+            if(m === '&') return '&amp;';
+            if(m === '<') return '&lt;';
+            if(m === '>') return '&gt;';
+            return m;
+        });
+    }
+
+    function toggleDetail(detailId, headerElement) {
+        const detailDiv = document.getElementById(detailId);
+        if(!detailDiv) return;
+        const expandIcon = headerElement.querySelector('.expand-icon');
+        if(detailDiv.classList.contains('active')) {
+            detailDiv.classList.remove('active');
+            if(expandIcon) expandIcon.innerHTML = '[ + ]';
+        } else {
+            detailDiv.classList.add('active');
+            if(expandIcon) expandIcon.innerHTML = '[ - ]';
+        }
+    }
+
+    function initTabs() {
+        const tabs = document.querySelectorAll('.tab-btn');
+        const panels = {
+            salary: document.getElementById('salaryPanel'),
+            announce: document.getElementById('announcePanel'),
+            expense: document.getElementById('expensePanel'),
+            training: document.getElementById('trainingPanel'),
+            message: document.getElementById('messagePanel')
+        };
+        tabs.forEach(btn => {
+            btn.addEventListener('click', () => {
+                const tabId = btn.getAttribute('data-tab');
+                Object.values(panels).forEach(p => p.classList.remove('active'));
+                tabs.forEach(b => b.classList.remove('active'));
+                panels[tabId].classList.add('active');
+                btn.classList.add('active');
+                if(tabId === 'message') renderMessagesOnly();
+            });
+        });
+    }
+
+    function updateDateTime() {
+        const now = new Date();
+        const dateStr = now.toLocaleString('zh-CN', {hour12: false});
+        const timeElem = document.getElementById('currentDateTime');
+        if(timeElem) timeElem.innerText = dateStr;
+    }
+
+    function init() {
+        renderSalaryList();
+        renderAnnounceList();
+        renderExpenseList();
+        renderTrainingList();
+        renderMessagesOnly();
+        initTabs();
+        updateDateTime();
+        setInterval(updateDateTime, 60000);
+    }
+
+    init();
+</script>
+</body>
+</html>

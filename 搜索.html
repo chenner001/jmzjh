@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>cococole 搜索</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: #ffffff;
+            font-family: -apple-system, 'SF Pro Text', 'Helvetica Neue', 'Segoe UI', Roboto, Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 2rem;
+        }
+
+        /* 极简居中容器 */
+        .search-container {
+            width: 100%;
+            max-width: 584px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        /* 引擎标识 - 三个c不同颜色 */
+        .engine-name {
+            font-size: 3rem;
+            font-weight: 500;
+            margin-bottom: 2rem;
+            letter-spacing: -0.5px;
+        }
+        .colored-c {
+            font-weight: 500;
+        }
+        .c1 { color: #e34234; } /* 橙红 */
+        .c2 { color: #2e8b57; } /* 海洋绿 */
+        .c3 { color: #4682b4; } /* 钢蓝 */
+
+        /* 搜索框区域 */
+        .search-box {
+            width: 100%;
+            margin-bottom: 1.8rem;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 12px 20px;
+            font-size: 16px;
+            font-family: inherit;
+            border: 1px solid #dfe1e5;
+            border-radius: 24px;
+            outline: none;
+            background: #ffffff;
+            transition: box-shadow 0.2s, border-color 0.2s;
+            color: #202124;
+        }
+
+        .search-input:hover,
+        .search-input:focus {
+            border-color: rgba(0, 0, 0, 0.2);
+            box-shadow: 0 1px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .search-input:focus {
+            outline: none;
+        }
+
+        /* 按钮区域 */
+        .buttons {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+        }
+
+        .search-btn {
+            background-color: #f8f9fa;
+            border: 1px solid #f8f9fa;
+            border-radius: 4px;
+            color: #3c4043;
+            font-family: inherit;
+            font-size: 14px;
+            padding: 10px 20px;
+            cursor: pointer;
+            transition: all 0.1s;
+        }
+
+        .search-btn:hover {
+            border-color: #dadce0;
+            box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
+            background-color: #f8f9fa;
+        }
+
+        .search-btn:active {
+            background-color: #e8eaed;
+        }
+
+        /* 响应式 */
+        @media (max-width: 600px) {
+            .engine-name {
+                font-size: 2.2rem;
+            }
+            .search-container {
+                max-width: 90%;
+            }
+            .search-input {
+                padding: 10px 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="search-container">
+    <div class="engine-name">
+        <span class="colored-c c1">c</span>o<span class="colored-c c2">c</span>o<span class="colored-c c3">c</span>ole
+    </div>
+    <div class="search-box">
+        <input type="text" class="search-input" id="searchInput" autocomplete="off" autocapitalize="none" spellcheck="false">
+    </div>
+    <div class="buttons">
+        <button class="search-btn" id="searchBtn">cococole搜索</button>
+    </div>
+</div>
+
+<script>
+    // 关键词映射表（精确匹配）
+    // 添加了“清港城市公开数据平台”映射到同一个目标文件
+    const routeMap = new Map([
+        ["清港", "清港.html"],
+        ["蔚蓝科技", "蔚蓝科技.html"],
+        ["城市公开数据平台", "城市公开数据平台.html"],
+        ["清港城市公开数据平台", "城市公开数据平台.html"],  // 新增映射
+        ["生态研究院", "生态研究院.html"],
+        ["非活跃档案库", "非活跃档案库.html"],
+        ["蔚蓝科技内部网络", "通行验证.html"],
+        ["清港慈心康复中心", "慈心康复中心.html"],
+        ["慈心康复中心", "慈心康复中心.html"],
+        ["何远航", "何远航.html"],
+        ["静默者计划", "静默者计划.html"]
+    ]);
+
+    const inputEl = document.getElementById('searchInput');
+    const searchBtn = document.getElementById('searchBtn');
+
+    function performSearch() {
+        const keyword = inputEl.value.trim();
+        if (keyword === "") return;  // 空输入无反应
+
+        const target = routeMap.get(keyword);
+        if (target) {
+            window.open(target, '_blank');
+        }
+        // 未匹配关键词无任何反应（不跳转、无提示）
+    }
+
+    searchBtn.addEventListener('click', performSearch);
+    inputEl.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+            performSearch();
+        }
+    });
+</script>
+</body>
+</html>

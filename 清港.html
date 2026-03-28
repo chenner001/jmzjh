@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>清港：一座没有历史的未来之城 | 深度报道</title>
+    <meta name="description" content="清港，一座因蔚蓝科技而崛起的新兴城市，没有旧城区，没有历史，一切从零规划。这里正成为无数年轻人的理想之城。">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&family=Merriweather:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background: #f5f7fa;
+            color: #1a2a3a;
+            line-height: 1.5;
+        }
+
+        .news-container {
+            max-width: 1280px;
+            margin: 0 auto;
+            background: white;
+            box-shadow: 0 0 20px rgba(0,0,0,0.05);
+        }
+
+        .top-nav {
+            border-bottom: 1px solid #e5e9f0;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            font-size: 0.9rem;
+        }
+        .logo {
+            font-weight: 700;
+            font-size: 1.3rem;
+            letter-spacing: -0.5px;
+            color: #0a5c8c;
+        }
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            color: #4a5c6c;
+        }
+        .nav-links span {
+            cursor: default;
+        }
+
+        .article {
+            padding: 2rem 2rem 3rem;
+        }
+
+        .article-header {
+            margin-bottom: 2rem;
+            border-bottom: 1px solid #eef2f6;
+            padding-bottom: 1.5rem;
+        }
+        .category {
+            display: inline-block;
+            background: #eef2fa;
+            color: #0a5c8c;
+            font-size: 0.75rem;
+            font-weight: 600;
+            padding: 0.2rem 0.8rem;
+            border-radius: 20px;
+            margin-bottom: 1rem;
+            letter-spacing: 0.5px;
+        }
+        h1 {
+            font-family: 'Merriweather', serif;
+            font-size: 2.8rem;
+            font-weight: 700;
+            line-height: 1.2;
+            margin-bottom: 1rem;
+            color: #0a2a3a;
+            text-align: center;   /* 抬头居中 */
+        }
+        .byline {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            color: #6c7e8e;
+            font-size: 0.85rem;
+            margin-top: 0.5rem;
+        }
+
+        .article-content {
+            font-size: 1.05rem;
+            color: #2c3e44;
+            max-width: 780px;
+            margin: 0 auto;
+        }
+        .article-content p {
+            margin-bottom: 1.4rem;
+            font-weight: 400;
+        }
+        .article-content h2 {
+            font-size: 1.6rem;
+            font-family: 'Merriweather', serif;
+            margin: 1.8rem 0 1rem;
+            color: #1e4a6e;
+        }
+        .pull-quote {
+            margin: 2rem 0;
+            padding: 1.2rem 2rem;
+            background: #f0f6fe;
+            border-left: 4px solid #0a5c8c;
+            font-style: italic;
+            font-weight: 500;
+            color: #1a4c6e;
+            font-size: 1.2rem;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+        .stat-card {
+            background: #f8fafc;
+            border-radius: 20px;
+            padding: 1.2rem;
+            text-align: center;
+            border: 1px solid #e2e8f0;
+        }
+        .stat-number {
+            font-size: 2.2rem;
+            font-weight: 800;
+            color: #0a5c8c;
+            line-height: 1;
+        }
+        .stat-label {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #5c6e7e;
+            margin-top: 0.5rem;
+        }
+
+        .insight-box {
+            background: #ffffff;
+            border: 1px solid #cbdde9;
+            border-radius: 20px;
+            padding: 1.5rem;
+            margin: 2rem 0;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.02);
+        }
+        .insight-box p {
+            margin-bottom: 0.5rem;
+        }
+        .insight-author {
+            font-weight: 600;
+            margin-top: 0.8rem;
+            font-size: 0.85rem;
+            color: #3a6e8c;
+        }
+
+        .footer {
+            border-top: 1px solid #e5e9f0;
+            padding: 2rem;
+            text-align: center;
+            font-size: 0.75rem;
+            color: #8a9aac;
+            background: #fafcfd;
+        }
+
+        /* 自适应屏幕优化 */
+        @media (max-width: 768px) {
+            .article {
+                padding: 1rem;
+            }
+            h1 {
+                font-size: 2rem;
+                margin-bottom: 0.8rem;
+            }
+            .byline {
+                flex-direction: column;
+                align-items: center;
+                gap: 0.3rem;
+            }
+            .top-nav {
+                flex-direction: column;
+                gap: 0.5rem;
+                text-align: center;
+            }
+            .nav-links {
+                justify-content: center;
+                gap: 1.2rem;
+            }
+            .article-content {
+                font-size: 1rem;
+            }
+            .stats-grid {
+                gap: 1rem;
+            }
+            .pull-quote {
+                padding: 1rem;
+                font-size: 1rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 1.6rem;
+            }
+            .category {
+                font-size: 0.7rem;
+            }
+            .stat-number {
+                font-size: 1.6rem;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="news-container">
+    <div class="top-nav">
+        <div class="logo">清港观察 · 深度</div>
+        <div class="nav-links">
+            <span>首页</span>
+            <span>城市</span>
+            <span>科技</span>
+            <span>产业</span>
+            <span>人物</span>
+        </div>
+    </div>
+
+    <article class="article">
+        <div class="article-header">
+            <div class="category">城市特写 · 新兴都会</div>
+            <h1>清港：没有旧城，只有未来</h1>
+            <div class="byline">
+                <span>记者 林霖</span>
+                <span>· 2025年3月28日</span>
+                <span>· 深度报道 10分钟阅读</span>
+            </div>
+        </div>
+
+        <div class="article-content">
+            <p>在中国东南沿海，一座没有“历史”的城市正在改写人们对城市发展的认知。它叫清港——十年前这里还是一片滩涂与农田，如今宽阔的八车道柏油路延伸至天际，玻璃幕墙的写字楼与低密度住宅区交替排列，产业园区与城市公园无缝衔接。这里没有老城区的逼仄巷弄，没有需要修补的旧厂房，一切都从一张白纸开始。</p>
+
+            <div class="pull-quote">
+                “这里没有历史包袱，每一寸土地都按照最新的城市标准设计。智慧交通、海绵城市、15分钟生活圈，不是写在蓝图里，而是铺在脚下的现实。”
+                <div style="margin-top: 0.5rem; font-size:0.85rem; font-style:normal;">—— 清港城市规划总顾问 陈逸明</div>
+            </div>
+
+            <h2>“一张蓝图”的极致实践</h2>
+            <p>清港的独特之处在于其“零旧改”的基因。从2015年获批设立新区开始，所有基础设施均采用地下综合管廊、5G全域覆盖、新能源供电系统。住宅区按照“邻里单元”模式分组团开发，每个组团均配备学校、社区医疗、商业中心和公园。产业园区则严格与居住区保持“职住平衡”间距，员工通勤时间平均不超过20分钟。</p>
+            <p>根据清港规划和自然资源局数据，城市建成区绿化覆盖率达43.7%，公园500米服务半径覆盖率达到96%。没有一座需要拆迁的老建筑，也没有一条需要拓宽的旧马路。“在其他城市，规划往往是妥协的艺术；在清港，规划就是执行的图纸。”同济大学城市规划系教授王永嘉在考察后评价道。</p>
+
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-number">52万</div>
+                    <div class="stat-label">常住人口（2025）</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">29.7岁</div>
+                    <div class="stat-label">平均年龄</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">43.7%</div>
+                    <div class="stat-label">绿化覆盖率</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">300+</div>
+                    <div class="stat-label">蔚蓝科技生态企业</div>
+                </div>
+            </div>
+
+            <h2>蔚蓝科技：城市的“磁极”与“心脏”</h2>
+            <p>走在清港的任何一条街道，几乎都能望见蔚蓝科技的总部大楼——一座螺旋形的地标建筑，被当地人称为“蓝芯”。这家以人工智能、清洁能源和智慧城市解决方案闻名的企业，不仅贡献了清港超过60%的GDP，更主导了整座城市的产业生态。从智能交通调度系统，到全域无人配送网络，再到市民使用的“清港通”城市服务App，背后均有蔚蓝科技的算法支撑。</p>
+            <p>“蔚蓝科技带来的不只是税收，而是一整套未来城市的试验场。”清港产业促进中心主任周明远表示，企业将整座城市作为技术落地的真实场景，使得清港在智慧水务、自动驾驶接驳、零碳社区等领域连续三年获得国家级创新奖项。更重要的是，蔚蓝科技每年从全球招聘超过8000名毕业生，其中超过60%选择在清港落户定居。</p>
+
+            <div class="insight-box">
+                <p><strong>蔚蓝科技 · 清港影响力一览</strong></p>
+                <p>• 直接提供就业岗位：4.2万个<br>
+                • 带动衍生服务业岗位：约11万个<br>
+                • 研发投入占清港全市研发经费比重：71%<br>
+                • 2024年清港新注册企业数量：同比增长34%，其中七成为蔚蓝科技供应商</p>
+                <div class="insight-author">—— 清港经济年报（2024）</div>
+            </div>
+
+            <h2>挑战与平衡：如何避免“单极依赖”？</h2>
+            <p>尽管清港的崛起令人瞩目，但专家也指出潜在风险。过度依赖蔚蓝科技一家企业，使得城市经济结构存在“单极依赖”隐患。一旦行业波动或企业战略调整，可能带来连锁反应。清港市政府显然已意识到这一点，近两年开始大力引进生物医药、新材料等多元产业，并规划了北部创新走廊，以分散风险。</p>
+            <p>“从一张白纸起步的优势是规划自由，但挑战也同样明显——如何培育自发生长的城市生态，而非仅仅是企业附属区。”中国城市科学研究会理事方杰表示，“清港正在探索一条政府与企业深度协同的新路径，这或许能为未来新兴城市提供范本。”</p>
+
+            <p style="margin-top: 2rem; font-size:0.9rem; border-left: 3px solid #cbdde9; padding-left: 1rem; color:#5a6e7e;">
+                记者手记：离开清港时，暮色中的城市灯光整齐而温暖。这里没有旧城老街的烟火气，却有一种属于未来的秩序感。当一群年轻人坐在中央公园的草坪上讨论他们设计的低碳社区方案时，你会意识到，清港正在书写一种全新的城市叙事——它的历史，从今天开始。
+            </p>
+        </div>
+    </article>
+
+    <div class="footer">
+        © 2025 清港观察 · 本报道系独立采编 | 数据来源：清港统计局、蔚蓝科技年报、公开资料整理
+    </div>
+</div>
+</body>
+</html>

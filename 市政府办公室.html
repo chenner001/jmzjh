@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>清港市政府办公室 · 授权入口</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #1a2a32;
+            font-family: '宋体', SimSun, 'Times New Roman', serif;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        /* 半透明遮罩背景 */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.65);
+            backdrop-filter: blur(3px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+        }
+
+        /* 模态框主体 */
+        .modal-container {
+            background: #fefefe;
+            width: 90%;
+            max-width: 420px;
+            border-radius: 24px;
+            box-shadow: 0 25px 45px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+            text-align: center;
+            animation: fadeInUp 0.25s ease-out;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* 移除了原来的 .modal-header 区域 */
+        .modal-content {
+            padding: 2rem 1.5rem 1.8rem;
+        }
+
+        .message-text {
+            font-size: 1.2rem;
+            color: #1f4e5e;
+            background: #f0f8fc;
+            padding: 0.8rem 1rem;
+            border-radius: 40px;
+            display: inline-block;
+            margin-bottom: 1.8rem;
+            font-weight: 500;
+            font-family: '宋体', SimSun, monospace;
+        }
+
+        .btn-goto {
+            background: #1e6f5c;
+            border: none;
+            border-radius: 60px;
+            padding: 0.85rem 2rem;
+            font-size: 1.05rem;
+            font-weight: 600;
+            color: white;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+            font-family: '宋体', SimSun, sans-serif;
+            letter-spacing: 0.5px;
+        }
+
+        .btn-goto:hover {
+            background: #0e5a48;
+            transform: scale(1.02);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .btn-goto:active {
+            transform: scale(0.98);
+        }
+
+        .footer-note {
+            margin-top: 1.2rem;
+            font-size: 0.7rem;
+            color: #8cafbb;
+            font-family: '宋体', SimSun, serif;
+        }
+
+        @media (max-width: 480px) {
+            .modal-content {
+                padding: 1.5rem;
+            }
+            .message-text {
+                font-size: 1rem;
+            }
+            .btn-goto {
+                padding: 0.7rem 1.5rem;
+                font-size: 0.95rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 弹窗模态框 -->
+    <div id="modalOverlay" class="modal-overlay">
+        <div class="modal-container">
+            <!-- 已删除抬头部分 -->
+            <div class="modal-content">
+                <div class="message-text">ip地址为清港市政府办公室</div>
+                <div>
+                    <button id="gotoBtn" class="btn-goto">跳转到清港市政府官网</button>
+                </div>
+                <div class="footer-note">授权访问 · 政务内网入口</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 获取按钮元素
+        const gotoButton = document.getElementById('gotoBtn');
+        
+        // 绑定点击事件：新标签页打开“清港市政府官网.html”
+        gotoButton.addEventListener('click', function() {
+            window.open('清港市政府官网.html', '_blank');
+        });
+    </script>
+</body>
+</html>

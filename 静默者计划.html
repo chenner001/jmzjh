@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>绝密 · 静默者计划 | 卷宗档案</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #6b5a4a;
+            font-family: 'Courier New', 'Times New Roman', '宋体', monospace;
+            padding: 2rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .dossier {
+            max-width: 1100px;
+            width: 100%;
+            background: #fef5e6;
+            background-image: radial-gradient(circle at 10% 20%, rgba(200, 170, 120, 0.1) 1.5px, transparent 1.5px);
+            background-size: 20px 20px;
+            box-shadow: 0 20px 35px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 245, 215, 0.6);
+            border: 1px solid #ba9b6c;
+            border-radius: 8px;
+            position: relative;
+            padding: 2.2rem 2rem 2.5rem;
+        }
+
+        .dossier::before {
+            content: '';
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            width: 12px;
+            height: 12px;
+            background: #d6c29d;
+            border-radius: 50%;
+            box-shadow: 0 0 0 2px #a38254, 30px 0 0 0 #d6c29d, 30px 0 0 2px #a38254, 60px 0 0 0 #d6c29d, 60px 0 0 2px #a38254;
+            opacity: 0.7;
+        }
+        .dossier::after {
+            content: '';
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            width: 12px;
+            height: 12px;
+            background: #d6c29d;
+            border-radius: 50%;
+            box-shadow: 0 0 0 2px #a38254, 30px 0 0 0 #d6c29d, 30px 0 0 2px #a38254, 60px 0 0 0 #d6c29d, 60px 0 0 2px #a38254;
+            opacity: 0.7;
+        }
+
+        .header-stamp {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            border-bottom: 2px solid #b4874a;
+            margin-bottom: 1.8rem;
+            padding-bottom: 0.8rem;
+            flex-wrap: wrap;
+        }
+        .title-area h1 {
+            font-size: 2.8rem;
+            font-weight: 700;
+            letter-spacing: 6px;
+            color: #4a2c1a;
+            text-shadow: 2px 2px 0 rgba(100, 60, 20, 0.1);
+            font-family: 'Times New Roman', serif;
+        }
+        .classify {
+            background: #aa2e1e;
+            color: #fae67a;
+            padding: 0.3rem 1rem;
+            font-weight: bold;
+            font-size: 1.1rem;
+            letter-spacing: 2px;
+            transform: rotate(2deg);
+            border-radius: 2px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+            font-family: monospace;
+        }
+        .archive-id {
+            margin-top: 0.5rem;
+            font-size: 0.75rem;
+            color: #6b4a2a;
+            border-left: 2px solid #b4874a;
+            padding-left: 0.8rem;
+        }
+
+        .meta-bar {
+            display: flex;
+            justify-content: space-between;
+            background: #e8ddc8;
+            padding: 0.6rem 1rem;
+            margin-bottom: 1.8rem;
+            font-size: 0.8rem;
+            border-radius: 4px;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .section {
+            margin-bottom: 2rem;
+        }
+        .section-title {
+            font-size: 1.3rem;
+            font-weight: bold;
+            border-left: 6px solid #b1592c;
+            padding-left: 12px;
+            margin-bottom: 0.8rem;
+            font-family: 'Times New Roman', serif;
+            color: #3a2a1a;
+        }
+        .description p {
+            margin-bottom: 1rem;
+            line-height: 1.5;
+            text-align: justify;
+        }
+
+        .personnel-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: #fffcf0;
+            border: 1px solid #cbbd96;
+            font-size: 0.85rem;
+        }
+        .personnel-table th {
+            background: #e2cfaa;
+            padding: 10px 6px;
+            border: 1px solid #c0a472;
+            font-weight: 700;
+            text-align: center;
+        }
+        .personnel-table td {
+            padding: 8px 6px;
+            border: 1px solid #e0cfaf;
+            text-align: left;
+            vertical-align: top;
+        }
+        .personnel-table .status-redacted {
+            background: #f4e5d4;
+            color: #aa5e3a;
+            font-style: italic;
+        }
+        .redacted {
+            background: #4e3a28;
+            color: #dbc8a8;
+            padding: 0 3px;
+            letter-spacing: 1px;
+            display: inline-block;
+        }
+
+        .footer-stamp {
+            margin-top: 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            border-top: 1px dashed #b4874a;
+            padding-top: 1rem;
+            font-size: 0.7rem;
+            color: #5a4a34;
+            flex-wrap: wrap;
+        }
+        .stamp-red {
+            font-family: 'Times New Roman', serif;
+            font-size: 1.1rem;
+            color: #c0392b;
+            font-weight: bold;
+            transform: rotate(-5deg);
+            border: 1px solid #c0392b;
+            padding: 4px 12px;
+            border-radius: 20px;
+            display: inline-block;
+            letter-spacing: 2px;
+            background: #fff3e0;
+        }
+
+        @media (max-width: 700px) {
+            body {
+                padding: 1rem;
+            }
+            .dossier {
+                padding: 1.2rem;
+            }
+            .title-area h1 {
+                font-size: 1.8rem;
+                letter-spacing: 2px;
+            }
+            .classify {
+                font-size: 0.8rem;
+            }
+            .personnel-table th, .personnel-table td {
+                font-size: 0.7rem;
+                padding: 5px;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="dossier">
+    <div class="header-stamp">
+        <div class="title-area">
+            <h1>静默者计划</h1>
+            <div class="archive-id">档案编号：ECHO-SCP-017 · 卷宗等级：Ω-7</div>
+        </div>
+        <div class="classify">绝 密</div>
+    </div>
+
+    <div class="meta-bar">
+        <span>立卷机构：清港特别事务办公室</span>
+        <span>归档日期：2025年03月28日</span>
+        <span>知情范围：仅限于Ω级授权者</span>
+    </div>
+
+    <div class="section">
+        <div class="section-title">Ⅰ. 项目概述</div>
+        <div class="description">
+            <p>“静默者计划”是一项始于2022年的城市人口管理实验，由蔚蓝科技联合清港城市发展研究院秘密发起。该计划旨在通过系统性“身份移除”手段，将特定社会个体从公共记录中剥离，使其进入完全静默的监视状态。被选中者均为无家庭关联、无社会举报风险的边缘个体——或独居，或与外界几乎无联系。</p>
+            <p>计划代号“静默者”取自“无声消失，不留涟漪”的宗旨。目前该计划已因不明原因暂停，但十七人的下落仍未追回，且无任何失踪报案记录。</p>
+        </div>
+    </div>
+
+    <div class="section">
+        <div class="section-title">Ⅱ. 被除名人员清单（静默对象）</div>
+        <table class="personnel-table">
+            <thead>
+                <tr><th>编号</th><th>姓名</th><th>原工号</th><th>社保档案号</th><th>状态</th><th>备注</th> </thead>
+            <tbody>
+                <tr><td>001</td><td>陈远华</td><td>DX-1101</td><td>HB2023-481256</td><td>静默 · 档案已转移</td><td>最后活动：2022.03.12</td></tr>
+                <tr><td>002</td><td>李素芬</td><td>DX-1203</td><td>SH2022-672341</td><td>静默 · 档案已转移</td><td>最后活动：2022.07.21</td></tr>
+                <tr><td>003</td><td>王建国</td><td>DX-1304</td><td>ZJ2021-590234</td><td>静默 · 档案已转移</td><td>最后活动：2023.01.05</td></tr>
+                <tr><td>004</td><td>张明霞</td><td>DX-1405</td><td>HB2023-129087</td><td>静默 · 档案已转移</td><td>最后活动：2023.08.19</td></tr>
+                <tr><td>005</td><td>刘永强</td><td>DX-1506</td><td>SH2022-903452</td><td>静默 · 档案已转移</td><td>最后活动：2024.02.28</td></tr>
+                <tr><td>006</td><td>赵美琳</td><td>DX-1607</td><td>ZJ2021-344875</td><td>静默 · 档案已转移</td><td>最后活动：2024.03.14</td></tr>
+                <tr><td>007</td><td>周德福</td><td>DX-1708</td><td>HB2023-765431</td><td>静默 · 档案已转移</td><td>最后活动：2024.04.22</td></tr>
+                <tr><td>008</td><td>吴秀英</td><td>DX-1809</td><td>SH2022-238996</td><td>静默 · 档案已转移</td><td>最后活动：2024.05.02</td></tr>
+                <tr><td>009</td><td>郑志远</td><td>DX-1910</td><td>ZJ2021-801274</td><td>静默 · 档案已转移</td><td>最后活动：2024.06.10</td></tr>
+                <tr><td>010</td><td>林婉清</td><td>DX-2101</td><td>HB2023-456781</td><td>静默 · 档案已转移</td><td>最后活动：2024.07.17</td></tr>
+                <tr><td>011</td><td>郭建平</td><td>DX-2202</td><td>SH2022-547823</td><td>静默 · 档案已转移</td><td>最后活动：2024.08.25</td></tr>
+                <tr><td>012</td><td>唐雅茹</td><td>DX-2303</td><td>ZJ2021-690132</td><td>静默 · 档案已转移</td><td>最后活动：2024.09.30</td></tr>
+                <tr><td>013</td><td>孙大勇</td><td>DX-2404</td><td>HB2023-902173</td><td>静默 · 档案已转移</td><td>最后活动：2024.10.11</td></tr>
+                <tr><td>014</td><td>宋文昭</td><td>DX-2303</td><td>SH2022-114578</td><td class="status-redacted">静默 · 身份严重涂抹</td><td>身份证前14位已销毁，仅存后四位8965</td></tr>
+                <tr><td>015</td><td>许春梅</td><td>DX-2606</td><td>ZJ2021-357924</td><td>静默 · 档案已转移</td><td>最后活动：2024.05.20</td></tr>
+                <tr><td>016</td><td>何志明</td><td>DX-2707</td><td>HB2023-668543</td><td>静默 · 档案已转移</td><td>最后活动：2024.09.03</td></tr>
+                <tr><td>017</td><td>沈雪琴</td><td>DX-2808</td><td>SH2022-992013</td><td>静默 · 档案已转移</td><td>最后活动：2024.10.17</td></tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="section">
+        <div class="section-title">Ⅲ. 技术手段与操作流程（摘录）</div>
+        <div class="description">
+            <p>1. 身份移除：通过“蔚蓝-城市数据中台”将目标人员的户籍、社保、税务记录标记为“注销”，同步删除所有公开履历。<br>
+            2. 物理隔离：由第三方安保团队将目标转移至清港产业园区“灰域宿舍”，切断原有通讯与社交链。<br>
+            3. 记忆覆盖：对周边邻居、同事进行话术安抚，告知“已正常离职/迁居”，并在社区系统中生成虚假的迁出记录。</p>
+            <p style="margin-top: 8px;">根据2024年12月内部评估报告，所有静默对象均未触发任何社会警报，符合计划预设的“零痕迹”指标。</p>
+        </div>
+    </div>
+
+    <div class="footer-stamp">
+        <div>
+            <span>承办人： ███ ████</span><br>
+            <span>电子签章：已加密</span>
+        </div>
+        <div class="stamp-red">
+            绝密 · 禁止复制
+        </div>
+        <div>
+            <span>卷宗页数：7页（本页为第5页）</span><br>
+            <span>解密时限：2099年12月31日</span>
+        </div>
+    </div>
+    <div style="text-align: center; margin-top: 1rem; font-size: 0.7rem; color: #a48354;">
+        本档案由清港特别事务办公室归档 · 数字水印验证码：ECHO-017-静默
+    </div>
+</div>
+</body>
+</html>

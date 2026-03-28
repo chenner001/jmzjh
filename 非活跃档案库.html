@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>非活跃档案库 · 蔚蓝科技内部记录</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: #000000;
+            color: #cc3333;
+            font-family: 'Courier New', 'Fira Code', 'Lucida Console', monospace;
+            line-height: 1.5;
+            padding: 2rem 1rem;
+        }
+
+        .archive-container {
+            max-width: 1280px;
+            margin: 0 auto;
+            background: rgba(0, 0, 0, 0.92);
+            border: 1px solid #660000;
+            box-shadow: 0 0 20px rgba(200, 0, 0, 0.2);
+            padding: 2rem 1.5rem;
+        }
+
+        .header {
+            text-align: center;
+            border-bottom: 2px solid #990000;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+        }
+
+        .header h1 {
+            font-size: 2.2rem;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            font-weight: 700;
+            color: #ff3333;
+            text-shadow: 0 0 5px #660000;
+            word-break: keep-all;
+        }
+
+        .header .sub {
+            font-size: 0.85rem;
+            color: #aa5555;
+            margin-top: 0.5rem;
+            font-family: inherit;
+        }
+
+        .stats {
+            display: inline-block;
+            background: #1a0000;
+            padding: 0.3rem 1rem;
+            border-left: 4px solid #cc3333;
+            font-size: 0.9rem;
+            margin-bottom: 1.8rem;
+            font-weight: bold;
+        }
+
+        .warning {
+            font-size: 0.75rem;
+            color: #aa5555;
+            text-align: right;
+            border-top: 1px solid #440000;
+            margin-top: 2rem;
+            padding-top: 1rem;
+        }
+
+        .archive-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.9rem;
+        }
+
+        .archive-table th,
+        .archive-table td {
+            border: 1px solid #660000;
+            padding: 12px 8px;
+            text-align: left;
+            vertical-align: top;
+        }
+
+        .archive-table th {
+            background-color: #1a0000;
+            color: #ff6666;
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            font-size: 0.85rem;
+        }
+
+        .archive-table td {
+            background-color: #000000;
+            color: #dd5555;
+        }
+
+        .archive-table tr:hover td {
+            background-color: #110000;
+            color: #ff7777;
+        }
+
+        @media (max-width: 700px) {
+            .archive-container {
+                padding: 1rem;
+            }
+            .archive-table th, .archive-table td {
+                padding: 8px 6px;
+                font-size: 0.75rem;
+            }
+            .header h1 {
+                font-size: 1.5rem;
+            }
+        }
+
+        .archive-table th:first-child,
+        .archive-table td:first-child {
+            width: 60px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+<div class="archive-container">
+    <div class="header">
+        <h1>非活跃档案库</h1>
+        <div class="sub">蔚蓝科技 · 人事与安全中心 | 内部封存记录</div>
+    </div>
+
+    <div style="display: flex; justify-content: space-between; align-items: baseline; flex-wrap: wrap; margin-bottom: 1rem;">
+        <div class="stats">当前展示：17名非活跃人员 | 状态：长期未更新</div>
+        <div style="font-size: 0.7rem; color: #993333;">最后同步：2026-03-28 · 内部调阅</div>
+    </div>
+
+    <table class="archive-table">
+        <thead>
+            <tr>
+                <th>编号</th>
+                <th>姓名</th>
+                <th>出生日期</th>
+                <th>住址</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr><td>001</td><td>陈远华</td><td>1991-01-03</td><td>清港市科技园华兴路18号蔚蓝公寓B-204</td></tr>
+            <tr><td>002</td><td>李素芬</td><td>1992-02-03</td><td>清港市滨海区蔚蓝研究院东楼403室</td></tr>
+            <tr><td>003</td><td>王建国</td><td>1993-03-04</td><td>清港市开发区蔚蓝智谷2栋1102</td></tr>
+            <tr><td>004</td><td>张明霞</td><td>1994-04-05</td><td>清港市南港区蔚蓝数据园宿舍5-101</td></tr>
+            <tr><td>005</td><td>刘永强</td><td>1995-05-06</td><td>清港市西环路蔚蓝云谷7栋302</td></tr>
+            <tr><td>006</td><td>赵美琳</td><td>1996-06-07</td><td>清港市滨江大道蔚蓝国际公寓C座1205</td></tr>
+            <tr><td>007</td><td>周德福</td><td>1997-07-08</td><td>清港市蔚蓝科技园集体宿舍3-208</td></tr>
+            <tr><td>008</td><td>吴秀英</td><td>1998-08-09</td><td>清港市大学城蔚蓝创新中心辅楼202</td></tr>
+            <tr><td>009</td><td>郑志远</td><td>1999-10-10</td><td>清港市东部新区蔚蓝科研基地西区6栋</td></tr>
+            <tr><td>010</td><td>林婉清</td><td>2000-11-01</td><td>清港市蔚蓝生态研究院职工宿舍8-503</td></tr>
+            <tr><td>011</td><td>郭建平</td><td>2001-12-02</td><td>清港市北港区蔚蓝新能源园区10栋401</td></tr>
+            <tr><td>012</td><td>唐雅茹</td><td>2002-03-03</td><td>清港市蔚蓝大数据中心公寓楼2-1107</td></tr>
+            <tr><td>013</td><td>孙大勇</td><td>2003-04-04</td><td>清港市蔚蓝智慧港员工宿舍9-206</td></tr>
+            <tr><td>014</td><td>宋文昭</td><td>1992-05-19</td><td>清港市滨海区翠湖路蔚蓝科技研究院旧址3号楼</td></tr>
+            <tr><td>015</td><td>许春梅</td><td>2005-06-06</td><td>清港市蔚蓝健康产业园区宿舍7-404</td></tr>
+            <tr><td>016</td><td>何志明</td><td>2006-07-07</td><td>清港市蔚蓝智能工厂生活区2栋304</td></tr>
+            <tr><td>017</td><td>沈雪琴</td><td>2007-08-08</td><td>清港市蔚蓝人才公寓8栋1202</td></tr>
+        </tbody>
+    </table>
+
+    <div class="warning">
+        本档案依据蔚蓝科技《员工状态追踪规程》归类为非活跃记录。如掌握任何更新信息，请联系蔚蓝科技人事与安全中心。<br>
+        数据仅供内部合规审查使用，未经授权禁止对外披露。部分记录处于长期未联络状态，将持续跟进。
+    </div>
+</div>
+</body>
+</html>
