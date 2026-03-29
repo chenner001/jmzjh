@@ -457,7 +457,7 @@
         id: "detective_lin"
     };
 
-    // 联系人定义 —— 程小雨对话已按要求修改，取消所有高亮
+    // 仅保留程小雨联系人
     const contactsData = [
         {
             id: "chengxiaoyu",
@@ -466,11 +466,9 @@
             avatarIcon: "fas fa-user-secret",
             color: "#4F46E5",
             messages: [
-                // 林述主动联系
                 { sender: "me", text: "程女士，我是侦探林述。关于蔚蓝科技内部的事，我需要你的证词。这次通话采用端到端加密，绝对安全。", time: "19:42" },
                 { sender: "contact", text: "林侦探，你终于来了……我一直在等一个能信任的人。你听说过“幸存者视角”吗？我就是那个视角——我差点成为第十八个人。", time: "19:44" },
                 { sender: "me", text: "第十八个人？什么意思？你经历了什么？", time: "19:45" },
-                // 替换为指定文本
                 { sender: "contact", text: "他们想把我调岗，但是我去了新的地方才发现这就是囚禁，我拼尽全力侥幸逃了出来。", time: "19:47" },
                 { sender: "me", text: "太惊险了。你提到过内部网络，现在还能访问吗？", time: "19:49" },
                 { sender: "contact", text: "我的永久通行证已经不能用了。不过……我这里还有个备用的临时访客码：285951。这个码能绕过身份验证进入后台，但只能用一次。", time: "19:51" },
@@ -478,22 +476,6 @@
                 { sender: "contact", text: "保重。希望这份访客码能帮你揭开所有黑幕。我差点成为第十八个，绝不能让更多人受害。", time: "19:55" }
             ],
             lastActive: "在线 · 安全会话"
-        },
-        {
-            id: "zhaomingyuan",
-            name: "赵明远",
-            roleTag: "关键证人",
-            avatarIcon: "fas fa-hand-fist",
-            color: "#0F7B6E",
-            messages: [
-                { sender: "me", text: "赵先生，我是侦探林述。关于你之前提到的违规事件，你掌握的录音证据至关重要。你现在的安全由我们保障。", time: "14:12" },
-                { sender: "contact", text: "林侦探，我清楚风险，但那些事情必须有人站出来。我亲眼目睹了机构内部的非法手段，包括非法拘禁和强迫行为，我需要法律伸张正义。", time: "14:15" },
-                { sender: "me", text: "我理解你的恐惧，但法律需要勇敢的证人。现在最关键的一步：你真的愿意站出来作证吗？面对可能存在的阻力，你确定？", time: "14:18" },
-                { sender: "contact", text: "我确定。这段时间我想得很清楚，如果连我都不敢出声，那些受害者永远没有希望。我愿意出庭作证，也愿意公开所有录音和证据。", time: "14:20" },
-                { sender: "me", text: "好！你的决心让我敬佩。我会申请相关保护计划，下周检方会安排预录证词。记住，从现在起任何可疑接触立刻通过加密频道告知我。", time: "14:22" },
-                { sender: "contact", text: "明白。我已经把备份证据藏在安全的地方。为了正义，我愿意承担一切后果。需要我的时候，我一定站出来。", time: "14:24" }
-            ],
-            lastActive: "最后活跃 2分钟前"
         }
     ];
 
@@ -575,9 +557,7 @@
             const messageDiv = document.createElement("div");
             messageDiv.className = `message ${isMe ? 'outgoing' : 'incoming'}`;
             
-            // 纯文本转义，取消所有高亮处理
             let displayText = msg.text;
-            // 基础转义（防止XSS）
             displayText = displayText.replace(/[&<>]/g, function(m) {
                 if (m === '&') return '&amp;';
                 if (m === '<') return '&lt;';
@@ -597,17 +577,12 @@
             container.appendChild(messageDiv);
         });
 
-        // 脚注（无高亮，仅提示）
         const footerHint = document.createElement("div");
         footerHint.className = "message";
         footerHint.style.width = "100%";
         footerHint.style.justifyContent = "center";
         footerHint.style.marginTop = "12px";
-        if (currentContactId === "chengxiaoyu") {
-            footerHint.innerHTML = `<div style="background:#01010130; border-radius: 30px; padding: 6px 18px; font-size:0.7rem; backdrop-filter: blur(4px);"><i class="fas fa-key"></i> 备用访客码已接收 · 安全通道确认</div>`;
-        } else {
-            footerHint.innerHTML = `<div style="background:#01010130; border-radius: 30px; padding: 6px 18px; font-size:0.7rem;"><i class="fas fa-gavel"></i> 作证保护协议已启动 · 司法加密通道</div>`;
-        }
+        footerHint.innerHTML = `<div style="background:#01010130; border-radius: 30px; padding: 6px 18px; font-size:0.7rem; backdrop-filter: blur(4px);"><i class="fas fa-key"></i> 备用访客码已接收 · 安全通道确认</div>`;
         container.appendChild(footerHint);
         
         container.scrollTop = container.scrollHeight;
