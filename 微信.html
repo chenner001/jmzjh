@@ -596,7 +596,6 @@
     }
 
     // ---------- 数据定义 ----------
-    // 根据用户要求：将老郑的第二条消息内容替换，并在其后添加我的回复“知道了，放心吧！”
     let contactsData = [
         {
             id: "sujianqiu",
@@ -615,10 +614,7 @@
             avatar: "郑",
             messages: [
                 { sender: "老郑", text: "对了，刚才电话里忘了说，有个城市公开数据平台也许能发现点什么。" },
-                // 原内容：【另外，如果看到什么看不懂的乱码，试试凯撒密码，老方法有时候挺管用。】 调整为：
-                { sender: "老郑", text: "还有，上次跟你说的凯撒密码一定要保护好密文！" },
-                // 紧接着添加“我”的回复
-                { sender: "me", text: "知道了，放心吧！" }
+                { sender: "老郑", text: "另外，如果看到什么看不懂的乱码，试试凯撒密码，老方法有时候挺管用。" }
             ]
         },
         {
@@ -673,7 +669,7 @@
     ];
     const momentsData = momentsDataRaw.map(m => ({ ...m, content: removeEmoji(m.content) }));
 
-    // 自动回复相关
+    // 自动回复相关 (仅用于发票代开)
     const AUTO_REPLY_TEXTS = [
         "您好，我是做正规发票代开的，全品类都能开，增值税专用、普通、电子票都有，真实可查。我这边走内部渠道，价格低、出票快，绝对安全。需要的话可以随时找我，量大还能再优惠。",
         "我们保证所有发票均可在税局官网查验，绝对正规。您需要哪种类型的发票？我可以给您详细报价。",
@@ -720,6 +716,19 @@
         autoReplyCountMap.set(contactId, 1);
     }
 
+    // 添加“蔚蓝-赵明远”好友后自动发送预设对话
+    function initZhaoMingyuanConversation(contactId) {
+        const contact = getContactById(contactId);
+        if (!contact) return;
+        // 避免重复添加（确保消息列表为空时才添加初始对话）
+        if (contact.messages.length === 0) {
+            // 我说
+            addMessage(contactId, "me", "你好，我是何云峰介绍来的，想入职该公司运营部，想跟你了解一下情况，福利待遇和工作压力之类的。");
+            // 对方回复
+            addMessage(contactId, contact.name, "福利待遇就是hr跟你讲的那些，但是工作压力确实比较大，经常有人承受不住压力辞职，如果你能承受压力而且能接受强制调岗的话可以考虑，还有如果你状态真的很差的话公司会给你安排休假的。");
+        }
+    }
+
     // 微信风格 Toast 提示
     function showToast(message) {
         const existingToast = document.querySelector('.wechat-toast');
@@ -733,7 +742,7 @@
         }, 2000);
     }
 
-    // 微信风格模态框 (添加好友)
+    // 微信风格模态框 (添加好友) ———— 支持 fpkf123 和 zhaomingyuan123
     function showAddFriendModal() {
         const overlay = document.createElement('div');
         overlay.className = 'wechat-modal-overlay';
@@ -772,15 +781,31 @@
                 errorEl.style.display = 'block';
                 return;
             }
-            if (wechatId !== "fpkf123") {
-                errorEl.textContent = '未找到该用户，微信号不正确。';
-                errorEl.style.display = 'block';
-                return;
-            }
-            const existing = contactsData.find(c => c.id === "fpkf123");
-            if (existing) {
+            // 处理发票代开好友
+            if (wechatId === "fpkf123") {
+                const existing = contactsData.find(c => c.id === "fpkf123");
+                if (existing) {
+                    closeModal();
+                    showToast('该好友已经是您的联系人');
+                    if (currentMode === 'moments') {
+                        document.getElementById("momentsToggleBtn")?.classList.remove("active");
+                        currentMode = 'chat';
+                    }
+                    currentContactId = "fpkf123";
+                    renderContactsList(currentContactId);
+                    renderChatInterface(currentContactId);
+                    return;
+                }
+                const newFriend = {
+                    id: "fpkf123",
+                    name: "AAA专业发票代开",
+                    avatar: "票",
+                    messages: []
+                };
+                contactsData.push(newFriend);
+                autoReplyCountMap.set("fpkf123", 0);
                 closeModal();
-                showToast('该好友已经是您的联系人');
+                showToast('添加成功');
                 if (currentMode === 'moments') {
                     document.getElementById("momentsToggleBtn")?.classList.remove("active");
                     currentMode = 'chat';
@@ -788,26 +813,47 @@
                 currentContactId = "fpkf123";
                 renderContactsList(currentContactId);
                 renderChatInterface(currentContactId);
+                sendFirstAutoMessage("fpkf123");
                 return;
             }
-            const newFriend = {
-                id: "fpkf123",
-                name: "AAA专业发票代开",
-                avatar: "票",
-                messages: []
-            };
-            contactsData.push(newFriend);
-            autoReplyCountMap.set("fpkf123", 0);
-            closeModal();
-            showToast('添加成功');
-            if (currentMode === 'moments') {
-                document.getElementById("momentsToggleBtn")?.classList.remove("active");
-                currentMode = 'chat';
+            // 处理蔚蓝-赵明远好友
+            if (wechatId === "zhaomingyuan123") {
+                const existing = contactsData.find(c => c.id === "zhaomingyuan123");
+                if (existing) {
+                    closeModal();
+                    showToast('该好友已经是您的联系人');
+                    if (currentMode === 'moments') {
+                        document.getElementById("momentsToggleBtn")?.classList.remove("active");
+                        currentMode = 'chat';
+                    }
+                    currentContactId = "zhaomingyuan123";
+                    renderContactsList(currentContactId);
+                    renderChatInterface(currentContactId);
+                    return;
+                }
+                const newFriend = {
+                    id: "zhaomingyuan123",
+                    name: "蔚蓝-赵明远",
+                    avatar: "赵",
+                    messages: []
+                };
+                contactsData.push(newFriend);
+                closeModal();
+                showToast('添加成功');
+                if (currentMode === 'moments') {
+                    document.getElementById("momentsToggleBtn")?.classList.remove("active");
+                    currentMode = 'chat';
+                }
+                currentContactId = "zhaomingyuan123";
+                renderContactsList(currentContactId);
+                renderChatInterface(currentContactId);
+                // 初始化对话（发送预设的两条消息）
+                initZhaoMingyuanConversation("zhaomingyuan123");
+                return;
             }
-            currentContactId = "fpkf123";
-            renderContactsList(currentContactId);
-            renderChatInterface(currentContactId);
-            sendFirstAutoMessage("fpkf123");
+            // 未匹配任何已知微信号
+            errorEl.textContent = '未找到该用户，微信号不正确。';
+            errorEl.style.display = 'block';
         };
         
         cancelBtn.addEventListener('click', closeModal);
@@ -921,6 +967,7 @@
         addMessage(contactId, "me", userText);
         const contact = getContactById(contactId);
         if (!contact) return;
+        // 仅对发票代开好友进行自动回复，蔚蓝-赵明远不触发自动回复（已有初始对话，后续用户发送消息不再自动回复）
         const isInvoiceFriend = (contact.id === "fpkf123" && contact.name === "AAA专业发票代开");
         if (isInvoiceFriend) {
             let count = autoReplyCountMap.get(contactId) || 0;
