@@ -9,7 +9,6 @@
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            /* 确保所有文字可以被鼠标选中 */
             user-select: text;
         }
 
@@ -22,7 +21,6 @@
             font-family: 'Segoe UI', 'Microsoft YaHei', 'Helvetica Neue', Helvetica, 'PingFang SC', '微软雅黑', sans-serif;
         }
 
-        /* 主窗口 — 真实微信电脑版风格 */
         .wechat-desktop {
             width: 1100px;
             height: 700px;
@@ -34,7 +32,7 @@
             position: relative;
         }
 
-        /* 左侧边栏 (联系人列表 + 底部工具栏) */
+        /* 左侧边栏 */
         .sidebar {
             width: 280px;
             background: #2c2f36;
@@ -43,11 +41,16 @@
             border-right: 1px solid #1e1f23;
         }
 
-        /* 我的信息栏 (简洁头部) */
         .profile-header {
             padding: 18px 16px;
             background: #2c2f36;
             border-bottom: 1px solid #3a3e46;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+        }
+        .profile-left {
             display: flex;
             align-items: center;
             gap: 12px;
@@ -74,8 +77,24 @@
             font-size: 12px;
             margin-top: 2px;
         }
+        .add-friend-btn {
+            background: #3a3f48;
+            border: none;
+            color: #e9edf2;
+            font-size: 20px;
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .add-friend-btn:hover {
+            background: #4f5562;
+        }
 
-        /* 联系人列表区域 可滚动 */
         .contacts-scroll {
             flex: 1;
             overflow-y: auto;
@@ -92,7 +111,6 @@
             border-radius: 4px;
         }
 
-        /* 单个联系人条目 */
         .contact-item {
             display: flex;
             align-items: center;
@@ -140,7 +158,6 @@
             text-overflow: ellipsis;
         }
 
-        /* 左下角朋友圈按钮区域 */
         .footer-tools {
             padding: 14px 16px;
             border-top: 1px solid #3a3e46;
@@ -181,7 +198,6 @@
             overflow: hidden;
         }
 
-        /* 聊天头部 */
         .chat-header {
             padding: 16px 24px;
             background: #ffffff;
@@ -194,7 +210,6 @@
             color: #1f2a3a;
         }
 
-        /* 聊天记录区域 */
         .chat-messages-area {
             flex: 1;
             overflow-y: auto;
@@ -242,6 +257,53 @@
             padding-right: 6px;
         }
 
+        /* 输入区域 */
+        .chat-input-area {
+            background: #ffffff;
+            border-top: 1px solid #e2e4e8;
+            padding: 12px 20px;
+            display: flex;
+            gap: 12px;
+            align-items: flex-end;
+        }
+        .chat-input {
+            flex: 1;
+            border: 1px solid #e2e4e8;
+            border-radius: 20px;
+            padding: 8px 16px;
+            font-size: 14px;
+            font-family: inherit;
+            resize: none;
+            outline: none;
+            transition: 0.2s;
+            max-height: 80px;
+            line-height: 1.4;
+        }
+        .chat-input:focus {
+            border-color: #07c160;
+        }
+        .send-btn {
+            background: #07c160;
+            border: none;
+            color: white;
+            padding: 8px 20px;
+            border-radius: 24px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .send-btn:hover {
+            background: #06ad56;
+        }
+
+        .chat-tip {
+            text-align: center;
+            font-size: 12px;
+            color: #b0b7c4;
+            margin-top: 12px;
+        }
+
         /* 朋友圈样式 */
         .moments-container {
             flex: 1;
@@ -255,7 +317,6 @@
             margin-bottom: 20px;
             padding: 16px 20px;
             box-shadow: 0 1px 2px rgba(0,0,0,0.04);
-            transition: 0.1s;
         }
         .moment-header {
             display: flex;
@@ -309,15 +370,6 @@
             cursor: default;
         }
 
-        /* 占位聊天底部提示 */
-        .chat-tip {
-            text-align: center;
-            font-size: 12px;
-            color: #b0b7c4;
-            margin-top: 12px;
-        }
-
-        /* 滚动条美化 */
         ::-webkit-scrollbar {
             width: 6px;
             height: 6px;
@@ -330,6 +382,154 @@
             background: #c1c9d2;
             border-radius: 4px;
         }
+
+        /* 微信风格弹窗 (模态框) */
+        .wechat-modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            backdrop-filter: blur(2px);
+        }
+        .wechat-modal {
+            width: 280px;
+            background: #ffffff;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 12px 28px rgba(0, 0, 0, 0.2);
+            animation: modalFadeIn 0.2s ease;
+        }
+        @keyframes modalFadeIn {
+            from {
+                opacity: 0;
+                transform: scale(0.96);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+        .modal-header {
+            padding: 20px 20px 8px 20px;
+            text-align: center;
+            font-size: 17px;
+            font-weight: 600;
+            color: #1f2a3a;
+        }
+        .modal-body {
+            padding: 8px 20px 16px 20px;
+        }
+        .modal-input {
+            width: 100%;
+            border: 1px solid #e2e4e8;
+            border-radius: 12px;
+            padding: 12px 16px;
+            font-size: 15px;
+            font-family: inherit;
+            outline: none;
+            transition: 0.2s;
+        }
+        .modal-input:focus {
+            border-color: #07c160;
+        }
+        .modal-error {
+            color: #fa5151;
+            font-size: 12px;
+            margin-top: 8px;
+            padding-left: 4px;
+        }
+        .modal-actions {
+            display: flex;
+            border-top: 1px solid #e2e4e8;
+        }
+        .modal-btn {
+            flex: 1;
+            text-align: center;
+            padding: 14px 0;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .modal-btn.cancel {
+            color: #8e9aaf;
+            border-right: 1px solid #e2e4e8;
+        }
+        .modal-btn.confirm {
+            color: #07c160;
+        }
+        .modal-btn:hover {
+            background: #f5f7fa;
+        }
+
+        /* 微信风格 Toast 提示 */
+        .wechat-toast {
+            position: fixed;
+            bottom: 30%;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(8px);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 40px;
+            font-size: 14px;
+            z-index: 1100;
+            white-space: nowrap;
+            pointer-events: none;
+            animation: toastFade 2s ease forwards;
+        }
+        @keyframes toastFade {
+            0% {
+                opacity: 0;
+                transform: translateX(-50%) translateY(10px);
+            }
+            15% {
+                opacity: 1;
+                transform: translateX(-50%) translateY(0);
+            }
+            85% {
+                opacity: 1;
+                transform: translateX(-50%) translateY(0);
+            }
+            100% {
+                opacity: 0;
+                transform: translateX(-50%) translateY(-10px);
+                visibility: hidden;
+            }
+        }
+
+        @media (max-width: 820px) {
+            .wechat-modal {
+                width: 260px;
+            }
+            .modal-header {
+                padding: 18px 16px 6px;
+                font-size: 16px;
+            }
+            .modal-body {
+                padding: 6px 16px 12px;
+            }
+            .modal-input {
+                padding: 10px 14px;
+                font-size: 14px;
+            }
+            .modal-btn {
+                padding: 12px 0;
+                font-size: 15px;
+            }
+            .wechat-toast {
+                font-size: 13px;
+                padding: 8px 18px;
+                bottom: 35%;
+            }
+        }
     </style>
 </head>
 <body>
@@ -337,15 +537,18 @@
     <!-- 左侧区域 -->
     <div class="sidebar">
         <div class="profile-header">
-            <div class="avatar-sm">侦</div>
-            <div class="user-info">
-                <h4>暗夜调查者</h4>
-                <p>ID: detective_x</p>
+            <div class="profile-left">
+                <div class="avatar-sm">侦</div>
+                <div class="user-info">
+                    <h4>暗夜调查者</h4>
+                    <p>ID: detective_x</p>
+                </div>
             </div>
+            <button class="add-friend-btn" id="addFriendBtn" title="添加好友">➕</button>
         </div>
 
         <div class="contacts-scroll" id="contactsList">
-            <!-- 动态js渲染联系人列表 -->
+            <!-- 动态联系人列表 -->
         </div>
 
         <div class="footer-tools">
@@ -357,21 +560,18 @@
     </div>
 
     <!-- 右侧动态面板 -->
-    <div class="main-panel" id="mainPanel">
-        <!-- 动态内容: 聊天模式 / 朋友圈模式 动态渲染 -->
-    </div>
+    <div class="main-panel" id="mainPanel"></div>
 </div>
 
 <script>
-    // ---------- 辅助函数：移除字符串中的emoji（确保朋友圈绝对无任何表情符号）----------
+    // ---------- 辅助函数：移除emoji（保证朋友圈干净）----------
     function removeEmoji(text) {
-        // 匹配常见emoji（包括基本多文种平面、符号、装饰符等）
         const emojiRegex = /[\u{1F600}-\u{1F64F}\u{1F300}-\u{1F5FF}\u{1F680}-\u{1F6FF}\u{1F700}-\u{1F77F}\u{1F780}-\u{1F7FF}\u{1F800}-\u{1F8FF}\u{1F900}-\u{1F9FF}\u{1FA00}-\u{1FA6F}\u{1FA70}-\u{1FAFF}\u{2600}-\u{26FF}\u{2700}-\u{27BF}\u{FE0F}\u{1F1E6}-\u{1F1FF}]/gu;
         return text.replace(emojiRegex, '').trim();
     }
 
     // ---------- 数据定义 ----------
-    const contactsData = [
+    let contactsData = [
         {
             id: "sujianqiu",
             name: "苏见秋",
@@ -429,112 +629,190 @@
         }
     ];
 
-    // 朋友圈数据：删除苏见秋和老郑的，添加其他人的个人生活内容（无emoji）
-    // 保留原有其他人的部分内容（感谢侦探等），同时新增个人生活朋友圈
-    const momentsData = [
-        // 我自己的那条（保留，2016.6.6）
-        {
-            id: "my_moment_1",
-            userName: "暗夜调查者",
-            avatar: "侦",
-            content: "解决了当侦探以来的第一个案子！好有成就感！",
-            time: "2016.6.6",
-            isSelf: true
-        },
-        // 何教授：保留原有哲理内容，再新增一条个人生活
-        {
-            id: "he_moment_1",
-            userName: "何教授",
-            avatar: "何",
-            content: "真相的重量往往超乎想象，但逃避只会让迷雾更浓。给勇敢的调查者点赞。",
-            time: "2026.6.9",
-            isSelf: false
-        },
-        {
-            id: "he_moment_2",
-            userName: "何教授",
-            avatar: "何",
-            content: "在图书馆发现一本珍贵的旧书，如获至宝。安静阅读的下午，很是惬意。",
-            time: "2026.7.19",
-            isSelf: false
-        },
-        // 张女士：保留原有感谢内容，新增猫咪日常
-        {
-            id: "zhang_moment_1",
-            userName: "张女士",
-            avatar: "张",
-            content: "感谢侦探！团子今天自己跑回来了，还带了邻居家的小鱼干 太感谢了！",
-            time: "2026.6.10",
-            isSelf: false
-        },
-        {
-            id: "zhang_moment_2",
-            userName: "张女士",
-            avatar: "张",
-            content: "团子学会开门了，真是个机灵鬼。每天都有新惊喜。",
-            time: "2026.7.20",
-            isSelf: false
-        },
-        // 陈先生：保留原有感谢，新增家庭生活
-        {
-            id: "chen_moment_1",
-            userName: "陈先生",
-            avatar: "陈",
-            content: "多亏侦探梳理的工商资料，避免了一次重大失误。专业且靠谱。",
-            time: "2026.6.11",
-            isSelf: false
-        },
-        {
-            id: "chen_moment_2",
-            userName: "陈先生",
-            avatar: "陈",
-            content: "难得全家人一起吃饭，简单又幸福。",
-            time: "2026.7.18",
-            isSelf: false
-        },
-        // 周姐（书店店主）：保留原有感谢，新增书店日常
-        {
-            id: "zhou_moment_1",
-            userName: "周姐（书店店主）",
-            avatar: "周",
-            content: "侦探帮忙调整监控后，晚上安心多了。今天店里还多了几位爱看推理小说的客人。",
-            time: "2026.6.12",
-            isSelf: false
-        },
-        {
-            id: "zhou_moment_2",
-            userName: "周姐（书店店主）",
-            avatar: "周",
-            content: "今天书店来了几位小读者，安安静静看书的样子真美好。",
-            time: "2026.7.22",
-            isSelf: false
-        }
+    // 朋友圈数据
+    const momentsDataRaw = [
+        { id: "my_moment_1", userName: "暗夜调查者", avatar: "侦", content: "解决了当侦探以来的第一个案子！好有成就感！", time: "2016.6.6", isSelf: true },
+        { id: "he_moment_1", userName: "何教授", avatar: "何", content: "真相的重量往往超乎想象，但逃避只会让迷雾更浓。给勇敢的调查者点赞。", time: "2026.6.9", isSelf: false },
+        { id: "he_moment_2", userName: "何教授", avatar: "何", content: "在图书馆发现一本珍贵的旧书，如获至宝。安静阅读的下午，很是惬意。", time: "2026.7.19", isSelf: false },
+        { id: "zhang_moment_1", userName: "张女士", avatar: "张", content: "感谢侦探！团子今天自己跑回来了，还带了邻居家的小鱼干 太感谢了！", time: "2026.6.10", isSelf: false },
+        { id: "zhang_moment_2", userName: "张女士", avatar: "张", content: "团子学会开门了，真是个机灵鬼。每天都有新惊喜。", time: "2026.7.20", isSelf: false },
+        { id: "chen_moment_1", userName: "陈先生", avatar: "陈", content: "多亏侦探梳理的工商资料，避免了一次重大失误。专业且靠谱。", time: "2026.6.11", isSelf: false },
+        { id: "chen_moment_2", userName: "陈先生", avatar: "陈", content: "难得全家人一起吃饭，简单又幸福。", time: "2026.7.18", isSelf: false },
+        { id: "zhou_moment_1", userName: "周姐（书店店主）", avatar: "周", content: "侦探帮忙调整监控后，晚上安心多了。今天店里还多了几位爱看推理小说的客人。", time: "2026.6.12", isSelf: false },
+        { id: "zhou_moment_2", userName: "周姐（书店店主）", avatar: "周", content: "今天书店来了几位小读者，安安静静看书的样子真美好。", time: "2026.7.22", isSelf: false }
     ];
+    const momentsData = momentsDataRaw.map(m => ({ ...m, content: removeEmoji(m.content) }));
 
-    // 对朋友圈内容进行二次净化（确保无emoji残留）
-    for (let moment of momentsData) {
-        moment.content = removeEmoji(moment.content);
+    // 自动回复相关
+    const AUTO_REPLY_TEXTS = [
+        "您好，我是做正规发票代开的，全品类都能开，增值税专用、普通、电子票都有，真实可查。我这边走内部渠道，价格低、出票快，绝对安全。需要的话可以随时找我，量大还能再优惠。",
+        "我们保证所有发票均可在税局官网查验，绝对正规。您需要哪种类型的发票？我可以给您详细报价。",
+        "价格方面很透明，增值税专用票点税低至3.5个点，普通票更优惠，量大还可以再商量。开票后提供查验截图，放心交易。"
+    ];
+    let autoReplyCountMap = new Map();
+
+    let currentMode = 'chat';
+    let currentContactId = contactsData[0].id;
+
+    function getContactById(id) {
+        return contactsData.find(c => c.id === id);
     }
 
-    // 辅助: 获取最后一条消息摘要 (含发送者标识)
-    function getLastMessagePreview(contact) {
+    function updateContactPreview(contactId) {
+        const contact = getContactById(contactId);
+        if (!contact) return;
         const lastMsg = contact.messages[contact.messages.length - 1];
-        if (!lastMsg) return "暂无消息";
-        const senderName = lastMsg.sender === "me" ? "我" : lastMsg.sender;
-        let content = lastMsg.text;
-        if (content.length > 28) content = content.slice(0, 26) + "...";
-        return `${senderName}: ${content}`;
+        let preview = "暂无消息";
+        if (lastMsg) {
+            const sender = lastMsg.sender === "me" ? "我" : lastMsg.sender;
+            let content = lastMsg.text;
+            if (content.length > 28) content = content.slice(0, 26) + "...";
+            preview = `${sender}: ${content}`;
+        }
+        renderContactsList(currentMode === 'chat' ? currentContactId : null);
     }
 
-    // 渲染左侧联系人列表 + 摘要 (所有文字均可选中)
-    function renderContactsList(activeContactId) {
+    function addMessage(contactId, sender, text) {
+        const contact = getContactById(contactId);
+        if (!contact) return false;
+        contact.messages.push({ sender, text });
+        if (currentMode === 'chat' && currentContactId === contactId) {
+            renderChatInterface(currentContactId);
+        }
+        updateContactPreview(contactId);
+        return true;
+    }
+
+    function sendFirstAutoMessage(contactId) {
+        const contact = getContactById(contactId);
+        if (!contact) return;
+        addMessage(contactId, contact.name, AUTO_REPLY_TEXTS[0]);
+        autoReplyCountMap.set(contactId, 1);
+    }
+
+    // 微信风格 Toast 提示
+    function showToast(message) {
+        const existingToast = document.querySelector('.wechat-toast');
+        if (existingToast) existingToast.remove();
+        const toast = document.createElement('div');
+        toast.className = 'wechat-toast';
+        toast.textContent = message;
+        document.body.appendChild(toast);
+        setTimeout(() => {
+            toast.remove();
+        }, 2000);
+    }
+
+    // 微信风格模态框 (添加好友)
+    function showAddFriendModal() {
+        // 创建遮罩层
+        const overlay = document.createElement('div');
+        overlay.className = 'wechat-modal-overlay';
+        
+        const modal = document.createElement('div');
+        modal.className = 'wechat-modal';
+        modal.innerHTML = `
+            <div class="modal-header">添加好友</div>
+            <div class="modal-body">
+                <input type="text" class="modal-input" id="friendWechatId" placeholder="请输入微信号" autocomplete="off">
+                <div class="modal-error" id="modalErrorMsg" style="display: none;"></div>
+            </div>
+            <div class="modal-actions">
+                <div class="modal-btn cancel" id="modalCancelBtn">取消</div>
+                <div class="modal-btn confirm" id="modalConfirmBtn">确定</div>
+            </div>
+        `;
+        overlay.appendChild(modal);
+        document.body.appendChild(overlay);
+        
+        const inputEl = modal.querySelector('#friendWechatId');
+        const errorEl = modal.querySelector('#modalErrorMsg');
+        const cancelBtn = modal.querySelector('#modalCancelBtn');
+        const confirmBtn = modal.querySelector('#modalConfirmBtn');
+        
+        // 聚焦输入框
+        setTimeout(() => inputEl.focus(), 50);
+        
+        const closeModal = () => {
+            overlay.remove();
+        };
+        
+        const handleConfirm = () => {
+            const wechatId = inputEl.value.trim();
+            if (!wechatId) {
+                errorEl.textContent = '微信号不能为空';
+                errorEl.style.display = 'block';
+                return;
+            }
+            if (wechatId !== "fpkf123") {
+                errorEl.textContent = '未找到该用户，微信号不正确。';
+                errorEl.style.display = 'block';
+                return;
+            }
+            // 检查是否已添加
+            const existing = contactsData.find(c => c.id === "fpkf123");
+            if (existing) {
+                closeModal();
+                showToast('该好友已经是您的联系人');
+                // 切换到该聊天
+                if (currentMode === 'moments') {
+                    document.getElementById("momentsToggleBtn")?.classList.remove("active");
+                    currentMode = 'chat';
+                }
+                currentContactId = "fpkf123";
+                renderContactsList(currentContactId);
+                renderChatInterface(currentContactId);
+                return;
+            }
+            // 创建新好友
+            const newFriend = {
+                id: "fpkf123",
+                name: "AAA专业发票代开",
+                avatar: "票",
+                messages: []
+            };
+            contactsData.push(newFriend);
+            autoReplyCountMap.set("fpkf123", 0);
+            closeModal();
+            showToast('添加成功');
+            // 刷新列表并切换到新好友
+            if (currentMode === 'moments') {
+                document.getElementById("momentsToggleBtn")?.classList.remove("active");
+                currentMode = 'chat';
+            }
+            currentContactId = "fpkf123";
+            renderContactsList(currentContactId);
+            renderChatInterface(currentContactId);
+            sendFirstAutoMessage("fpkf123");
+        };
+        
+        cancelBtn.addEventListener('click', closeModal);
+        confirmBtn.addEventListener('click', handleConfirm);
+        inputEl.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') handleConfirm();
+        });
+        // 点击遮罩关闭
+        overlay.addEventListener('click', (e) => {
+            if (e.target === overlay) closeModal();
+        });
+    }
+    
+    // 渲染联系人列表
+    function renderContactsList(activeId) {
         const container = document.getElementById("contactsList");
         if (!container) return;
         container.innerHTML = "";
         contactsData.forEach(contact => {
-            const preview = getLastMessagePreview(contact);
+            const lastMsg = contact.messages[contact.messages.length - 1];
+            let preview = "暂无消息";
+            if (lastMsg) {
+                const sender = lastMsg.sender === "me" ? "我" : lastMsg.sender;
+                let content = lastMsg.text;
+                if (content.length > 28) content = content.slice(0, 26) + "...";
+                preview = `${sender}: ${content}`;
+            }
             const div = document.createElement("div");
-            div.className = `contact-item ${activeContactId === contact.id ? 'active' : ''}`;
+            div.className = `contact-item ${activeId === contact.id ? 'active' : ''}`;
             div.setAttribute("data-id", contact.id);
             div.innerHTML = `
                 <div class="contact-avatar">${escapeHtml(contact.avatar)}</div>
@@ -543,34 +821,24 @@
                     <div class="contact-preview">${escapeHtml(preview)}</div>
                 </div>
             `;
-            div.addEventListener("click", (e) => {
-                e.stopPropagation();
-                switchToChatMode(contact.id);
+            div.addEventListener("click", () => {
+                if (currentMode === 'moments') {
+                    currentMode = 'chat';
+                    document.getElementById("momentsToggleBtn")?.classList.remove("active");
+                }
+                currentContactId = contact.id;
+                renderContactsList(currentContactId);
+                renderChatInterface(currentContactId);
             });
             container.appendChild(div);
         });
     }
-
-    // 简单防XSS
-    function escapeHtml(str) {
-        if (!str) return '';
-        return str.replace(/[&<>]/g, function(m) {
-            if(m === '&') return '&amp;';
-            if(m === '<') return '&lt;';
-            if(m === '>') return '&gt;';
-            return m;
-        }).replace(/[\uD800-\uDBFF][\uDC00-\uDFFF]/g, function(c) {
-            return c;
-        });
-    }
-
-    // 渲染聊天记录 (右侧)
-    function renderChatMessages(contactId) {
-        const contact = contactsData.find(c => c.id === contactId);
+    
+    function renderChatInterface(contactId) {
+        const contact = getContactById(contactId);
         if (!contact) return;
         const mainPanel = document.getElementById("mainPanel");
         if (!mainPanel) return;
-        // 构建聊天界面html
         let messagesHtml = `<div class="chat-header"><h2>${escapeHtml(contact.name)}</h2></div>`;
         messagesHtml += `<div class="chat-messages-area" id="chatMessagesArea">`;
         contact.messages.forEach(msg => {
@@ -587,24 +855,68 @@
         });
         messagesHtml += `<div class="chat-tip">—— 仅展示历史对话 ——</div>`;
         messagesHtml += `</div>`;
+        messagesHtml += `
+            <div class="chat-input-area">
+                <textarea class="chat-input" id="chatInput" rows="1" placeholder="输入消息..."></textarea>
+                <button class="send-btn" id="sendMsgBtn">发送</button>
+            </div>
+        `;
         mainPanel.innerHTML = messagesHtml;
-        // 滚动到底部
         setTimeout(() => {
             const msgArea = document.getElementById("chatMessagesArea");
-            if(msgArea) msgArea.scrollTop = msgArea.scrollHeight;
+            if (msgArea) msgArea.scrollTop = msgArea.scrollHeight;
+            const textarea = document.getElementById("chatInput");
+            if (textarea) {
+                textarea.addEventListener("keydown", (e) => {
+                    if (e.key === "Enter" && !e.shiftKey) {
+                        e.preventDefault();
+                        document.getElementById("sendMsgBtn")?.click();
+                    }
+                });
+                textarea.addEventListener("input", function() {
+                    this.style.height = "auto";
+                    this.style.height = Math.min(this.scrollHeight, 80) + "px";
+                });
+            }
         }, 20);
+        const sendBtn = document.getElementById("sendMsgBtn");
+        if (sendBtn) {
+            sendBtn.addEventListener("click", () => handleSendMessage(contactId));
+        }
     }
-
-    // 朋友圈渲染 (无任何emoji，且已删除苏见秋和老郑，新增个人生活)
+    
+    function handleSendMessage(contactId) {
+        const inputEl = document.getElementById("chatInput");
+        if (!inputEl) return;
+        const rawText = inputEl.value.trim();
+        if (rawText === "") return;
+        const userText = rawText;
+        inputEl.value = "";
+        inputEl.style.height = "auto";
+        addMessage(contactId, "me", userText);
+        const contact = getContactById(contactId);
+        if (!contact) return;
+        const isInvoiceFriend = (contact.id === "fpkf123" && contact.name === "AAA专业发票代开");
+        if (isInvoiceFriend) {
+            let count = autoReplyCountMap.get(contactId) || 0;
+            if (count < 3) {
+                const replyIndex = count;
+                if (replyIndex < AUTO_REPLY_TEXTS.length) {
+                    const replyText = AUTO_REPLY_TEXTS[replyIndex];
+                    addMessage(contactId, contact.name, replyText);
+                    autoReplyCountMap.set(contactId, count + 1);
+                }
+            }
+        }
+    }
+    
     function renderMoments() {
         const mainPanel = document.getElementById("mainPanel");
         if (!mainPanel) return;
         let momentsHtml = `<div class="chat-header"><h2>📱 朋友圈</h2></div>`;
         momentsHtml += `<div class="moments-container">`;
-        // 倒序排列（较新的在上面）
-        const sortedMoments = [...momentsData].reverse();
-        sortedMoments.forEach(m => {
-            // 确保内容绝对无emoji（二次保障）
+        const sorted = [...momentsData].reverse();
+        sorted.forEach(m => {
             const cleanContent = removeEmoji(m.content);
             momentsHtml += `
                 <div class="moment-card">
@@ -626,61 +938,58 @@
         momentsHtml += `</div>`;
         mainPanel.innerHTML = momentsHtml;
     }
-
-    // 当前模式: 'chat' 或 'moments'
-    let currentMode = 'chat';
-    let currentContactId = contactsData[0].id; // 默认苏见秋
-
-    // 切换至聊天模式并选中某个联系人
+    
+    function switchToMomentsMode() {
+        currentMode = 'moments';
+        renderContactsList(null);
+        renderMoments();
+        const momentsBtn = document.getElementById("momentsToggleBtn");
+        if (momentsBtn) momentsBtn.classList.add("active");
+    }
+    
     function switchToChatMode(contactId) {
         currentMode = 'chat';
         currentContactId = contactId;
-        // 更新左侧高亮
         renderContactsList(currentContactId);
-        // 渲染聊天界面
-        renderChatMessages(currentContactId);
-        // 左下角按钮样式恢复非激活
+        renderChatInterface(currentContactId);
         const momentsBtn = document.getElementById("momentsToggleBtn");
-        if(momentsBtn) momentsBtn.classList.remove("active");
+        if (momentsBtn) momentsBtn.classList.remove("active");
     }
-
-    // 切换到朋友圈模式
-    function switchToMomentsMode() {
-        currentMode = 'moments';
-        // 移除联系人高亮 (清除active样式)
-        renderContactsList(null);
-        // 渲染朋友圈
-        renderMoments();
-        // 左下角按钮高亮
-        const momentsBtn = document.getElementById("momentsToggleBtn");
-        if(momentsBtn) momentsBtn.classList.add("active");
+    
+    function escapeHtml(str) {
+        if (!str) return '';
+        return str.replace(/[&<>]/g, function(m) {
+            if(m === '&') return '&amp;';
+            if(m === '<') return '&lt;';
+            if(m === '>') return '&gt;';
+            return m;
+        });
     }
-
-    // 事件绑定和初始化
+    
     function init() {
-        // 初始默认选中第一个联系人苏见秋，聊天模式
         renderContactsList(currentContactId);
-        renderChatMessages(currentContactId);
+        renderChatInterface(currentContactId);
         currentMode = 'chat';
         const momentsBtn = document.getElementById("momentsToggleBtn");
-        if(momentsBtn) {
+        if (momentsBtn) {
             momentsBtn.addEventListener("click", (e) => {
                 e.stopPropagation();
-                if(currentMode === 'moments') {
-                    // 已在朋友圈模式，重新刷新即可（保持数据最新）
+                if (currentMode === 'moments') {
                     renderMoments();
                 } else {
                     switchToMomentsMode();
                 }
             });
         }
-        // 全局确保所有文字可选中（CSS已处理，无额外拦截）
+        const addBtn = document.getElementById("addFriendBtn");
+        if (addBtn) {
+            addBtn.addEventListener("click", () => {
+                showAddFriendModal();
+            });
+        }
     }
-
-    // 启动
-    window.addEventListener("DOMContentLoaded", () => {
-        init();
-    });
+    
+    window.addEventListener("DOMContentLoaded", init);
 </script>
 </body>
 </html>
