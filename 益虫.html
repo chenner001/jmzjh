@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>益虫公益 · 关注被系统遗忘的人</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background: #fefaf5;
+            color: #2d3e2b;
+            line-height: 1.5;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        /* 导航 */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 24px 0;
+            flex-wrap: wrap;
+            gap: 20px;
+            border-bottom: 1px solid #e8e0d5;
+        }
+        .logo {
+            font-size: 28px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            color: #5b8c5a;
+        }
+        .logo i {
+            color: #d4a373;
+            margin-right: 8px;
+        }
+        .nav-links {
+            display: flex;
+            gap: 32px;
+        }
+        .nav-links a {
+            text-decoration: none;
+            color: #4a5b3e;
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+        .nav-links a:hover {
+            color: #d4a373;
+        }
+
+        /* 英雄区 */
+        .hero {
+            background: linear-gradient(135deg, #f6f0e8 0%, #fff7ef 100%);
+            border-radius: 32px;
+            padding: 64px 48px;
+            margin: 48px 0 64px;
+            text-align: center;
+        }
+        .hero h1 {
+            font-size: 3rem;
+            font-weight: 700;
+            color: #2d3e2b;
+            margin-bottom: 20px;
+        }
+        .hero .highlight {
+            color: #d4a373;
+        }
+        .hero p {
+            font-size: 1.2rem;
+            color: #5a6e4a;
+            max-width: 700px;
+            margin: 0 auto 32px;
+        }
+        .hero-btn {
+            background: #5b8c5a;
+            color: white;
+            border: none;
+            padding: 12px 32px;
+            border-radius: 40px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.2s;
+            text-decoration: none;
+            display: inline-block;
+        }
+        .hero-btn:hover {
+            background: #4a7349;
+            transform: translateY(-2px);
+        }
+
+        /* 使命陈述 */
+        .mission {
+            text-align: center;
+            margin: 64px 0;
+        }
+        .mission h2 {
+            font-size: 2rem;
+            font-weight: 600;
+            margin-bottom: 24px;
+            color: #2d3e2b;
+        }
+        .mission p {
+            max-width: 800px;
+            margin: 0 auto;
+            font-size: 1.1rem;
+            color: #5a6e4a;
+            line-height: 1.6;
+        }
+
+        /* 关注群体卡片 */
+        .focus-section {
+            margin: 64px 0;
+        }
+        .focus-section h2 {
+            text-align: center;
+            font-size: 1.8rem;
+            margin-bottom: 40px;
+        }
+        .focus-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 32px;
+        }
+        .focus-card {
+            background: white;
+            border-radius: 24px;
+            padding: 32px 24px;
+            text-align: center;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.04);
+            border: 1px solid #eee5db;
+            transition: 0.2s;
+        }
+        .focus-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 24px rgba(0,0,0,0.08);
+        }
+        .focus-card i {
+            font-size: 2.5rem;
+            color: #d4a373;
+            margin-bottom: 20px;
+        }
+        .focus-card h3 {
+            font-size: 1.4rem;
+            margin-bottom: 12px;
+        }
+        .focus-card p {
+            color: #6f7e5c;
+            font-size: 0.95rem;
+        }
+
+        /* 核心项目 */
+        .projects {
+            background: #fef8f0;
+            border-radius: 32px;
+            padding: 56px 48px;
+            margin: 64px 0;
+        }
+        .projects h2 {
+            text-align: center;
+            font-size: 1.8rem;
+            margin-bottom: 40px;
+        }
+        .project-list {
+            display: flex;
+            flex-direction: column;
+            gap: 32px;
+        }
+        .project-item {
+            display: flex;
+            gap: 24px;
+            align-items: flex-start;
+            flex-wrap: wrap;
+        }
+        .project-icon {
+            width: 60px;
+            height: 60px;
+            background: #e8dccc;
+            border-radius: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            color: #5b8c5a;
+        }
+        .project-content {
+            flex: 1;
+        }
+        .project-content h3 {
+            font-size: 1.3rem;
+            margin-bottom: 8px;
+        }
+        .project-content p {
+            color: #5a6e4a;
+        }
+
+        /* 加入方式 */
+        .join {
+            text-align: center;
+            margin: 64px 0;
+            padding: 48px 32px;
+            background: #eef3e6;
+            border-radius: 32px;
+        }
+        .join h2 {
+            font-size: 1.8rem;
+            margin-bottom: 24px;
+        }
+        .join-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+            margin-top: 32px;
+        }
+        .join-btn {
+            background: transparent;
+            border: 2px solid #5b8c5a;
+            padding: 10px 28px;
+            border-radius: 40px;
+            font-weight: 600;
+            color: #5b8c5a;
+            cursor: pointer;
+            transition: 0.2s;
+            text-decoration: none;
+            display: inline-block;
+        }
+        .join-btn:hover {
+            background: #5b8c5a;
+            color: white;
+        }
+
+        /* 底部 */
+        footer {
+            text-align: center;
+            padding: 48px 0 32px;
+            border-top: 1px solid #e8e0d5;
+            margin-top: 48px;
+            color: #8a9a7a;
+            font-size: 0.85rem;
+        }
+        .social-links {
+            margin-bottom: 20px;
+        }
+        .social-links a {
+            color: #8a9a7a;
+            margin: 0 12px;
+            font-size: 1.2rem;
+            transition: color 0.2s;
+        }
+        .social-links a:hover {
+            color: #d4a373;
+        }
+
+        @media (max-width: 780px) {
+            .hero h1 {
+                font-size: 2rem;
+            }
+            .hero {
+                padding: 40px 24px;
+            }
+            .navbar {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            .project-item {
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="navbar">
+        <div class="logo"><i class="fas fa-seedling"></i> 益虫公益</div>
+        <div class="nav-links">
+            <a href="#">首页</a>
+            <a href="#">关于我们</a>
+            <a href="#">项目</a>
+            <a href="#">加入</a>
+            <a href="#">联系</a>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <div class="hero">
+        <h1>关注<span class="highlight">被系统遗忘的人</span></h1>
+        <p>环卫工、外卖骑手、流水线工人……他们支撑着城市的运转，却常常被忽略。益虫公益致力于为每一个默默付出的劳动者争取尊严与权利。</p>
+        <a href="#" class="hero-btn">了解我们的工作</a>
+    </div>
+
+    <div class="mission">
+        <h2>我们的使命</h2>
+        <p>“益虫”之名，源于那些在土壤中默默耕耘、让生态系统得以运转的小生命。我们相信，每一个平凡而坚韧的劳动者，都值得被看见、被尊重、被保护。通过法律援助、心理支持、政策倡导，我们为边缘群体搭建发声与互助的平台。</p>
+    </div>
+
+    <div class="focus-section">
+        <h2><i class="fas fa-hands-helping"></i> 我们关注谁</h2>
+        <div class="focus-grid">
+            <div class="focus-card">
+                <i class="fas fa-broom"></i>
+                <h3>环卫工人</h3>
+                <p>凌晨四点的城市，他们在寒风中清扫。我们提供劳动权益咨询、免费体检和冬日暖包。</p>
+            </div>
+            <div class="focus-card">
+                <i class="fas fa-motorcycle"></i>
+                <h3>外卖骑手</h3>
+                <p>风雨无阻的配送者，却常面临不合理的扣款与风险。我们协助处理工伤认定、平台纠纷。</p>
+            </div>
+            <div class="focus-card">
+                <i class="fas fa-industry"></i>
+                <h3>流水线工人</h3>
+                <p>日夜重复的劳作，换来城市的繁荣。我们提供职业健康培训、法律咨询与技能提升。</p>
+            </div>
+            <div class="focus-card">
+                <i class="fas fa-boxes"></i>
+                <h3>物流搬运工</h3>
+                <p>连接生产与消费的桥梁，却承受着高强度的体力负荷。我们推动公平计薪与休息保障。</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="projects">
+        <h2><i class="fas fa-star-of-life"></i> 核心项目</h2>
+        <div class="project-list">
+            <div class="project-item">
+                <div class="project-icon"><i class="fas fa-gavel"></i></div>
+                <div class="project-content">
+                    <h3>“听见”法律援助热线</h3>
+                    <p>免费为劳动者提供劳动合同、工伤、欠薪等法律咨询，累计帮助超过3000人次追回合法报酬。</p>
+                </div>
+            </div>
+            <div class="project-item">
+                <div class="project-icon"><i class="fas fa-heartbeat"></i></div>
+                <div class="project-content">
+                    <h3>“喘息”心理支持计划</h3>
+                    <p>针对高压工作环境的群体，提供一对一心理疏导和减压工作坊，已覆盖环卫、物流等行业。</p>
+                </div>
+            </div>
+            <div class="project-item">
+                <div class="project-icon"><i class="fas fa-chalkboard-user"></i></div>
+                <div class="project-content">
+                    <h3>“微光”技能学堂</h3>
+                    <p>联合职业院校开设免费数字技能、安全操作等课程，帮助劳动者拓宽职业路径。</p>
+                </div>
+            </div>
+            <div class="project-item">
+                <div class="project-icon"><i class="fas fa-chart-line"></i></div>
+                <div class="project-content">
+                    <h3>“破土”政策倡导</h3>
+                    <p>基于一线调研，推动地方政府完善灵活就业者保障政策，已促成两项地方性指导意见出台。</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="join">
+        <h2>加入益虫，成为改变的一部分</h2>
+        <p>无论你是律师、心理咨询师、学生，还是普通市民，都能为边缘群体贡献一份力量。</p>
+        <div class="join-buttons">
+            <a href="#" class="join-btn"><i class="fas fa-hand-sparkles"></i> 成为志愿者</a>
+            <a href="#" class="join-btn"><i class="fas fa-donate"></i> 捐赠支持</a>
+            <a href="#" class="join-btn"><i class="fas fa-envelope"></i> 联系合作</a>
+        </div>
+    </div>
+</div>
+
+<footer>
+    <div class="social-links">
+        <a href="#"><i class="fab fa-weixin"></i></a>
+        <a href="#"><i class="fab fa-weibo"></i></a>
+        <a href="#"><i class="fab fa-github"></i></a>
+        <a href="#"><i class="fas fa-envelope"></i></a>
+    </div>
+    <p>© 2026 益虫公益 · 让每一个劳动者都被看见</p>
+</footer>
+
+</body>
+</html>
