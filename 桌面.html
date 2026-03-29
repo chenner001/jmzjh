@@ -584,6 +584,50 @@
     let currentModal = null;
     function closeModal() { if(currentModal) { currentModal.remove(); currentModal = null; } }
 
+    // 通用确认弹窗（用于举报等，是的时候执行 onYes）
+    function showConfirm(msg, onYes) {
+        const confirmMask = document.createElement('div');
+        confirmMask.className = 'modal-mask';
+        const confirmDiv = document.createElement('div');
+        confirmDiv.className = 'modal-container confirm-modal';
+        confirmDiv.innerHTML = `
+            <div class="modal-header"><span>确认</span><div class="close-modal">✕</div></div>
+            <div class="modal-body"><p>${msg}</p><div class="confirm-buttons"><button class="confirm-btn confirm-yes">是</button><button class="confirm-btn confirm-no">否</button></div></div>
+        `;
+        confirmMask.appendChild(confirmDiv);
+        document.body.appendChild(confirmMask);
+        const closeX = confirmDiv.querySelector('.close-modal');
+        const yesBtn = confirmDiv.querySelector('.confirm-yes');
+        const noBtn = confirmDiv.querySelector('.confirm-no');
+        const cleanup = (result) => { confirmMask.remove(); if(result === true && onYes) onYes(); };
+        yesBtn.onclick = () => cleanup(true);
+        noBtn.onclick = () => cleanup(false);
+        closeX.onclick = () => cleanup(false);
+        confirmMask.onclick = (e) => { if(e.target === confirmMask) cleanup(false); };
+    }
+
+    // 新增：仅提示弹窗（样式与确认弹窗相同，但两个按钮都只关闭）
+    function showInfoDialog(msg) {
+        const confirmMask = document.createElement('div');
+        confirmMask.className = 'modal-mask';
+        const confirmDiv = document.createElement('div');
+        confirmDiv.className = 'modal-container confirm-modal';
+        confirmDiv.innerHTML = `
+            <div class="modal-header"><span>提示</span><div class="close-modal">✕</div></div>
+            <div class="modal-body"><p>${msg}</p><div class="confirm-buttons"><button class="confirm-btn confirm-yes">是</button><button class="confirm-btn confirm-no">否</button></div></div>
+        `;
+        confirmMask.appendChild(confirmDiv);
+        document.body.appendChild(confirmMask);
+        const closeX = confirmDiv.querySelector('.close-modal');
+        const yesBtn = confirmDiv.querySelector('.confirm-yes');
+        const noBtn = confirmDiv.querySelector('.confirm-no');
+        const cleanup = () => { confirmMask.remove(); };
+        yesBtn.onclick = () => cleanup();
+        noBtn.onclick = () => cleanup();
+        closeX.onclick = () => cleanup();
+        confirmMask.onclick = (e) => { if(e.target === confirmMask) cleanup(); };
+    }
+
     // 邮箱登录弹窗
     function openMailLoginModal() {
         if(currentModal) closeModal();
@@ -735,27 +779,6 @@
         modalDiv.querySelector('#deleteBtn').addEventListener('click', () => { currentPhoneNumber = currentPhoneNumber.slice(0,-1); updateScreen(); });
 
         const callBtn = modalDiv.querySelector('#callBtn');
-        const showConfirm = (msg, onYes) => {
-            const confirmMask = document.createElement('div');
-            confirmMask.className = 'modal-mask';
-            const confirmDiv = document.createElement('div');
-            confirmDiv.className = 'modal-container confirm-modal';
-            confirmDiv.innerHTML = `
-                <div class="modal-header"><span>确认</span><div class="close-modal">✕</div></div>
-                <div class="modal-body"><p>${msg}</p><div class="confirm-buttons"><button class="confirm-btn confirm-yes">是</button><button class="confirm-btn confirm-no">否</button></div></div>
-            `;
-            confirmMask.appendChild(confirmDiv);
-            document.body.appendChild(confirmMask);
-            const closeX = confirmDiv.querySelector('.close-modal');
-            const yesBtn = confirmDiv.querySelector('.confirm-yes');
-            const noBtn = confirmDiv.querySelector('.confirm-no');
-            const cleanup = (result) => { confirmMask.remove(); if(result === true && onYes) onYes(); };
-            yesBtn.onclick = () => cleanup(true);
-            noBtn.onclick = () => cleanup(false);
-            closeX.onclick = () => cleanup(false);
-            confirmMask.onclick = (e) => { if(e.target === confirmMask) cleanup(false); };
-        };
-
         callBtn.onclick = () => {
             const num = currentPhoneNumber;
             if(num === "0574-1236732") {
@@ -764,6 +787,8 @@
                 showConfirm("是否要拨打检察院电话举报？", () => openLocalHtml('司法举报.html'));
             } else if(num === "0574-1236888") {
                 showConfirm("是否要拨打新闻网电话举报？", () => openLocalHtml('公开报道.html'));
+            } else if(num === "12333") {
+                showInfoDialog("尊敬的客户，当前人工坐席繁忙，请耐心等待或稍后再拨。");
             }
             // 其他号码无任何反应
         };
