@@ -345,7 +345,7 @@
             <button class="tab-btn" data-tab="announce">公司公告</button>
             <button class="tab-btn" data-tab="expense">报销进度</button>
             <button class="tab-btn" data-tab="training">培训计划</button>
-            <button class="tab-btn" data-tab="message">员工留言交流</button>
+            <button class="tab-btn" data-tab="message">员工交流</button>   <!-- 修改文字：员工留言交流 -> 员工交流 -->
         </div>
 
         <!-- 工资条面板 -->
@@ -372,7 +372,7 @@
             <div id="trainingList"></div>
         </div>
 
-        <!-- 员工留言交流面板（仅展示，无发布/删除功能） -->
+        <!-- 员工交流面板（原员工留言交流，仅展示，无发布/删除功能） -->
         <div id="messagePanel" class="tab-pane">
             <div class="message-board">
                 <div class="stat-summary"><span class="stat-item">员工心声 · 交流园地</span><span class="stat-item">共 <span id="messageCount" class="stat-number"></span> 条留言</span></div>
@@ -448,7 +448,7 @@
         { id: 5, title: "跨部门沟通与协作工作坊", date: "2026年3月25日", time: "13:30-16:00", location: "A座 1F 创新空间", lecturer: "外部讲师 林婉清", target: "主管及以上", detail: "提升横向协作效率，解决项目推进中的沟通障碍，结合案例实战演练。" }
     ];
 
-    // 5. 留言板数据（仅展示）
+    // 5. 留言板数据（仅展示） 新增赵明远留言内容
     let messagesData = [
         { id: 1, name: "李敏华", dept: "产品部", content: "建议公司内部知识库增加交互设计模板板块，方便跨部门复用设计资产。", timestamp: "2026-03-15 10:32:15" },
         { id: 2, name: "王致远", dept: "算法实验室", content: "GPU资源申请流程已优化，最近调度效率提升明显，感谢IT支持。", timestamp: "2026-03-20 16:20:03" },
@@ -456,7 +456,9 @@
         { id: 4, name: "赵明远", dept: "运营部", content: "新OA审批流偶尔卡顿，技术同事反馈下稳定性问题，多谢。", timestamp: "2026-03-10 14:50:22" },
         { id: 5, name: "张振国", dept: "研发中心", content: "建议将技术分享录屏上传内网，方便后续回看学习。", timestamp: "2026-03-22 11:24:08" },
         { id: 6, name: "周若云", dept: "人力资源部", content: "新员工入职培训反馈很好，建议每季度增设一次专项业务培训。", timestamp: "2026-03-17 09:05:33" },
-        { id: 7, name: "何云峰", dept: "信息技术部", content: "服务器升级计划已公告，请大家3月28日凌晨避开作业，感谢理解。", timestamp: "2026-03-23 14:12:47" }
+        { id: 7, name: "何云峰", dept: "信息技术部", content: "服务器升级计划已公告，请大家3月28日凌晨避开作业，感谢理解。", timestamp: "2026-03-23 14:12:47" },
+        // 新增留言：赵明远发布 节假日不看官网，有事vx联系：zhaomingyuan123
+        { id: 8, name: "赵明远", dept: "运营部", content: "节假日不看官网，有事vx联系：zhaomingyuan123", timestamp: "2026-03-29 10:28:00" }
     ];
 
     // ---------- 辅助渲染函数 ----------
@@ -505,7 +507,7 @@
             <tr><th>公积金个人部分</th><td>¥ ${emp.housingFund}</td></tr>
             <tr><th>个人所得税</th><td>¥ ${emp.tax}</td></tr>
             <tr><th>实发工资</th><td class="total-highlight">¥ ${emp.netPay}</td></tr>
-          </table><div style="margin-top:0.4rem; font-size:0.7rem;">发放日期: 2026年3月31日</div>`;
+           </table><div style="margin-top:0.4rem; font-size:0.7rem;">发放日期: 2026年3月31日</div>`;
     }
 
     function renderAnnounceList() {
