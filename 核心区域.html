@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>蔚蓝科技 · 内部网络核心区域</title>
+    <title>蔚蓝科技 · 内部网络核心区域 · 审计日志</title>
     <style>
         * {
             margin: 0;
@@ -22,21 +22,18 @@
             padding: 1.5rem;
         }
 
-        /* 主容器 - 黑底红字核心区 */
         .core-container {
-            max-width: 780px;
+            max-width: 1100px;
             width: 100%;
-            text-align: center;
             background: transparent;
             border: 1px solid rgba(255, 51, 51, 0.3);
             padding: 2.5rem 2rem;
-            backdrop-filter: blur(0px);
         }
 
-        /* 头部装饰线 */
         .core-header {
             margin-bottom: 2.5rem;
             position: relative;
+            text-align: center;
         }
 
         .core-header h1 {
@@ -51,9 +48,9 @@
             font-family: monospace;
         }
 
-        /* 欢迎语区域 - 增加神秘感 */
         .welcome-area {
             margin: 2rem 0 2.5rem 0;
+            text-align: center;
         }
 
         .welcome-text {
@@ -63,7 +60,6 @@
             color: #ff3333;
             text-shadow: 0 0 8px #ff0000, 0 0 3px #ff3333, 0 0 12px rgba(255, 0, 0, 0.6);
             font-family: 'Courier New', 'Fira Code', monospace;
-            font-style: normal;
             background: linear-gradient(135deg, #ff4444 0%, #aa2222 100%);
             background-clip: text;
             -webkit-background-clip: text;
@@ -72,7 +68,6 @@
             -webkit-text-stroke: 0.5px #ff4444;
             filter: drop-shadow(0 0 6px #aa2222);
         }
-        /* 兼容不支持背景裁剪的浏览器 */
         @supports not (background-clip: text) {
             .welcome-text {
                 color: #ff5555;
@@ -80,7 +75,7 @@
             }
         }
 
-        .sub-line {
+        .info-line {
             font-size: 0.7rem;
             color: #882222;
             margin-top: 0.6rem;
@@ -91,24 +86,21 @@
             letter-spacing: 1px;
         }
 
-        /* 搜索框区域 */
         .search-section {
-            margin: 2rem 0 0.5rem;
+            margin: 2rem 0 2rem;
+            text-align: center;
         }
-
         .search-wrapper {
             display: flex;
             flex-direction: column;
             align-items: center;
             gap: 1rem;
         }
-
         .search-input-group {
             width: 100%;
             max-width: 480px;
             position: relative;
         }
-
         .search-input {
             width: 100%;
             background: #0a0a0a;
@@ -122,19 +114,16 @@
             border-radius: 0px;
             letter-spacing: 0.3px;
         }
-
         .search-input:focus {
             border-color: #ff7777;
             background-color: #111111;
             box-shadow: 0 0 10px rgba(255, 68, 68, 0.3);
         }
-
         .search-input::placeholder {
             color: #882222;
             font-family: monospace;
             font-size: 0.85rem;
         }
-
         .search-btn {
             background: #1a0000;
             border: 1px solid #ff5555;
@@ -148,7 +137,6 @@
             margin-top: 0.5rem;
             letter-spacing: 1px;
         }
-
         .search-btn:hover {
             background: #330000;
             border-color: #ff7777;
@@ -156,9 +144,58 @@
             box-shadow: 0 0 6px #ff3a3a;
         }
 
-        /* 结果区域已移除所有反馈内容，仅保留占位（无显示） */
-        .result-area {
-            display: none;
+        .logs-section {
+            margin-top: 2.5rem;
+            text-align: left;
+            border-top: 1px solid #2a1a1a;
+            padding-top: 1.8rem;
+        }
+        .logs-title {
+            font-size: 0.9rem;
+            letter-spacing: 2px;
+            color: #aa5555;
+            margin-bottom: 1.2rem;
+            font-family: monospace;
+            border-left: 3px solid #ff5555;
+            padding-left: 0.8rem;
+        }
+        .log-entry {
+            background: #0a0508;
+            border-left: 3px solid #882222;
+            margin-bottom: 1.5rem;
+            padding: 1rem 1.2rem;
+            font-family: 'Fira Code', 'Courier New', monospace;
+            font-size: 0.75rem;
+            line-height: 1.5;
+            color: #cc7777;
+            transition: all 0.2s;
+        }
+        .log-entry:hover {
+            border-left-color: #ff5555;
+            background: #0f0a0c;
+        }
+        .log-meta {
+            color: #ff8888;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+            font-size: 0.8rem;
+        }
+        .log-meta span {
+            color: #aa5555;
+        }
+        .log-content {
+            white-space: pre-wrap;
+            word-break: break-word;
+            margin-left: 0.5rem;
+            font-family: 'Fira Code', monospace;
+        }
+        .audit-flag {
+            color: #ff4444;
+            font-weight: bold;
+            margin-top: 0.5rem;
+            border-top: 1px dashed #551111;
+            padding-top: 0.5rem;
+            font-size: 0.7rem;
         }
 
         .footnote {
@@ -169,9 +206,11 @@
             border-top: 1px solid #2a1a1a;
             padding-top: 1.2rem;
             font-family: monospace;
+            text-align: center;
         }
 
-        @media (max-width: 550px) {
+        /* 响应式 */
+        @media (max-width: 700px) {
             .core-container {
                 padding: 1.5rem;
             }
@@ -180,6 +219,16 @@
             }
             .search-input {
                 padding: 0.7rem 1rem;
+            }
+            .log-entry {
+                padding: 0.8rem;
+                font-size: 0.7rem;
+            }
+            .info-line {
+                font-size: 0.65rem;
+            }
+            .logs-title {
+                font-size: 0.8rem;
             }
         }
     </style>
@@ -194,7 +243,8 @@
         <div class="welcome-text">
             欢迎回来，何远航
         </div>
-        <div class="sub-line">授权访问 · 安全终端</div>
+        <div class="info-line">授权访问 · 安全终端</div>
+        <div class="info-line">核心终端IP / 工作站标识：192.0.2.45</div>
     </div>
 
     <div class="search-section">
@@ -206,8 +256,88 @@
         </div>
     </div>
 
-    <!-- 结果区域完全隐藏，无任何反馈显示 -->
-    <div class="result-area" style="display: none;"></div>
+    <div class="logs-section">
+        <div class="logs-title">核心区域网络审计记录（违规操作日志）</div>
+
+        <div class="log-entry">
+            <div class="log-meta">2021-05-28 09:34:21 | <span>USER:</span> he_yuanhang@azuretech.com | <span>IP:</span> 192.0.2.45</div>
+            <div class="log-content">
+                ACTION: 修改项目配置文件 `/echo/config/scope.json`<br>
+                CHANGES: <br>
+                &nbsp;&nbsp;- "data_source": "employee" → "city_residents"<br>
+                &nbsp;&nbsp;- "data_types": ["performance","attendance"] → ["gps","social","health","finance"]<br>
+                COMMIT MESSAGE: "扩大样本量以提升模型准确性"
+            </div>
+            <div class="audit-flag">⚠️ AUDIT_FLAG: 重大变更未提交伦理委员会复审</div>
+        </div>
+
+        <div class="log-entry">
+            <div class="log-meta">2022-01-20 02:17:43 | <span>USER:</span> he_yuanhang@azuretech.com | <span>IP:</span> 192.0.2.45</div>
+            <div class="log-content">
+                ACTION: 通过关联账户 `data_ops@thirdparty` 执行外部数据导入<br>
+                SOURCE: 清港市体检中心数据库备份（.bak文件，2.3TB）<br>
+                TARGET: `/echo/data/health/genetic/`
+            </div>
+            <div class="audit-flag">⚠️ AUDIT_FLAG: 数据来源未备案，字段含“遗传标记”属特类敏感信息<br>
+            NOTICE: 系统自动触发数据分类告警，但被用户以“管理员覆盖”关闭</div>
+        </div>
+
+        <div class="log-entry">
+            <div class="log-meta">2022-04-11 14:22:09 | <span>USER:</span> he_yuanhang@azuretech.com | <span>IP:</span> 192.0.2.45</div>
+            <div class="log-content">
+                ACTION: 批量修改用户风险标签<br>
+                对象: 员工ID列表 (E1024, E2088, E3719, E4502, E5127...共47人)<br>
+                原标签: "yellow"（需关注）<br>
+                新标签: "red"（立即干预）<br>
+                附加指令: "执行静默退出流程，优先级最高"
+            </div>
+            <div class="audit-flag">⚠️ AUDIT_FLAG: 干预级别从“心理辅导”直接跳至“社会隔离”，无中间层级记录</div>
+        </div>
+
+        <div class="log-entry">
+            <div class="log-meta">2022-05-16 09:05:22 | <span>USER:</span> he_yuanhang@azuretech.com | <span>IP:</span> 192.0.2.45</div>
+            <div class="log-content">
+                ACTION: 审批通过 `silent_exit/E1024` 工作流<br>
+                审批意见: "按计划执行，确保无外部记录。已安排安保组跟进。"<br>
+                同时操作: 删除该员工在公司内网的所有日志、邮件备份、门禁记录
+            </div>
+            <div class="audit-flag">⚠️ AUDIT_FLAG: 违反劳动法第39条（非严重违纪不得解雇）及第48条（违法解除合同赔偿）<br>
+            OVERRIDE: 系统提示“需法务复核”，被用户绕过（使用管理员权限直接完成）</div>
+        </div>
+
+        <div class="log-entry">
+            <div class="log-meta">2023-08-24 21:10:33 | <span>USER:</span> he_yuanhang@azuretech.com | <span>IP:</span> 192.0.2.45</div>
+            <div class="log-content">
+                ACTION: 直接发送指令至康复中心管理系统<br>
+                指令内容: "将A区7名对象转移至B区（限制通讯区）。"<br>
+                接收方: rehab_control@azuretech.com
+            </div>
+            <div class="audit-flag">⚠️ AUDIT_FLAG: 非法拘禁。</div>
+        </div>
+
+        <div class="log-entry">
+            <div class="log-meta">2024-03-15 23:59:44 | <span>USER:</span> he_yuanhang@azuretech.com | <span>IP:</span> 192.0.2.45</div>
+            <div class="log-content">
+                ACTION: 执行脚本 `cleanse_silent_trails.sh`<br>
+                脚本内容摘要:<br>
+                &nbsp;&nbsp;- 删除 `/echo/logs/silent/*` 中早于2023年的所有日志<br>
+                &nbsp;&nbsp;- 清空康复中心数据库中“行为干预记录”表<br>
+                &nbsp;&nbsp;- 粉碎员工E1024、E2088等5人的全部数字档案（含备份）
+            </div>
+            <div class="audit-flag">⚠️ AUDIT_FLAG: 严重违规 – 销毁受法律保留要求的证据<br>
+            RESULT: 部分文件因正被备份任务锁定未能删除，残留碎片存于冷存储</div>
+        </div>
+
+        <div class="log-entry">
+            <div class="log-meta">2024-03-18 03:22:16 | <span>USER:</span> he_yuanhang@azuretech.com | <span>IP:</span> 192.0.2.45</div>
+            <div class="log-content">
+                ACTION: 请求物理销毁服务器硬盘（序列号: SD-CH-092, SD-CH-117）<br>
+                理由: "硬件老化，更换"
+            </div>
+            <div class="audit-flag">⚠️ AUDIT_FLAG: 该批次硬盘存储2021-2022年回声项目原始数据，销毁将导致证据灭失<br>
+            STATUS: 已被运维主管“张立”临时拒绝，要求先完成数据迁移</div>
+        </div>
+    </div>
 
     <div class="footnote">
         核心网络审计节点 | 所有操作将被记录
@@ -215,22 +345,16 @@
 </div>
 
 <script>
-    // 获取元素
     const inputField = document.getElementById('ipQueryInput');
     const searchButton = document.getElementById('searchBtn');
 
-    // 执行跳转逻辑：仅当输入内容为 "192.0.2.0/24" 时打开新标签页
     function handleAction() {
         const rawValue = inputField.value.trim();
-        // 严格匹配目标字符串
         if (rawValue === "192.0.2.0/24") {
-            // 打开新标签页到 市政府办公室.html (同一目录下)
             window.open("市政府办公室.html", "_blank");
         }
-        // 其他任何输入无任何反应，不跳转、不提示、不清空、无反馈
     }
 
-    // 绑定点击事件和回车事件
     searchButton.addEventListener('click', handleAction);
     inputField.addEventListener('keypress', (e) => {
         if (e.key === 'Enter') {
