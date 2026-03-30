@@ -222,19 +222,15 @@
             filter: blur(0);
         }
 
+        /* 修改红字样式：直接正常显示，无需悬停 */
         .archival-note {
             text-align: center;
             font-size: 0.7rem;
             color: #b91c1c;
             font-weight: 500;
             letter-spacing: 0.3px;
-            opacity: 0;
-            transition: opacity 0.2s ease;
             cursor: default;
             margin-top: 8px;
-        }
-        .archival-note:hover {
-            opacity: 1;
         }
 
         @keyframes fadeIn {
@@ -460,8 +456,6 @@
 
     // 初始化渲染荣誉墙表格
     renderHonorTable();
-
-    // 默认首页（home已激活）
 </script>
 </body>
 </html>
