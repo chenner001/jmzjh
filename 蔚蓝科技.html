@@ -132,6 +132,15 @@
             border-color: #0a66c2;
             box-shadow: 0 0 0 2px rgba(10,102,194,0.2);
         }
+        /* 新增提示文字样式 */
+        .modal-hint {
+            font-size: 0.7rem;
+            color: #8e9aaf;
+            margin-top: 4px;
+            margin-bottom: 8px;
+            text-align: left;
+            line-height: 1.3;
+        }
         .modal-buttons {
             display: flex;
             gap: 12px;
@@ -422,11 +431,16 @@
     </footer>
 </div>
 
-<!-- 自定义弹窗模态框 -->
+<!-- 自定义弹窗模态框 (增加提示文字) -->
 <div id="loginModal" class="modal-overlay">
     <div class="modal-container">
         <h3>身份验证</h3>
         <input type="text" id="accessCode" placeholder="英文通行证 / 临时访客码" autocomplete="off">
+        <!-- 新增提示 -->
+        <div class="modal-hint">
+            <i class="fas fa-info-circle" style="font-size: 0.65rem; margin-right: 4px;"></i>
+            临时访客码仅通往公共网络区域，如需进入个人网络区域还请输入英文通行证
+        </div>
         <div id="modalError" class="error-msg"></div>
         <div class="modal-buttons">
             <button id="modalSubmit" class="modal-submit">确认</button>
