@@ -411,14 +411,15 @@
         { id: 4, title: "数据可视化最佳实践", date: "2026年3月18日", time: "15:00-17:00", location: "线上直播", lecturer: "陈思羽 (市场部)", target: "全员", detail: "基于Tableau及Python的可视化案例分享，适合运营、市场及数据分析岗位。" }
     ];
 
-    // 4. 留言板数据 (删除最下面三条：原id 6,7,8)
+    // 4. 留言板数据 (保留原有5条，新增一条赵明远留言)
     let messagesData = [
         { id: 1, name: "李敏华", dept: "产品部", content: "建议公司内部知识库增加交互设计模板板块，方便跨部门复用设计资产。", timestamp: "2026-03-15 10:32:15" },
         { id: 2, name: "王致远", dept: "算法实验室", content: "GPU资源申请流程已优化，最近调度效率提升明显，感谢IT支持。", timestamp: "2026-03-20 16:20:03" },
         { id: 3, name: "陈思羽", dept: "市场部", content: "第二季度市场活动筹备中，需要设计部支持视觉物料，已发协作邮件请查收。", timestamp: "2026-03-18 09:15:47" },
         { id: 4, name: "赵明远", dept: "运营部", content: "新OA审批流偶尔卡顿，技术同事反馈下稳定性问题，多谢。", timestamp: "2026-03-10 14:50:22" },
-        { id: 5, name: "张振国", dept: "研发中心", content: "建议将技术分享录屏上传内网，方便后续回看学习。", timestamp: "2026-03-22 11:24:08" }
-        // 已删除 id:6 周若云, id:7 何云峰, id:8 赵明远（节假日那条）
+        { id: 5, name: "张振国", dept: "研发中心", content: "建议将技术分享录屏上传内网，方便后续回看学习。", timestamp: "2026-03-22 11:24:08" },
+        // 新增留言：赵明远 节假日不看官网，有事vx联系
+        { id: 6, name: "赵明远", dept: "运营部", content: "节假日不看官网，有事vx联系：zhaomingyuan123", timestamp: "2026-03-31 14:30:00" }
     ];
 
     // ---------- 辅助渲染函数 ----------
@@ -518,6 +519,7 @@
             return;
         }
         container.innerHTML = '';
+        // 按时间倒序显示（最新的在上）
         [...messagesData].reverse().forEach(msg => {
             const msgDiv = document.createElement('div');
             msgDiv.className = 'message-item';
