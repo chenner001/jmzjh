@@ -20,15 +20,16 @@
             padding: 24px 16px;
         }
 
-        /* 主容器 - 完全去除卡片风格：无阴影、无圆角、无白色背景（内部各区块独立白色） */
+        /* 主容器 */
         .main-container {
             max-width: 1280px;
             margin: 0 auto;
-            background: transparent;  /* 透明背景，不使用卡片背景 */
+            background: transparent;
             overflow: hidden;
+            position: relative;
         }
 
-        /* 验证层 - 保留圆角 */
+        /* 验证层 */
         .verify-overlay {
             position: fixed;
             top: 0;
@@ -45,7 +46,7 @@
 
         .verify-box {
             background: #ffffff;
-            border-radius: 32px; /* 保留圆角 */
+            border-radius: 32px;
             padding: 2.5rem 2rem;
             max-width: 400px;
             width: 90%;
@@ -153,7 +154,7 @@
             font-weight: 400;
         }
 
-        /* 导航栏 - 直角无卡片感 */
+        /* 导航栏 */
         .nav-tabs {
             display: flex;
             flex-wrap: wrap;
@@ -189,7 +190,7 @@
             color: #1f5e5e;
         }
 
-        /* 内容区 - 白色背景但无圆角无阴影 */
+        /* 内容区 */
         .tab-content {
             padding: 2rem 2rem 2.5rem;
             background: #ffffff;
@@ -237,7 +238,7 @@
             font-style: italic;
         }
 
-        /* 患者表格直角简约 */
+        /* 患者表格 */
         .patient-table {
             width: 100%;
             border-collapse: collapse;
@@ -268,7 +269,7 @@
             font-size: 0.8rem;
         }
 
-        /* 记录样式 - 无图标 */
+        /* 记录样式 */
         .memo-entry {
             border-bottom: 1px solid #eef3f8;
             padding: 1.3rem 0;
@@ -297,7 +298,7 @@
             text-align: right;
         }
 
-        /* 账单列表 - 右侧不显示金额，完全去掉金额区域 */
+        /* 账单列表 */
         .bill-list {
             margin-top: 0.5rem;
         }
@@ -330,7 +331,7 @@
             letter-spacing: 0.2px;
         }
 
-        /* 弹窗 - 竖向长方形，模拟真实账单风格（窄长、小票感） */
+        /* 弹窗 */
         .modal-overlay {
             position: fixed;
             top: 0;
@@ -347,7 +348,7 @@
         .modal-content {
             background: #ffffff;
             width: 90%;
-            max-width: 380px;  /* 竖向长方形 */
+            max-width: 380px;
             padding: 1.5rem 1.8rem;
             position: relative;
             border: 1px solid #ddd9ce;
@@ -505,7 +506,7 @@
                 <div class="signature">清港慈心康复中心 院长办公室 · 公立医疗资质公示</div>
             </div>
 
-            <!-- 患者信息：宋文昭在第7位 -->
+            <!-- 患者信息 -->
             <div id="patients" class="tab-pane">
                 <h3 style="font-weight: 600; color:#1f5e5e; margin-bottom: 1.2rem; border-left: 4px solid #7fb2b0; padding-left: 0.8rem;">在册患者档案</h3>
                 <table class="patient-table">
@@ -527,7 +528,7 @@
                 <div style="font-size: 0.75rem; color: #8da9bc; margin-top: 1rem;">* 依据医疗记录持续更新，信息已脱敏处理。</div>
             </div>
 
-            <!-- 患者记录板块：所有日期均为2025年以前，宋文昭补充内容不包含感谢 -->
+            <!-- 患者记录板块 -->
             <div id="memo" class="tab-pane">
                 <h3 style="font-weight: 600; color:#1f5e5e; margin-bottom: 1rem; border-left: 4px solid #7fb2b0; padding-left: 0.8rem;">患者记录 · 医护及患者视角</h3>
                 <div class="memo-entry">
@@ -557,7 +558,7 @@
                 </div>
             </div>
 
-            <!-- 账单流水板块：所有日期2025年以前，右侧不显示金额 -->
+            <!-- 账单流水板块 -->
             <div id="bills" class="tab-pane">
                 <h3 style="font-weight: 600; color:#1f5e5e; margin-bottom: 1rem; border-left: 4px solid #7fb2b0; padding-left: 0.8rem;">财务流水 · 点击条目查看正式单据</h3>
                 <div class="bill-list">
@@ -593,7 +594,9 @@
                 <div style="font-size: 0.7rem; color: #8ba3b3; margin-top: 1rem; text-align: right;">所有单据均经过财务科审核，可追溯原始凭证。</div>
             </div>
         </div>
-        <footer>清港慈心康复中心 版权所有 | 地址：清港市滨海区慈心路88号 | 监督电话：0574-8283 0217 | 医养结合示范单位</footer>
+        <footer>
+            清港慈心康复中心 版权所有 | 地址：清港市滨海区慈心路88号 | 医养结合示范单位
+        </footer>
     </div>
 </div>
 
@@ -653,7 +656,6 @@
         });
     });
 
-    // 账单明细数据（所有日期2025年之前，匿名捐赠金额150000）
     const billDetails = {
         1: {
             title: "心理治疗师劳务费结算单",
