@@ -18,6 +18,7 @@
             background: #ffffff;
             color: #1a2c3e;
             line-height: 1.5;
+            position: relative;
         }
 
         .container {
@@ -203,6 +204,35 @@
             margin-top: 48px;
         }
 
+        /* 右上角浮窗 - 新文字“仅完善背景，无线索”，允许换行 */
+        .hidden-tip {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: rgba(255, 250, 240, 0.18);
+            backdrop-filter: blur(2px);
+            color: rgba(100, 110, 80, 0.35);
+            font-size: 22px;
+            font-weight: 400;
+            padding: 6px 14px;
+            border-radius: 30px;
+            letter-spacing: 0.5px;
+            pointer-events: none;
+            z-index: 1000;
+            font-family: monospace;
+            transition: opacity 0.2s;
+            opacity: 0.65;
+            white-space: normal;        /* 允许换行 */
+            max-width: 240px;           /* 限制最大宽度，避免溢出屏幕 */
+            text-align: right;          /* 右对齐更自然 */
+            line-height: 1.3;
+        }
+        .hidden-tip:hover {
+            opacity: 0.9;
+            color: rgba(90, 100, 70, 0.6);
+            background: rgba(245, 240, 230, 0.3);
+        }
+
         @media (max-width: 780px) {
             .project-title {
                 font-size: 2.2rem;
@@ -217,10 +247,21 @@
                 flex-direction: column;
                 align-items: flex-start;
             }
+            .hidden-tip {
+                top: 12px;
+                right: 12px;
+                font-size: 18px;
+                padding: 4px 12px;
+                max-width: 200px;
+                opacity: 0.5;
+            }
         }
     </style>
 </head>
 <body>
+
+<!-- 右上角浮窗：仅完善背景，无线索 -->
+<div class="hidden-tip">仅完善背景，无线索</div>
 
 <div class="container">
     <div class="navbar">
