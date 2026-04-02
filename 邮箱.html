@@ -515,12 +515,14 @@
 
 <script>
     // ======================== 邮件数据 ========================
+    // 已删除：李婉清(id:3)、鑫鑫理财(id:5)、平安保险(id:7)
+    // 在“清港市社会保障中心”和“正规发票代开”邮件中添加【Easter egg】标记
     const emails = [
         {
             id: 1,
             from: "苏见秋",
             fromEmail: "su_jianqiu@case.cn",
-            subject: "委托附件",  // 修改后的标题
+            subject: "委托附件",
             date: "2026-03-28 10:32",
             dateDisplay: "今天 10:32",
             body: `<p>侦探，您好。</p>
@@ -541,26 +543,13 @@
             body: `<p>尊敬的参保人，您好。</p>
                    <p>根据系统筛查，您的社保账户存在一条历史缴费记录与当前信息不符的情况。为保障您的社保权益，请您于近期登录官方平台核对个人信息，或携带身份证件至就近社保窗口办理信息更新。</p>
                    <p>如有疑问，可拨打12333热线咨询。感谢您的配合。</p>
-                   <p>—— 清港市社会保障中心</p>`,
+                   <p>—— 清港市社会保障中心</p>
+                   <p style="margin-top:12px; color:#6c8e9e; font-size:0.8rem;">【Easter egg】</p>`,
             hasAttachment: false,
             attachmentName: null
         },
         {
-            id: 3,
-            from: "李婉清 (委托客户)",
-            fromEmail: "liwanqing@client.com",
-            subject: "委托调查 · 商业竞争对手背景",
-            date: "2026-03-26 09:12",
-            dateDisplay: "3月26日",
-            body: `<p>侦探先生，您好。</p>
-                   <p>冒昧打扰。我所在的公司近期与“恒远科技”有重大合作意向，但对方提供的工商资料部分存疑。希望能委托您帮忙核实其实际股东结构、近三年诉讼记录以及主要关联方。相关报酬可随时商议。</p>
-                   <p>附件中是我手头已有的公开信息摘要，请您过目。期待您的回复。</p>
-                   <p>—— 李婉清</p>`,
-            hasAttachment: false,
-            attachmentName: null
-        },
-        {
-            id: 4,
+            id: 4,   // 原id=4，何教授
             from: "何教授",
             fromEmail: "he_prof@univ.edu",
             subject: "文献资料分享 · 城市变迁与人口流动",
@@ -574,38 +563,15 @@
             attachmentName: null
         },
         {
-            id: 5,
-            from: "鑫鑫理财",
-            fromEmail: "xxlicai@spam.com",
-            subject: "恭喜您获得10万元信用额度",
-            date: "2026-03-24 08:45",
-            dateDisplay: "3月24日",
-            body: `<p>尊敬的用户，根据您的信用评估，您已获得我司提供的100,000元备用金资格，年化利率低至3.5%。点击链接即可极速到账，限时3天有效。</p>
-                   <p>—— 鑫鑫理财客户经理</p>`,
-            hasAttachment: false,
-            attachmentName: null
-        },
-        {
-            id: 6,
+            id: 6,   // 原id=6，正规发票代开
             from: "正规发票代开",
             fromEmail: "fapiao@spam.net",
             subject: "正规发票代开，点税优惠",
             date: "2026-03-23 14:30",
             dateDisplay: "3月23日",
             body: `<p>专业代开各类正规发票，增值税专用发票、普通发票均可，点税优惠，全国通用。需要请联系微信：fpkf123。</p>
-                   <p>—— 发票服务中心</p>`,
-            hasAttachment: false,
-            attachmentName: null
-        },
-        {
-            id: 7,
-            from: "平安保险",
-            fromEmail: "service@pingan-insure.com",
-            subject: "您的车险即将到期，请及时续保",
-            date: "2026-03-22 09:20",
-            dateDisplay: "3月22日",
-            body: `<p>尊敬的车主，您的车辆保险将于本月末到期，为避免脱保风险，请尽快续保。本月续保可享7折优惠，并赠送洗车服务。</p>
-                   <p>—— 平安保险客服中心</p>`,
+                   <p>—— 发票服务中心</p>
+                   <p style="margin-top:12px; color:#6c8e9e; font-size:0.8rem;">【Easter egg】</p>`,
             hasAttachment: false,
             attachmentName: null
         },
@@ -617,8 +583,8 @@
             date: "2026-03-20 15:18",
             dateDisplay: "3月20日",
             body: `<p>尊敬的用户，您好。</p>
-                   <p>您申请的“清港城市公开数据平台”访问权限已审核通过。您的账号已正式激活，默认身份码为<strong>您在平台登记的出生日期+姓的全拼+名字拼音首字母（例如19910423zhangt）</strong>。</p>
-                   <p>该平台收录了城市地理信息、旧城改造档案、公共设施图纸等，或许能为您正在调研的历史遗留问题提供关键支撑。首次登录后请及时修改身份码，并遵守数据使用条例。</p>
+                   <p>您申请的“清港城市公开数据平台”访问权限已审核通过。您的账号已正式激活，默认登录密码为<strong>您在平台登记的出生日期+姓的全拼+名字拼音首字母（例如19910423zhangt）</strong>。</p>
+                   <p>该平台收录了城市地理信息、旧城改造档案、公共设施图纸等，或许能为您正在调研的历史遗留问题提供关键支撑。首次登录后请及时修改密码，并遵守数据使用条例。</p>
                    <p>若有疑问请回复本邮件，祝调查顺利。</p>
                    <p>—— 清港城市数据平台 技术组</p>`,
             hasAttachment: false,
