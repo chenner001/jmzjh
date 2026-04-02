@@ -66,26 +66,6 @@
             background: #ffffff;
         }
 
-        .info-bar {
-            display: flex;
-            justify-content: flex-end;
-            align-items: center;
-            margin-bottom: 1.8rem;
-            flex-wrap: wrap;
-            gap: 1rem;
-            border-bottom: 1px solid #e9edf2;
-            padding-bottom: 0.8rem;
-        }
-
-        .time-display {
-            font-family: monospace;
-            font-size: 0.85rem;
-            color: #4a6c7c;
-            background: #f7fafc;
-            padding: 0.3rem 0.9rem;
-            border: 1px solid #e2eaf0;
-        }
-
         .nav-tabs {
             display: flex;
             flex-wrap: wrap;
@@ -336,10 +316,6 @@
     </div>
 
     <div class="dashboard">
-        <div class="info-bar">
-            <div class="time-display" id="currentDateTime"></div>
-        </div>
-
         <div class="nav-tabs">
             <button class="tab-btn active" data-tab="announce">公司公告</button>
             <button class="tab-btn" data-tab="expense">报销进度</button>
@@ -582,21 +558,12 @@
         if(activeTab) activeTab.classList.add('active');
     }
 
-    function updateDateTime() {
-        const now = new Date();
-        const dateStr = now.toLocaleString('zh-CN', {hour12: false});
-        const timeElem = document.getElementById('currentDateTime');
-        if(timeElem) timeElem.innerText = dateStr;
-    }
-
     function init() {
         renderAnnounceList();
         renderExpenseList();
         renderTrainingList();
         renderMessagesOnly();
         initTabs();
-        updateDateTime();
-        setInterval(updateDateTime, 60000);
     }
 
     init();
